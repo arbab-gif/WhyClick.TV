@@ -281,7 +281,7 @@ const FilterButton = ({ filters, setFilters }) => {
 };
 
 // ── DENTIST CARD ──────────────────────────────────────────────────────────────
-const DentistCard = ({ d, active, hovered, onHover, onClick, onViewProfile }) => (
+const DentistCard = ({ d, active, hovered, onHover, onViewProfile }) => (
   <article
     data-id={d.id}
     onMouseEnter={() => onHover(d.id)}
@@ -298,16 +298,16 @@ const DentistCard = ({ d, active, hovered, onHover, onClick, onViewProfile }) =>
     }}>
     <div style={{ position: 'relative', overflow: 'hidden', minHeight: 180 }}>
       <img src={d.img} alt={d.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
-      <div style={{ position: 'absolute', top: 10, left: 10 }}>
-        <Tag tone="green" size="sm"><Icon name="check-badge" size={10} /> Verified</Tag>
-      </div>
     </div>
     <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 0 }}>
-      {/* Name + rating */}
+      {/* Name + checkmark + rating */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
-        <div>
-          <div style={{ font: '600 16px/1.25 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>{d.name}</div>
-          <div style={{ font: '400 13px/1.3 Inter', color: 'var(--ink-2)', marginTop: 3 }}>{d.clinic}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+          <div style={{ font: '600 16px/1.25 Inter', letterSpacing: '-0.01em', color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{d.name}</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} aria-label="Verified">
+            <circle cx="12" cy="12" r="12" fill="var(--green)" />
+            <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
           <Icon name="star" size={13} color="var(--gold)" />
@@ -315,8 +315,10 @@ const DentistCard = ({ d, active, hovered, onHover, onClick, onViewProfile }) =>
           <span style={{ font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>({d.reviews})</span>
         </div>
       </div>
+      {/* Clinic */}
+      <div style={{ font: '400 13px/1.3 Inter', color: 'var(--ink-2)', marginBottom: 8 }}>{d.clinic}</div>
       {/* Tags */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10, marginTop: 8 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
         {d.treatments.slice(0, 3).map(t => (
           <span key={t} style={{ padding: '4px 10px', borderRadius: 999, background: 'var(--bg-alt)', border: '1px solid var(--line-2)', font: '500 11px/1.4 Inter', color: 'var(--ink-2)' }}>{t}</span>
         ))}
@@ -469,6 +471,7 @@ const MapView = ({ items, activeId, onPinClick, onPinHover, hoveredId, collapsed
 
 // ── PAGE ──────────────────────────────────────────────────────────────────────
 export default function DentistListing() {
+  const navigate = useNavigate();
   const [location, setLocation] = useState('Brooklyn, NY · 11211');
   const [query, setQuery] = useState('');
   const [activeId, setActiveId] = useState(null);
