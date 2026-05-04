@@ -6,6 +6,8 @@ import LandingPage from './pages/LandingPage';
 import DentistListing from './pages/DentistListing';
 import DentistProfile from './pages/DentistProfile';
 import JoinAsPartner from './pages/JoinAsPartner';
+import ProListing from './pages/ProListing';
+import ProProfile from './pages/ProProfile';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -15,6 +17,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/dentists" element={<DentistListing />} />
         <Route path="/dentists/:id" element={<DentistProfile />} />
         <Route path="/join" element={<JoinAsPartner />} />
+        <Route path="/:industry/:id" element={<ProProfile />} />
+        <Route path="/:industry" element={<ProListing />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
