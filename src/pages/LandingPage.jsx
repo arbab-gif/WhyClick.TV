@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon, Tag, Btn, Avatar, PhotoPlaceholder, Container, SectionHeader } from '../components/primitives';
 import AskAIFab from '../components/AskAIFab';
+import SiteNav from '../components/SiteNav';
 import logo from '../assets/whyclick-logo.png';
 
-// ── NAV ──────────────────────────────────────────────────────────────────────
+// ── INDUSTRY DATA (used in homepage sections only) ─────────────────────────
 const INDUSTRIES = [
-  { icon: 'tooth',    label: 'Dentists',           sub: '14,200 pros' },
-  { icon: 'fork',     label: 'Restaurants',        sub: '12,840 listings' },
-  { icon: 'scissors', label: 'Salons & Spas',      sub: '6,420 pros' },
-  { icon: 'home',     label: 'Home Services',      sub: '9,180 pros' },
-  { icon: 'wrench',   label: 'Service Pros',       sub: '20,100 pros' },
-  { icon: 'camera',   label: 'Photographers',      sub: '3,640 pros' },
-  { icon: 'pin',      label: 'Real Estate',        sub: '5,210 agents' },
-  { icon: 'sparkle',  label: 'Wellness & Fitness', sub: '4,860 pros' },
+  { icon: 'tooth',    label: 'Dentists',           sub: '14,200 pros',    slug: 'dentists' },
+  { icon: 'fork',     label: 'Restaurants',        sub: '12,840 listings',slug: 'restaurants' },
+  { icon: 'scissors', label: 'Salons & Spas',      sub: '6,420 pros',     slug: 'salon-spa' },
+  { icon: 'camera',   label: 'Photographers',      sub: '3,640 pros',     slug: 'photographers' },
+  { icon: 'home',     label: 'Home Services',      sub: '9,180 pros',     slug: null },
+  { icon: 'wrench',   label: 'Service Pros',       sub: '20,100 pros',    slug: null },
+  { icon: 'pin',      label: 'Real Estate',        sub: '5,210 agents',   slug: null },
+  { icon: 'sparkle',  label: 'Wellness & Fitness', sub: '4,860 pros',     slug: null },
 ];
 
 const Nav = () => {
@@ -274,7 +275,6 @@ const Hero = () => {
                   width: 48, height: 48, borderRadius: '50%',
                   background: 'var(--accent)', color: 'white', border: 'none',
                   display: 'grid', placeItems: 'center', cursor: 'pointer',
-                  boxShadow: '0 4px 16px -2px rgba(255, 90, 32, 0.55)',
                 }}>
                   <Icon name="search" size={18} color="white" />
                 </button>
@@ -283,8 +283,15 @@ const Hero = () => {
 
             {/* Quick category pills */}
             <div style={{ marginTop: 18, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {['Dentist', 'Restaurant', 'Photographer', 'Home Services', 'Salon & Spa', 'Private Chef'].map(cat => (
-                <button key={cat} onClick={() => cat === 'Dentist' ? navigate('/dentists') : null}
+              {[
+                { label: 'Dentist',       slug: 'dentists'      },
+                { label: 'Restaurant',    slug: 'restaurants'   },
+                { label: 'Photographer',  slug: 'photographers' },
+                { label: 'Home Services', slug: null            },
+                { label: 'Salon & Spa',   slug: 'salon-spa'     },
+                { label: 'Private Chef',  slug: null            },
+              ].map(({ label, slug }) => (
+                <button key={label} onClick={() => slug && navigate(`/${slug}`)}
                   style={{
                     padding: '7px 14px', borderRadius: 999,
                     background: 'oklch(1 0 0 / 0.12)', border: '1px solid oklch(1 0 0 / 0.25)',
@@ -295,7 +302,7 @@ const Hero = () => {
                   onMouseEnter={e => e.currentTarget.style.background = 'oklch(1 0 0 / 0.22)'}
                   onMouseLeave={e => e.currentTarget.style.background = 'oklch(1 0 0 / 0.12)'}
                 >
-                  {cat}
+                  {label}
                 </button>
               ))}
             </div>
@@ -464,7 +471,7 @@ const HowItWorks = () => (
             position: 'relative', minHeight: 260,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ font: '700 13px/1 "JetBrains Mono", monospace', color: 'var(--accent)', letterSpacing: '0.04em' }}>STEP {s.n}</span>
+              <span style={{ font: '700 13px/1 Inter', color: 'var(--accent)', letterSpacing: '0.04em' }}>STEP {s.n}</span>
               <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--accent-soft)',
                 border: '1px solid var(--line)', display: 'grid', placeItems: 'center' }}>
                 <Icon name={s.icon} size={20} color="var(--accent)" />
@@ -489,12 +496,12 @@ const HowItWorks = () => (
 
 // ── BROWSE BY CATEGORY ────────────────────────────────────────────────────────
 const BROWSE = [
-  { id: 'restaurant', name: 'Restaurants',           count: '12,840', icon: 'fork',      sub: 'Fine dining → cafes',        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80&auto=format&fit=crop' },
-  { id: 'dentist',    name: 'Dentists',               count: '14,200', icon: 'tooth',     sub: 'Cleaning, ortho, cosmetic',  img: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80&auto=format&fit=crop' },
-  { id: 'service',    name: 'Professional Services',  count: '20,100', icon: 'briefcase', sub: 'Legal, finance, consulting', img: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop' },
-  { id: 'salon',      name: 'Salon & Spa',            count: '6,420',  icon: 'scissors',  sub: 'Hair, nails, massage',       img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&auto=format&fit=crop' },
-  { id: 'home',       name: 'Home Services',          count: '9,180',  icon: 'home',      sub: 'Plumbing, electric, HVAC',   img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80&auto=format&fit=crop' },
-  { id: 'photo',      name: 'Photographers',          count: '3,640',  icon: 'camera',    sub: 'Weddings, portraits, events',img: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800&q=80&auto=format&fit=crop' },
+  { id: 'restaurant', slug: 'restaurants',  name: 'Restaurants',           count: '12,840', icon: 'fork',      sub: 'Fine dining → cafes',        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80&auto=format&fit=crop' },
+  { id: 'dentist',    slug: 'dentists',     name: 'Dentists',               count: '14,200', icon: 'tooth',     sub: 'Cleaning, ortho, cosmetic',  img: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80&auto=format&fit=crop' },
+  { id: 'service',    slug: null,           name: 'Professional Services',  count: '20,100', icon: 'briefcase', sub: 'Legal, finance, consulting', img: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop' },
+  { id: 'salon',      slug: 'salon-spa',    name: 'Salon & Spa',            count: '6,420',  icon: 'scissors',  sub: 'Hair, nails, massage',       img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&auto=format&fit=crop' },
+  { id: 'home',       slug: null,           name: 'Home Services',          count: '9,180',  icon: 'home',      sub: 'Plumbing, electric, HVAC',   img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80&auto=format&fit=crop' },
+  { id: 'photo',      slug: 'photographers',name: 'Photographers',          count: '3,640',  icon: 'camera',    sub: 'Weddings, portraits, events',img: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800&q=80&auto=format&fit=crop' },
 ];
 
 const BrowseByCategory = () => {
@@ -502,7 +509,7 @@ const BrowseByCategory = () => {
   return (
     <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
       <Container>
-        <SectionHeader title="Browse by category" sub="Whatever you need, we have the right pro for it." />
+        <SectionHeader title="Browse by industry" sub="Whatever you need, we have the right pro for it." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
           {BROWSE.map(c => (
             <a key={c.id} href="/dentists"
@@ -521,7 +528,7 @@ const BrowseByCategory = () => {
               <div style={{ aspectRatio: '16/10', position: 'relative', overflow: 'hidden', background: 'oklch(0.95 0.012 80)' }}>
                 <PhotoPlaceholder ratio="16/10" label={c.name.toLowerCase()} src={c.img} style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }} />
                 <div style={{ position: 'absolute', top: 14, right: 14,
-                  font: '600 11px/1 "JetBrains Mono", monospace',
+                  font: '600 11px/1 Inter',
                   background: 'rgba(255,255,255,0.90)', color: 'var(--ink)',
                   padding: '6px 10px', borderRadius: 999, letterSpacing: '0.04em',
                 }}>{c.count} pros</div>
@@ -549,13 +556,47 @@ const BrowseByCategory = () => {
 
 // ── TOP PROFESSIONALS ─────────────────────────────────────────────────────────
 const TOP_PROS = [
-  { id: 1, name: 'Dr. Maya Patel',    role: 'Pediatric Dentist',   loc: 'Brooklyn, NY',  tags: ['Pediatric', 'Cleaning'],    rating: 4.9, reviews: 412, fee: 85,  img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop&crop=faces' },
-  { id: 2, name: 'Dr. Ali Awan',      role: 'Family Dentist',      loc: 'Brooklyn, NY',  tags: ['Family', 'Cleaning'],       rating: 5.0, reviews: 487, fee: 60,  img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80&auto=format&fit=crop&crop=faces' },
-  { id: 3, name: 'Dr. Lena Vogel',    role: 'Orthodontist',        loc: 'Brooklyn, NY',  tags: ['Aligners', 'Braces'],       rating: 4.8, reviews: 91,  fee: 120, img: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80&auto=format&fit=crop&crop=faces' },
-  { id: 4, name: 'Dr. James Okafor',  role: 'Cosmetic Dentist',    loc: 'Williamsburg',  tags: ['Whitening', 'Veneers'],     rating: 4.7, reviews: 256, fee: 200, img: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=600&q=80&auto=format&fit=crop&crop=faces' },
-  { id: 5, name: 'Dr. Priya Shah',    role: 'General Dentist',     loc: 'Greenpoint',    tags: ['Cleaning', 'Cosmetic'],     rating: 4.9, reviews: 184, fee: 75,  img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop&crop=faces' },
-  { id: 6, name: 'Dr. Marcus Reyes',  role: 'Endodontist',         loc: 'Brooklyn, NY',  tags: ['Root Canal', 'Sedation'],   rating: 4.6, reviews: 142, fee: 150, img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  // Dentists
+  { id: 1,  industry: 'Dentists',      name: 'Dr. Maya Patel',      role: 'Pediatric Dentist',    loc: 'Brooklyn, NY',     tags: ['Pediatric', 'Cleaning'],      rating: 4.9, reviews: 412,  fee: 85,  img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 2,  industry: 'Dentists',      name: 'Dr. Ali Awan',        role: 'Family Dentist',       loc: 'Brooklyn, NY',     tags: ['Family', 'Cleaning'],         rating: 5.0, reviews: 487,  fee: 60,  img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 3,  industry: 'Dentists',      name: 'Dr. Lena Vogel',      role: 'Orthodontist',         loc: 'Brooklyn, NY',     tags: ['Aligners', 'Braces'],         rating: 4.8, reviews: 91,   fee: 120, img: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 13, industry: 'Dentists',      name: 'Dr. James Okafor',    role: 'Cosmetic Dentist',     loc: 'Williamsburg, NY', tags: ['Whitening', 'Veneers'],       rating: 4.7, reviews: 256,  fee: 200, img: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 14, industry: 'Dentists',      name: 'Dr. Priya Shah',      role: 'General Dentist',      loc: 'Greenpoint, NY',   tags: ['Cleaning', 'Cosmetic'],       rating: 4.9, reviews: 184,  fee: 75,  img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 15, industry: 'Dentists',      name: 'Dr. Marcus Reyes',    role: 'Endodontist',          loc: 'Brooklyn, NY',     tags: ['Root Canal', 'Sedation'],     rating: 4.6, reviews: 142,  fee: 150, img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 16, industry: 'Dentists',      name: 'Dr. Sarah Kim',       role: 'Periodontist',         loc: 'Park Slope, NY',   tags: ['Gum Care', 'Implants'],       rating: 4.8, reviews: 97,   fee: 175, img: 'https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 17, industry: 'Dentists',      name: 'Dr. Omar Hassan',     role: 'Oral Surgeon',         loc: 'Bushwick, NY',     tags: ['Extractions', 'Implants'],    rating: 4.7, reviews: 211,  fee: 230, img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 18, industry: 'Dentists',      name: 'Dr. Nina Clarke',     role: 'Emergency Dentist',    loc: 'Brooklyn, NY',     tags: ['Emergency', 'Weekends'],      rating: 4.9, reviews: 329,  fee: 95,  img: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  // Photographers
+  { id: 4,  industry: 'Photographers', name: 'Sophie Laurent',      role: 'Wedding Photographer', loc: 'Williamsburg, NY', tags: ['Weddings', 'Portraits'],      rating: 5.0, reviews: 318,  fee: 350, img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 5,  industry: 'Photographers', name: 'Marcus Cole',         role: 'Event Photographer',   loc: 'Brooklyn, NY',     tags: ['Events', 'Corporate'],        rating: 4.8, reviews: 204,  fee: 220, img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 6,  industry: 'Photographers', name: 'Rina Tanaka',         role: 'Portrait Photographer',loc: 'Greenpoint, NY',   tags: ['Portraits', 'Headshots'],     rating: 4.9, reviews: 156,  fee: 180, img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 19, industry: 'Photographers', name: 'Luca Ferretti',       role: 'Commercial Photographer',loc: 'Brooklyn, NY',   tags: ['Commercial', 'Products'],     rating: 4.7, reviews: 88,   fee: 400, img: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 20, industry: 'Photographers', name: 'Amara Diallo',        role: 'Family Photographer',  loc: 'Park Slope, NY',   tags: ['Family', 'Newborn'],          rating: 5.0, reviews: 241,  fee: 250, img: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 21, industry: 'Photographers', name: 'Dev Patel',           role: 'Real Estate Photographer',loc: 'Williamsburg, NY',tags: ['Interiors', 'Aerial'],      rating: 4.8, reviews: 132,  fee: 300, img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 22, industry: 'Photographers', name: 'Chloe Bennett',       role: 'Fashion Photographer', loc: 'Bushwick, NY',     tags: ['Fashion', 'Editorial'],       rating: 4.9, reviews: 174,  fee: 500, img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 23, industry: 'Photographers', name: 'Noah Williams',       role: 'Sports Photographer',  loc: 'Brooklyn, NY',     tags: ['Sports', 'Action'],           rating: 4.7, reviews: 99,   fee: 275, img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  // Salon & Spa
+  { id: 7,  industry: 'Salon & Spa',   name: 'Jade Monroe',         role: 'Master Stylist',       loc: 'Brooklyn, NY',     tags: ['Color', 'Cuts'],              rating: 4.9, reviews: 531,  fee: 95,  img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 8,  industry: 'Salon & Spa',   name: 'Elena Vasquez',       role: 'Esthetician',          loc: 'Williamsburg, NY', tags: ['Facials', 'Waxing'],          rating: 4.8, reviews: 289,  fee: 80,  img: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 9,  industry: 'Salon & Spa',   name: 'Kira Osei',           role: 'Massage Therapist',    loc: 'Greenpoint, NY',   tags: ['Deep Tissue', 'Relaxation'],  rating: 5.0, reviews: 174,  fee: 110, img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 24, industry: 'Salon & Spa',   name: 'Tara Nguyen',         role: 'Nail Technician',      loc: 'Park Slope, NY',   tags: ['Gel', 'Nail Art'],            rating: 4.9, reviews: 402,  fee: 55,  img: 'https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 25, industry: 'Salon & Spa',   name: 'Isabelle Roux',       role: 'Lash Artist',          loc: 'Brooklyn, NY',     tags: ['Lash Extensions', 'Lifts'],   rating: 5.0, reviews: 318,  fee: 130, img: 'https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 26, industry: 'Salon & Spa',   name: 'Priya Kapoor',        role: 'Brow Specialist',      loc: 'Williamsburg, NY', tags: ['Microblading', 'Threading'],  rating: 4.8, reviews: 227,  fee: 90,  img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 27, industry: 'Salon & Spa',   name: 'Maya Torres',         role: 'Makeup Artist',        loc: 'Bushwick, NY',     tags: ['Bridal', 'Editorial'],        rating: 4.9, reviews: 183,  fee: 150, img: 'https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 28, industry: 'Salon & Spa',   name: 'Leo Andersen',        role: 'Barber',               loc: 'Greenpoint, NY',   tags: ['Fades', 'Beard Trim'],        rating: 4.8, reviews: 614,  fee: 45,  img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  // Restaurants
+  { id: 10, industry: 'Restaurants',   name: 'Osteria Nolita',      role: 'Italian · Fine Dining',loc: 'Brooklyn, NY',     tags: ['Italian', 'Wine Bar'],        rating: 4.9, reviews: 892,  fee: 65,  img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80&auto=format&fit=crop' },
+  { id: 11, industry: 'Restaurants',   name: 'Sōra Ramen',          role: 'Japanese · Casual',    loc: 'Williamsburg, NY', tags: ['Ramen', 'Izakaya'],           rating: 4.8, reviews: 1204, fee: 22,  img: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80&auto=format&fit=crop' },
+  { id: 12, industry: 'Restaurants',   name: 'Casa Verde',          role: 'Mexican · Brunch',     loc: 'Greenpoint, NY',   tags: ['Tacos', 'Brunch'],            rating: 4.7, reviews: 643,  fee: 30,  img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80&auto=format&fit=crop' },
+  { id: 29, industry: 'Restaurants',   name: 'The Ember Room',      role: 'American · Steakhouse',loc: 'Brooklyn, NY',     tags: ['Steak', 'Cocktails'],         rating: 4.9, reviews: 741,  fee: 85,  img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80&auto=format&fit=crop' },
+  { id: 30, industry: 'Restaurants',   name: 'Mango & Lime',        role: 'Caribbean · Casual',   loc: 'Flatbush, NY',     tags: ['Caribbean', 'Vegan Options'], rating: 4.8, reviews: 529,  fee: 28,  img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80&auto=format&fit=crop' },
+  { id: 31, industry: 'Restaurants',   name: 'Tulum Kitchen',       role: 'Mexican · Fine Dining',loc: 'Williamsburg, NY', tags: ['Tasting Menu', 'Mezcal'],     rating: 5.0, reviews: 418,  fee: 95,  img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80&auto=format&fit=crop' },
+  { id: 32, industry: 'Restaurants',   name: 'Spice Route',         role: 'Indian · Modern',      loc: 'Park Slope, NY',   tags: ['Indian', 'Vegetarian'],       rating: 4.8, reviews: 387,  fee: 40,  img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80&auto=format&fit=crop' },
+  { id: 33, industry: 'Restaurants',   name: 'Le Petit Bistro',     role: 'French · Café',        loc: 'Greenpoint, NY',   tags: ['Brunch', 'French'],           rating: 4.9, reviews: 602,  fee: 35,  img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80&auto=format&fit=crop' },
+  { id: 34, industry: 'Restaurants',   name: 'Nori & Co.',          role: 'Japanese · Sushi',     loc: 'Brooklyn, NY',     tags: ['Sushi', 'Omakase'],           rating: 5.0, reviews: 511,  fee: 120, img: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&q=80&auto=format&fit=crop' },
 ];
+
+const PRO_TABS = ['Dentists', 'Photographers', 'Salon & Spa', 'Restaurants'];
 
 function ProCard({ pro, featured = false }) {
   const navigate = useNavigate();
@@ -577,19 +618,23 @@ function ProCard({ pro, featured = false }) {
     >
       <div style={{ position: 'relative' }}>
         <PhotoPlaceholder ratio="5/4" label={pro.role.toLowerCase()} src={pro.img} style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }} />
-        <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', gap: 6 }}>
-          {featured && <Tag tone="accent" size="sm">Featured</Tag>}
-          <Tag tone="green" size="sm"><Icon name="check-badge" size={12} /> Verified</Tag>
-        </div>
-        <div style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.94)', borderRadius: 999, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 4, font: '600 12px/1 Inter' }}>
-          <Icon name="star" size={12} color="oklch(0.72 0.14 75)" />
-          {pro.rating}
-          <span style={{ color: 'var(--ink-3)', fontWeight: 500 }}>({pro.reviews})</span>
-        </div>
       </div>
       <div style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div>
-          <h3 style={{ margin: '0 0 4px', font: '700 18px/1.2 Inter', letterSpacing: '-0.015em' }}>{pro.name}</h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+              <h3 style={{ margin: 0, font: '700 18px/1.2 Inter', letterSpacing: '-0.015em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pro.name}</h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} aria-label="Verified">
+                <circle cx="12" cy="12" r="12" fill="var(--green)" />
+                <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, font: '600 12px/1 Inter', flexShrink: 0 }}>
+              <Icon name="star" size={12} color="oklch(0.72 0.14 75)" />
+              {pro.rating}
+              <span style={{ color: 'var(--ink-3)', fontWeight: 500 }}>({pro.reviews})</span>
+            </div>
+          </div>
           <div style={{ font: '400 13px/1.4 Inter', color: 'var(--ink-2)', marginBottom: 6 }}>{pro.role}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>
             <Icon name="pin" size={12} />
@@ -601,7 +646,7 @@ function ProCard({ pro, featured = false }) {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px dashed var(--line)', paddingTop: 12, marginTop: 2 }}>
           <div>
-            <div style={{ font: '700 15px/1 Inter', color: 'var(--ink)', letterSpacing: '-0.01em' }}>from ${pro.fee}</div>
+            <div style={{ font: '700 15px/1 Inter', color: 'var(--ink)', letterSpacing: '-0.01em' }}>From ${pro.fee}</div>
             <div style={{ font: '400 11px/1 Inter', color: 'var(--ink-3)', marginTop: 3 }}>per consult</div>
           </div>
           <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={e => { e.stopPropagation(); navigate(dest); }}>View profile</Btn>
@@ -611,20 +656,46 @@ function ProCard({ pro, featured = false }) {
   );
 }
 
-const TopProfessionals = () => (
-  <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
-    <Container>
-      <SectionHeader
-        title="Top professionals near you"
-        sub="Hand-picked, consistently 5-star, and available this week."
-        action={<Btn variant="outline" iconRight="arrow-right" onClick={() => {}}>View all</Btn>}
-      />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-        {TOP_PROS.map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
-      </div>
-    </Container>
-  </section>
-);
+const TopProfessionals = () => {
+  const [activeTab, setActiveTab] = useState('Dentists');
+  const filtered = TOP_PROS.filter(p => p.industry === activeTab);
+
+  return (
+    <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
+      <Container>
+        <SectionHeader
+          title="Top professionals near you"
+          sub="Hand-picked, consistently 5-star, and available this week."
+          action={<Btn variant="outline" iconRight="arrow-right" onClick={() => {}}>View all</Btn>}
+        />
+        <div style={{ display: 'flex', gap: 8, marginBottom: 28, flexWrap: 'wrap' }}>
+          {PRO_TABS.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: '8px 18px',
+                borderRadius: 999,
+                font: '500 14px/1 Inter',
+                cursor: 'pointer',
+                border: '1px solid',
+                transition: 'all .15s',
+                borderColor: activeTab === tab ? 'var(--accent)' : 'var(--line)',
+                background: activeTab === tab ? 'var(--accent)' : 'var(--bg)',
+                color: activeTab === tab ? '#fff' : 'var(--ink-2)',
+              }}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+          {filtered.map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
+        </div>
+      </Container>
+    </section>
+  );
+};
 
 // ── REVIEWS ───────────────────────────────────────────────────────────────────
 const REVIEWS = [
@@ -724,7 +795,7 @@ const Blog = () => (
     <Container>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48 }}>
         <div>
-          <div style={{ font: '700 12px/1 "JetBrains Mono", monospace', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 12 }}>FROM THE BLOG</div>
+          <div style={{ font: '700 12px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 12 }}>FROM THE BLOG</div>
           <h2 style={{ margin: 0, font: '700 36px/1.1 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
             Advice you can actually use
           </h2>
@@ -769,7 +840,7 @@ const Blog = () => (
                 <div style={{ font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>
                   {post.author} · {post.date}
                 </div>
-                <span style={{ font: '500 11px/1 "JetBrains Mono", monospace', color: 'var(--ink-3)', background: 'var(--bg-alt)', padding: '4px 8px', borderRadius: 999 }}>
+                <span style={{ font: '500 11px/1 Inter', color: 'var(--ink-3)', background: 'var(--bg-alt)', padding: '4px 8px', borderRadius: 999 }}>
                   {post.readTime} read
                 </span>
               </div>
@@ -783,89 +854,115 @@ const Blog = () => (
 
 // ── STATS ─────────────────────────────────────────────────────────────────────
 const STATS = [
-  { v: '1.8M',    label: 'Active customers',    sub: 'across the US' },
+  { v: '1.8M+',   label: 'Active customers',    sub: 'across the US' },
   { v: '14,200+', label: 'Verified pros',        sub: 'license-checked' },
   { v: '847',     label: 'Bookings today',       sub: 'and counting' },
-  { v: '4.9',     label: 'Avg. platform rating', sub: 'out of 5 stars' },
+  { v: '4.9★',   label: 'Platform rating',      sub: 'out of 5 stars' },
+];
+
+const INDUSTRY_PHOTOS = [
+  { src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop', label: 'Dentistry', name: 'Dr. Maya Patel' },
+  { src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80&auto=format&fit=crop', label: 'Restaurants', name: 'Osteria Nolita' },
+  { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80&auto=format&fit=crop&crop=faces', label: 'Salon & Spa', name: 'Jade Monroe' },
+  { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop&crop=faces', label: 'Photography', name: 'Sophie Laurent' },
 ];
 
 const Stats = () => (
   <section style={{
     position: 'relative', overflow: 'hidden',
-    background: 'linear-gradient(135deg, #1a0f0a 0%, #0f0b08 50%, #1c1008 100%)',
+    background: 'linear-gradient(160deg, #150c07 0%, #0f0905 45%, #1a0e08 100%)',
     borderTop: '1px solid rgba(255,255,255,0.06)',
   }}>
-    {/* Subtle dot grid overlay */}
+    {/* Subtle dot grid */}
     <div aria-hidden="true" style={{
       position: 'absolute', inset: 0,
-      backgroundImage: 'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)',
-      backgroundSize: '28px 28px',
-    }} />
-    {/* Orange radial glow */}
-    <div aria-hidden="true" style={{
-      position: 'absolute', bottom: -100, left: '50%',
-      transform: 'translateX(-50%)',
-      width: 800, height: 400,
-      background: 'radial-gradient(ellipse, rgba(255,90,32,0.18) 0%, transparent 65%)',
-      pointerEvents: 'none',
+      backgroundImage: 'radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)',
+      backgroundSize: '32px 32px',
     }} />
 
-    <Container style={{ position: 'relative', zIndex: 1 }}>
-      {/* Headline */}
-      <div style={{ padding: '72px 0 60px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 20,
-          padding: '5px 14px', borderRadius: 999,
-          background: 'rgba(255,90,32,0.12)', border: '1px solid rgba(255,90,32,0.25)' }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF5A20' }} />
-          <span style={{ font: '700 10px/1 "JetBrains Mono", monospace', color: '#FF5A20', letterSpacing: '0.12em' }}>LIVE PLATFORM DATA</span>
-        </div>
-        <h2 style={{ margin: '0 0 14px', font: '800 54px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
-          Growing every{' '}
-          <span style={{ color: '#FF5A20', fontStyle: 'italic' }}>single day.</span>
-        </h2>
-        <p style={{ margin: 0, font: '400 16px/1.5 Inter', color: 'rgba(255,255,255,0.45)' }}>
-          Real numbers from our platform — updated every 24 hours.
-        </p>
-      </div>
+    <Container style={{ position: 'relative', zIndex: 1, padding: '80px 0' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
 
-      {/* Stat cards */}
-      <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 12, marginBottom: 72,
-      }}>
-        {STATS.map((s, i) => (
-          <div key={s.label} style={{
-            padding: '40px 32px',
-            background: i === 0
-              ? 'linear-gradient(135deg, #FF5A20 0%, #e04010 100%)'
-              : 'rgba(255,255,255,0.04)',
-            border: `1px solid ${i === 0 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.08)'}`,
-            borderRadius: 18,
-            display: 'flex', flexDirection: 'column', gap: 10,
-            backdropFilter: i !== 0 ? 'blur(10px)' : 'none',
-            boxShadow: i === 0 ? '0 24px 48px -12px rgba(255,90,32,0.4)' : 'none',
-            transition: 'transform .2s, box-shadow .2s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
-          >
-            <div style={{
-              font: '900 60px/1 Inter', letterSpacing: '-0.04em',
-              color: i === 0 ? '#fff' : '#FF5A20',
-            }}>
-              {s.v}
-              {s.label === 'Avg. platform rating' && (
-                <span style={{ font: '700 28px/1 Inter', color: i === 0 ? 'rgba(255,255,255,0.8)' : '#FF5A20', marginLeft: 2 }}>★</span>
-              )}
-            </div>
-            <div style={{ font: '600 14px/1.3 Inter', color: i === 0 ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.75)' }}>
-              {s.label}
-            </div>
-            <div style={{ font: '400 12px/1 Inter', color: i === 0 ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.30)' }}>
-              {s.sub}
-            </div>
+        {/* Left: headline + stats */}
+        <div>
+          <h2 style={{ margin: '0 0 16px', font: '800 52px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
+            Trusted by millions,<br />
+            <span style={{ color: '#FF5A20' }}>every single day.</span>
+          </h2>
+          <p style={{ margin: '0 0 48px', font: '400 17px/1.6 Inter', color: 'rgba(255,255,255,0.4)' }}>
+            Real numbers from our platform — updated every 24 hours.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
+            {STATS.map((s, i) => (
+              <div key={s.label} style={{
+                padding: '32px 28px',
+                background: 'rgba(255,255,255,0.04)',
+                borderRight: (i === 0 || i === 2) ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                borderBottom: (i === 0 || i === 1) ? '1px solid rgba(255,255,255,0.06)' : 'none',
+              }}>
+                <div style={{
+                  font: '800 44px/1 Inter', letterSpacing: '-0.03em',
+                  color: '#FF5A20',
+                  marginBottom: 8,
+                }}>
+                  {s.v}
+                </div>
+                <div style={{ font: '600 13px/1.3 Inter', color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>
+                  {s.label}
+                </div>
+                <div style={{ font: '400 12px/1 Inter', color: 'rgba(255,255,255,0.25)' }}>
+                  {s.sub}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Right: 2×2 photo mosaic */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 10, aspectRatio: '1 / 1' }}>
+          {INDUSTRY_PHOTOS.map((p, i) => (
+            <div key={p.label} style={{
+              position: 'relative', borderRadius: 14, overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <img
+                src={p.src}
+                alt={p.label}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+              {/* Gradient overlay */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(to top, rgba(10,6,3,0.75) 0%, rgba(10,6,3,0.1) 55%, transparent 100%)',
+              }} />
+              {/* Label */}
+              <div style={{ position: 'absolute', bottom: 12, left: 14, right: 14 }}>
+                <div style={{ font: '600 11px/1 Inter', color: '#FF5A20', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>
+                  {p.label}
+                </div>
+                <div style={{ font: '600 13px/1.2 Inter', color: 'rgba(255,255,255,0.9)' }}>
+                  {p.name}
+                </div>
+              </div>
+              {/* Verified badge */}
+              <div style={{
+                position: 'absolute', top: 12, right: 12,
+                background: 'rgba(10,6,3,0.6)', backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: 999, padding: '4px 8px',
+                display: 'flex', alignItems: 'center', gap: 4,
+              }}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="12" fill="#22c55e" />
+                  <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span style={{ font: '600 10px/1 Inter', color: 'rgba(255,255,255,0.85)' }}>Verified</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </Container>
   </section>
@@ -905,7 +1002,7 @@ const Locations = () => {
               <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)', marginTop: 4 }}>{l.cities}</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ font: '600 13px/1 "JetBrains Mono", monospace', color: 'var(--ink-2)' }}>{l.count}</div>
+              <div style={{ font: '600 13px/1 Inter', color: 'var(--ink-2)' }}>{l.count}</div>
               <div style={{ marginTop: 8, display: 'inline-flex' }}>
                 <Icon name="arrow-up-right" size={14} color="var(--accent)" />
               </div>
@@ -1098,7 +1195,7 @@ const Footer = () => (
 export default function LandingPage() {
   return (
     <>
-      <Nav />
+      <SiteNav transparent />
       <main>
         <Hero />
         <BrowseByCategory />

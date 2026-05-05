@@ -3,45 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import { Icon, Tag, Btn } from '../components/primitives';
 import AskAIFab from '../components/AskAIFab';
-import logo from '../assets/whyclick-logo.png';
+import SiteNav from '../components/SiteNav';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const DENTISTS = [
-  { id: 1, name: 'Dr. Maya Patel',   clinic: 'Patel Pediatric Dental',  rating: 4.9, reviews: 412, distance: 0.6, lat: 40.7155, lng: -73.9540, treatments: ['Pediatric', 'Cleaning', 'Whitening'],           price: 85,  fee: 'Consult $85',  avail: 'Today · 3:00 PM',         insurance: ['Aetna', 'BCBS', 'Cigna'],        gender: 'female', img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop', address: '142 Bedford Ave, Brooklyn' },
-  { id: 2, name: 'Dr. Ali Awan',     clinic: 'Bridge St. Family Dental', rating: 5.0, reviews: 487, distance: 0.9, lat: 40.7068, lng: -73.9442, treatments: ['Family', 'Cleaning', 'Pediatric'],              price: 60,  fee: 'Consult $60',  avail: 'Tomorrow · 10:30 AM',     insurance: ['Aetna', 'Delta'],               gender: 'male',   img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80&auto=format&fit=crop', address: '88 Bridge St, Brooklyn' },
-  { id: 3, name: 'Dr. Lena Vogel',   clinic: 'Vogel Orthodontics',       rating: 4.8, reviews: 91,  distance: 1.2, lat: 40.7232, lng: -73.9580, treatments: ['Orthodontics', 'Aligners', 'Braces'],           price: 120, fee: 'Consult $120', avail: 'Mon, May 4 · 2:00 PM',   insurance: ['BCBS', 'Cigna', 'United'],      gender: 'female', img: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80&auto=format&fit=crop', address: '25 Greenpoint Ave, Brooklyn' },
-  { id: 4, name: 'Dr. James Okafor', clinic: 'Smile Studio NYC',         rating: 4.7, reviews: 256, distance: 1.4, lat: 40.7100, lng: -73.9700, treatments: ['Cosmetic', 'Whitening', 'Veneers'],             price: 200, fee: 'Consult $200', avail: 'Today · 5:30 PM',         insurance: ['Aetna'],                        gender: 'male',   img: 'https://images.unsplash.com/photo-1612531385446-f7e6d131e1d0?w=600&q=80&auto=format&fit=crop', address: '310 Broadway, Williamsburg' },
-  { id: 5, name: 'Dr. Priya Shah',   clinic: 'Greenpoint Dental Co.',    rating: 4.9, reviews: 184, distance: 1.7, lat: 40.7280, lng: -73.9510, treatments: ['Cleaning', 'Cosmetic', 'Whitening'],            price: 75,  fee: 'Consult $75',  avail: 'Wed, May 6 · 11:00 AM', insurance: ['BCBS', 'Delta', 'Aetna', 'Cigna'], gender: 'female', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop', address: '78 Manhattan Ave, Greenpoint' },
-  { id: 6, name: 'Dr. Marcus Reyes', clinic: 'BK Endodontics',           rating: 4.6, reviews: 142, distance: 2.1, lat: 40.6985, lng: -73.9620, treatments: ['Root Canal', 'Endodontics'],                   price: 150, fee: 'Consult $150', avail: 'Fri, May 8 · 9:00 AM',  insurance: ['United', 'Cigna'],              gender: 'male',   img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&q=80&auto=format&fit=crop', address: '512 Atlantic Ave, Brooklyn' },
-  { id: 7, name: 'Dr. Sofia Chen',   clinic: 'Smile Lab',                rating: 5.0, reviews: 318, distance: 2.4, lat: 40.7330, lng: -73.9680, treatments: ['Cosmetic', 'Veneers', 'Whitening', 'Cleaning'], price: 95,  fee: 'Consult $95',  avail: 'Today · 6:45 PM',        insurance: ['Aetna', 'BCBS', 'Delta'],       gender: 'female', img: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=80&auto=format&fit=crop', address: '230 N 9th St, Williamsburg' },
-  { id: 8, name: 'Dr. Ben Levin',    clinic: 'Levin Family Dentistry',   rating: 4.5, reviews: 98,  distance: 2.8, lat: 40.6900, lng: -73.9760, treatments: ['Family', 'Cleaning', 'Crowns'],                 price: 70,  fee: 'Consult $70',  avail: 'Tue, May 5 · 4:15 PM',  insurance: ['BCBS'],                         gender: 'male',   img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&q=80&auto=format&fit=crop', address: '901 Court St, Brooklyn' },
+  { id: 1,  name: 'Dr. Maya Patel',    clinic: 'Patel Pediatric Dental',   rating: 4.9, reviews: 412, distance: 0.6, lat: 40.7155, lng: -73.9540, treatments: ['Pediatric', 'Cleaning', 'Whitening'],    price: 85,  fee: 'Consult $85',  avail: 'Today · 3:00 PM',        insurance: ['Aetna', 'BCBS', 'Cigna'],           gender: 'female', img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop', address: '142 Bedford Ave, Brooklyn' },
+  { id: 2,  name: 'Dr. Ali Awan',      clinic: 'Bridge St. Family Dental',  rating: 5.0, reviews: 487, distance: 0.9, lat: 40.7068, lng: -73.9442, treatments: ['Family', 'Cleaning', 'Pediatric'],       price: 60,  fee: 'Consult $60',  avail: 'Tomorrow · 10:30 AM',    insurance: ['Aetna', 'Delta'],                   gender: 'male',   img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80&auto=format&fit=crop', address: '88 Bridge St, Brooklyn' },
+  { id: 3,  name: 'Dr. Lena Vogel',    clinic: 'Vogel Orthodontics',         rating: 4.8, reviews: 91,  distance: 1.2, lat: 40.7232, lng: -73.9580, treatments: ['Orthodontics', 'Aligners', 'Braces'],    price: 120, fee: 'Consult $120', avail: 'Mon, May 4 · 2:00 PM',  insurance: ['BCBS', 'Cigna', 'United'],          gender: 'female', img: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=600&q=80&auto=format&fit=crop', address: '25 Greenpoint Ave, Brooklyn' },
+  { id: 13, name: 'Dr. James Okafor',  clinic: 'Smile Studio NYC',           rating: 4.7, reviews: 256, distance: 1.4, lat: 40.7100, lng: -73.9700, treatments: ['Cosmetic', 'Whitening', 'Veneers'],      price: 200, fee: 'Consult $200', avail: 'Today · 5:30 PM',        insurance: ['Aetna'],                            gender: 'male',   img: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=600&q=80&auto=format&fit=crop', address: '310 Broadway, Williamsburg' },
+  { id: 14, name: 'Dr. Priya Shah',    clinic: 'Greenpoint Dental Co.',      rating: 4.9, reviews: 184, distance: 1.7, lat: 40.7280, lng: -73.9510, treatments: ['Cleaning', 'Cosmetic', 'Whitening'],     price: 75,  fee: 'Consult $75',  avail: 'Wed, May 6 · 11:00 AM', insurance: ['BCBS', 'Delta', 'Aetna', 'Cigna'],  gender: 'female', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop', address: '78 Manhattan Ave, Greenpoint' },
+  { id: 15, name: 'Dr. Marcus Reyes',  clinic: 'BK Endodontics',             rating: 4.6, reviews: 142, distance: 2.1, lat: 40.6985, lng: -73.9620, treatments: ['Root Canal', 'Endodontics', 'Sedation'], price: 150, fee: 'Consult $150', avail: 'Fri, May 8 · 9:00 AM',  insurance: ['United', 'Cigna'],                  gender: 'male',   img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&q=80&auto=format&fit=crop', address: '512 Atlantic Ave, Brooklyn' },
+  { id: 16, name: 'Dr. Sarah Kim',     clinic: 'Park Slope Periodontics',    rating: 4.8, reviews: 97,  distance: 2.4, lat: 40.6728, lng: -73.9785, treatments: ['Gum Care', 'Implants', 'Cleaning'],      price: 175, fee: 'Consult $175', avail: 'Thu, May 7 · 1:00 PM',  insurance: ['BCBS', 'Aetna'],                    gender: 'female', img: 'https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?w=600&q=80&auto=format&fit=crop', address: '456 7th Ave, Park Slope' },
+  { id: 17, name: 'Dr. Omar Hassan',   clinic: 'Hassan Oral Surgery',        rating: 4.7, reviews: 211, distance: 2.7, lat: 40.6944, lng: -73.9213, treatments: ['Extractions', 'Implants', 'Surgery'],    price: 230, fee: 'Consult $230', avail: 'Today · 4:00 PM',        insurance: ['United', 'Aetna', 'Delta'],         gender: 'male',   img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&q=80&auto=format&fit=crop', address: '218 Knickerbocker Ave, Bushwick' },
+  { id: 18, name: 'Dr. Nina Clarke',   clinic: 'Clarke Emergency Dental',    rating: 4.9, reviews: 329, distance: 3.1, lat: 40.6501, lng: -73.9496, treatments: ['Emergency', 'Cleaning', 'Crowns'],        price: 95,  fee: 'Consult $95',  avail: 'Today · 6:00 PM',        insurance: ['Aetna', 'BCBS', 'Cigna', 'United'], gender: 'female', img: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=80&auto=format&fit=crop', address: '900 Flatbush Ave, Brooklyn' },
 ];
 
-const ALL_TREATMENTS = ['Cleaning', 'Whitening', 'Pediatric', 'Cosmetic', 'Orthodontics', 'Aligners', 'Family', 'Veneers', 'Root Canal', 'Crowns'];
+const ALL_TREATMENTS = ['Cleaning', 'Whitening', 'Pediatric', 'Cosmetic', 'Orthodontics', 'Aligners', 'Family', 'Veneers', 'Root Canal', 'Gum Care', 'Implants', 'Emergency', 'Extractions', 'Sedation', 'Crowns'];
 
-// ── TOP BAR ───────────────────────────────────────────────────────────────────
-const TopBar = () => {
-  const navigate = useNavigate();
-  return (
-    <header style={{
-      position: 'sticky', top: 0, zIndex: 60,
-      background: 'oklch(0.985 0.005 80 / 0.92)',
-      backdropFilter: 'saturate(180%) blur(16px)',
-      borderBottom: '1px solid var(--line-2)',
-    }}>
-      <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, gap: 24 }}>
-        <a href="/" onClick={e => { e.preventDefault(); navigate('/'); }} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src={logo} alt="whyclick.tv" style={{ height: 32, width: 'auto' }} />
-        </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <a href="#" style={{ padding: '8px 12px', borderRadius: 8, font: '500 14px/1 Inter', color: 'var(--ink-2)' }}>Sign in</a>
-          <Btn variant="primary" size="sm" iconRight="arrow-right">Join as a partner</Btn>
-        </div>
-      </div>
-    </header>
-  );
-};
 
 // ── SEARCH SUB-BAR ────────────────────────────────────────────────────────────
 const SearchSubBar = ({ location, onLocationChange, query, onQueryChange }) => {
@@ -49,12 +27,6 @@ const SearchSubBar = ({ location, onLocationChange, query, onQueryChange }) => {
   return (
     <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--line-2)', padding: '20px 24px' }}>
       <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '500 13px/1 Inter', color: 'var(--ink-3)' }}>
-          <a href="/" onClick={e => { e.preventDefault(); navigate('/'); }}>Home</a>
-          <Icon name="chevron-right" size={12} />
-          <span style={{ color: 'var(--ink)' }}>Dentists</span>
-        </div>
-        <span style={{ flex: 1 }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 0,
           background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: 999,
           padding: 4, minWidth: 480, maxWidth: 600, flex: 1 }}>
@@ -280,7 +252,7 @@ const FilterButton = ({ filters, setFilters }) => {
 };
 
 // ── DENTIST CARD ──────────────────────────────────────────────────────────────
-const DentistCard = ({ d, active, hovered, onHover, onClick, onViewProfile }) => (
+const DentistCard = ({ d, active, hovered, onHover, onViewProfile }) => (
   <article
     data-id={d.id}
     onMouseEnter={() => onHover(d.id)}
@@ -297,16 +269,16 @@ const DentistCard = ({ d, active, hovered, onHover, onClick, onViewProfile }) =>
     }}>
     <div style={{ position: 'relative', overflow: 'hidden', minHeight: 180 }}>
       <img src={d.img} alt={d.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
-      <div style={{ position: 'absolute', top: 10, left: 10 }}>
-        <Tag tone="green" size="sm"><Icon name="check-badge" size={10} /> Verified</Tag>
-      </div>
     </div>
     <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 0 }}>
-      {/* Name + rating */}
+      {/* Name + checkmark + rating */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
-        <div>
-          <div style={{ font: '600 16px/1.25 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>{d.name}</div>
-          <div style={{ font: '400 13px/1.3 Inter', color: 'var(--ink-2)', marginTop: 3 }}>{d.clinic}</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+          <div style={{ font: '600 16px/1.25 Inter', letterSpacing: '-0.01em', color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{d.name}</div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} aria-label="Verified">
+            <circle cx="12" cy="12" r="12" fill="var(--green)" />
+            <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
           <Icon name="star" size={13} color="var(--gold)" />
@@ -314,8 +286,10 @@ const DentistCard = ({ d, active, hovered, onHover, onClick, onViewProfile }) =>
           <span style={{ font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>({d.reviews})</span>
         </div>
       </div>
+      {/* Clinic */}
+      <div style={{ font: '400 13px/1.3 Inter', color: 'var(--ink-2)', marginBottom: 8 }}>{d.clinic}</div>
       {/* Tags */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10, marginTop: 8 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
         {d.treatments.slice(0, 3).map(t => (
           <span key={t} style={{ padding: '4px 10px', borderRadius: 999, background: 'var(--bg-alt)', border: '1px solid var(--line-2)', font: '500 11px/1.4 Inter', color: 'var(--ink-2)' }}>{t}</span>
         ))}
@@ -468,6 +442,7 @@ const MapView = ({ items, activeId, onPinClick, onPinHover, hoveredId, collapsed
 
 // ── PAGE ──────────────────────────────────────────────────────────────────────
 export default function DentistListing() {
+  const navigate = useNavigate();
   const [location, setLocation] = useState('Brooklyn, NY · 11211');
   const [query, setQuery] = useState('');
   const [activeId, setActiveId] = useState(null);
@@ -503,7 +478,7 @@ export default function DentistListing() {
 
   return (
     <>
-      <TopBar />
+      <SiteNav />
       <SearchSubBar
         location={location} onLocationChange={setLocation}
         query={query} onQueryChange={setQuery}

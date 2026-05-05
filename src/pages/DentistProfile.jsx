@@ -1,45 +1,35 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Icon, Tag, Btn } from '../components/primitives';
-import logo from '../assets/whyclick-logo.png';
+import SiteNav from '../components/SiteNav';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const DENTISTS = [
   {
     id: 1,
-    name: 'Dr. Maya Patel',
-    title: 'Pediatric Dentist, DDS',
-    clinic: 'Patel Pediatric Dental',
-    rating: 4.9, reviews: 412, experience: 12, patients: 1840,
-    price: 85, degree: 'DDS', license: 'NY-DDS-084521',
-    specialization: 'Pediatric Dentistry & Preventive Care',
-    address: '142 Bedford Ave, Brooklyn, NY',
-    phone: '+1 (718) 555-0101', email: 'maya@pateldental.com',
-    avail: 'Today · 3:00 PM',
+    name: 'Dr. Maya Patel', title: 'Pediatric Dentist, DDS', clinic: 'Patel Pediatric Dental',
+    rating: 4.9, reviews: 412, experience: 12, patients: 1840, price: 85, degree: 'DDS', license: 'NY-DDS-084521',
+    specialization: 'Pediatric Dentistry & Preventive Care', address: '142 Bedford Ave, Brooklyn, NY',
+    phone: '+1 (718) 555-0101', email: 'maya@pateldental.com', avail: 'Today · 3:00 PM',
     insurance: ['Aetna', 'BCBS', 'Cigna'],
     img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Maya Patel is a board-certified pediatric dentist with 12 years of experience making young patients feel safe and comfortable. She founded Patel Pediatric Dental to bring compassionate, modern dentistry to Brooklyn families. Her philosophy centers on prevention, education, and building lifelong healthy habits from the very first visit. Dr. Patel invests time in getting to know every child personally — and their parents too. She is fluent in English and Hindi.',
+    bio: 'Dr. Maya Patel is a board-certified pediatric dentist with 12 years of experience making young patients feel safe and comfortable. She founded Patel Pediatric Dental to bring compassionate, modern dentistry to Brooklyn families. Her philosophy centers on prevention, education, and building lifelong healthy habits from the very first visit.',
     services: ['Teeth Cleaning', 'Dental Sealants', 'Teeth Whitening', 'Early Orthodontics', 'Fluoride Treatment', 'Dental X-rays', 'Emergency Care'],
     certifications: ['American Board of Pediatric Dentistry', 'ADA Member', 'NY State Dental Association', 'Invisalign First Certified'],
     hours: { Mon: '9 AM – 5 PM', Tue: '9 AM – 5 PM', Wed: '9 AM – 5 PM', Thu: '9 AM – 6 PM', Fri: '9 AM – 4 PM', Sat: '10 AM – 2 PM', Sun: 'Closed' },
-    education: 'DDS — NYU College of Dentistry · Pediatric Residency, Children\'s Hospital of Philadelphia',
+    education: "DDS — NYU College of Dentistry · Pediatric Residency, Children's Hospital of Philadelphia",
   },
   {
     id: 2,
-    name: 'Dr. Ali Awan',
-    title: 'Family Dentist, DMD',
-    clinic: 'Bridge St. Family Dental',
-    rating: 5.0, reviews: 487, experience: 9, patients: 2100,
-    price: 60, degree: 'DMD', license: 'NY-DMD-076432',
-    specialization: 'Family & Restorative Dentistry',
-    address: '88 Bridge St, Brooklyn, NY',
-    phone: '+1 (718) 555-0202', email: 'ali@bridgedental.com',
-    avail: 'Tomorrow · 10:30 AM',
+    name: 'Dr. Ali Awan', title: 'Family Dentist, DMD', clinic: 'Bridge St. Family Dental',
+    rating: 5.0, reviews: 487, experience: 9, patients: 2100, price: 60, degree: 'DMD', license: 'NY-DMD-076432',
+    specialization: 'Family & Restorative Dentistry', address: '88 Bridge St, Brooklyn, NY',
+    phone: '+1 (718) 555-0202', email: 'ali@bridgedental.com', avail: 'Tomorrow · 10:30 AM',
     insurance: ['Aetna', 'Delta Dental'],
     img: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Ali Awan brings a warm, family-first approach to dentistry. His clinic is designed to be welcoming to all ages, from toddlers to seniors. He is known for his gentle touch and transparent communication, and takes the time to explain every procedure before it begins. Having grown up in a large family himself, Dr. Awan understands that every patient has different needs and anxiety levels — and he tailors his care accordingly.',
+    bio: 'Dr. Ali Awan brings a warm, family-first approach to dentistry. His clinic is designed to be welcoming to all ages, from toddlers to seniors. He is known for his gentle touch and transparent communication, taking time to explain every procedure before it begins.',
     services: ['Teeth Cleaning', 'Composite Fillings', 'Root Canal', 'Crowns & Bridges', 'Oral Cancer Screening', 'Pediatric Care', 'CEREC Same-Day Crowns'],
     certifications: ['ADA Member', 'NY State Dental Association', 'CEREC Certified', 'Oral Cancer Foundation Partner'],
     hours: { Mon: '8 AM – 5 PM', Tue: '8 AM – 5 PM', Wed: '8 AM – 5 PM', Thu: '8 AM – 6 PM', Fri: '8 AM – 3 PM', Sat: '9 AM – 1 PM', Sun: 'Closed' },
@@ -47,123 +37,108 @@ const DENTISTS = [
   },
   {
     id: 3,
-    name: 'Dr. Lena Vogel',
-    title: 'Orthodontist, Dr. med. dent.',
-    clinic: 'Vogel Orthodontics',
-    rating: 4.8, reviews: 91, experience: 15, patients: 980,
-    price: 120, degree: 'Dr. med. dent.', license: 'NY-ORTH-031987',
-    specialization: 'Clear Aligners & Adult Orthodontics',
-    address: '25 Greenpoint Ave, Brooklyn, NY',
-    phone: '+1 (718) 555-0303', email: 'lena@vogelortho.com',
-    avail: 'Mon, May 4 · 2:00 PM',
+    name: 'Dr. Lena Vogel', title: 'Orthodontist, Dr. med. dent.', clinic: 'Vogel Orthodontics',
+    rating: 4.8, reviews: 91, experience: 15, patients: 980, price: 120, degree: 'Dr. med. dent.', license: 'NY-ORTH-031987',
+    specialization: 'Clear Aligners & Adult Orthodontics', address: '25 Greenpoint Ave, Brooklyn, NY',
+    phone: '+1 (718) 555-0303', email: 'lena@vogelortho.com', avail: 'Mon, May 4 · 2:00 PM',
     insurance: ['BCBS', 'Cigna', 'United'],
     img: 'https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Lena Vogel is a leading orthodontist specializing in adult and teen aligner therapy. She trained in Berlin before establishing her practice in Greenpoint, bringing European precision to New York smiles. Dr. Vogel is passionate about the confidence a well-aligned smile can bring at any age. Her practice is renowned for its use of digital simulation technology — patients can see their projected results before treatment even begins.',
+    bio: 'Dr. Lena Vogel is a leading orthodontist specializing in adult and teen aligner therapy. She trained in Berlin before establishing her Greenpoint practice, bringing European precision to New York smiles. Her practice is renowned for digital simulation technology — patients see projected results before treatment begins.',
     services: ['Clear Aligners (Invisalign)', 'Traditional Braces', 'Ceramic Braces', 'Retainers', 'Jaw Alignment', '3D Digital Scanning', 'AcceleDent Therapy'],
     certifications: ['American Association of Orthodontists', 'Board Certified Orthodontist', 'Invisalign Platinum Provider', '3M Unitek Certified'],
     hours: { Mon: '9 AM – 5 PM', Tue: '9 AM – 5 PM', Wed: 'Closed', Thu: '10 AM – 7 PM', Fri: '9 AM – 4 PM', Sat: '10 AM – 3 PM', Sun: 'Closed' },
     education: 'Dr. med. dent. — Charité Berlin · Orthodontic Specialty Certificate, NYU',
   },
   {
-    id: 4,
-    name: 'Dr. James Okafor',
-    title: 'Cosmetic Dentist, DDS',
-    clinic: 'Smile Studio NYC',
-    rating: 4.7, reviews: 256, experience: 11, patients: 1560,
-    price: 200, degree: 'DDS', license: 'NY-DDS-094312',
-    specialization: 'Cosmetic & Aesthetic Dentistry',
-    address: '310 Broadway, Williamsburg, NY',
-    phone: '+1 (718) 555-0404', email: 'james@smilestudio.com',
-    avail: 'Today · 5:30 PM',
+    id: 13,
+    name: 'Dr. James Okafor', title: 'Cosmetic Dentist, DDS', clinic: 'Smile Studio NYC',
+    rating: 4.7, reviews: 256, experience: 11, patients: 1560, price: 200, degree: 'DDS', license: 'NY-DDS-094312',
+    specialization: 'Cosmetic & Aesthetic Dentistry', address: '310 Broadway, Williamsburg, NY',
+    phone: '+1 (718) 555-0404', email: 'james@smilestudio.com', avail: 'Today · 5:30 PM',
     insurance: ['Aetna'],
-    img: 'https://images.unsplash.com/photo-1612531385446-f7e6d131e1d0?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
+    img: 'https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. James Okafor is a highly sought-after cosmetic dentist known for transforming smiles with artistry and precision. His Williamsburg studio blends luxury aesthetics with the latest dental technology. Dr. Okafor has been featured in New York Magazine\'s "Best Dentists" list three years running. He takes a holistic approach — designing smiles that complement each patient\'s unique facial structure and personality.',
+    bio: 'Dr. James Okafor is a highly sought-after cosmetic dentist known for transforming smiles with artistry and precision. His Williamsburg studio blends luxury aesthetics with the latest dental technology. Featured in New York Magazine\'s "Best Dentists" list three years running, he designs smiles that complement each patient\'s unique facial structure.',
     services: ['Porcelain Veneers', 'Teeth Whitening', 'Smile Makeover', 'Dental Bonding', 'Gum Contouring', 'Composite Veneers', 'Enamel Shaping'],
     certifications: ['American Academy of Cosmetic Dentistry', 'ADA Member', 'NY State Dental Association', 'AACD Accredited Member'],
     hours: { Mon: '10 AM – 6 PM', Tue: '10 AM – 6 PM', Wed: '10 AM – 6 PM', Thu: '10 AM – 7 PM', Fri: '10 AM – 5 PM', Sat: '11 AM – 4 PM', Sun: 'Closed' },
     education: 'DDS — University of Pennsylvania School of Dental Medicine · Cosmetic Fellowship, Las Vegas Institute',
   },
   {
-    id: 5,
-    name: 'Dr. Priya Shah',
-    title: 'General Dentist, BDS',
-    clinic: 'Greenpoint Dental Co.',
-    rating: 4.9, reviews: 184, experience: 7, patients: 1200,
-    price: 75, degree: 'BDS', license: 'NY-BDS-108743',
-    specialization: 'Preventive & Cosmetic Dentistry',
-    address: '78 Manhattan Ave, Greenpoint, NY',
-    phone: '+1 (718) 555-0505', email: 'priya@greenpointdental.com',
-    avail: 'Wed · 11:00 AM',
+    id: 14,
+    name: 'Dr. Priya Shah', title: 'General Dentist, BDS', clinic: 'Greenpoint Dental Co.',
+    rating: 4.9, reviews: 184, experience: 7, patients: 1200, price: 75, degree: 'BDS', license: 'NY-BDS-108743',
+    specialization: 'Preventive & Cosmetic Dentistry', address: '78 Manhattan Ave, Greenpoint, NY',
+    phone: '+1 (718) 555-0505', email: 'priya@greenpointdental.com', avail: 'Wed · 11:00 AM',
     insurance: ['BCBS', 'Delta Dental', 'Aetna', 'Cigna'],
     img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Priya Shah founded Greenpoint Dental Co. with a single mission: make exceptional dental care accessible and stress-free. With a background in both preventive and cosmetic dentistry, she excels at spotting problems early and crafting personalized treatment plans. Her patients consistently praise her calm chair-side manner and her ability to explain complex procedures in plain language.',
+    bio: 'Dr. Priya Shah founded Greenpoint Dental Co. with a single mission: make exceptional dental care accessible and stress-free. She excels at spotting problems early and crafting personalized treatment plans. Her patients consistently praise her calm chair-side manner and her ability to explain complex procedures in plain language.',
     services: ['Teeth Cleaning', 'Teeth Whitening', 'Tooth-Colored Fillings', 'Preventive Exams', 'Night Guards', 'Dental Sealants', 'Cosmetic Bonding'],
     certifications: ['ADA Member', 'NY State Dental Association', 'Academy of General Dentistry', 'Invisalign Certified Provider'],
     hours: { Mon: '9 AM – 5 PM', Tue: '9 AM – 5 PM', Wed: '9 AM – 6 PM', Thu: '9 AM – 5 PM', Fri: '9 AM – 4 PM', Sat: '10 AM – 2 PM', Sun: 'Closed' },
-    education: 'BDS — King\'s College London · Advanced Aesthetics Certification, NYU Langone',
+    education: "BDS — King's College London · Advanced Aesthetics Certification, NYU Langone",
   },
   {
-    id: 6,
-    name: 'Dr. Marcus Reyes',
-    title: 'Endodontist, DMD',
-    clinic: 'BK Endodontics',
-    rating: 4.6, reviews: 142, experience: 13, patients: 890,
-    price: 150, degree: 'DMD', license: 'NY-ENDO-057621',
-    specialization: 'Root Canal & Endodontic Surgery',
-    address: '512 Atlantic Ave, Brooklyn, NY',
-    phone: '+1 (718) 555-0606', email: 'marcus@bkendo.com',
-    avail: 'Fri · 9:00 AM',
+    id: 15,
+    name: 'Dr. Marcus Reyes', title: 'Endodontist, DMD', clinic: 'BK Endodontics',
+    rating: 4.6, reviews: 142, experience: 13, patients: 890, price: 150, degree: 'DMD', license: 'NY-ENDO-057621',
+    specialization: 'Root Canal & Endodontic Surgery', address: '512 Atlantic Ave, Brooklyn, NY',
+    phone: '+1 (718) 555-0606', email: 'marcus@bkendo.com', avail: 'Fri · 9:00 AM',
     insurance: ['United', 'Cigna'],
     img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Marcus Reyes is one of Brooklyn\'s most trusted endodontists, specializing in saving teeth that other practitioners have given up on. With 13 years of focused endodontic practice, he has performed over 8,000 root canal procedures with an exceptional success rate. Dr. Reyes uses cone-beam CT imaging and rotary instrumentation to ensure precise, comfortable, and efficient treatment.',
-    services: ['Root Canal Therapy', 'Endodontic Retreatment', 'Apicoectomy', 'Pulp Capping', 'Cracked Tooth Treatment', 'Dental Trauma Care', 'Internal Bleaching'],
+    bio: 'Dr. Marcus Reyes is one of Brooklyn\'s most trusted endodontists, specializing in saving teeth that other practitioners have given up on. With 13 years of focused endodontic practice, he has performed over 8,000 root canal procedures using cone-beam CT imaging and rotary instrumentation.',
+    services: ['Root Canal Therapy', 'Endodontic Retreatment', 'Apicoectomy', 'Pulp Capping', 'Cracked Tooth Treatment', 'Dental Trauma Care', 'Sedation Dentistry'],
     certifications: ['American Association of Endodontists', 'Board Certified Endodontist', 'NY State Dental Association', 'Fellow, AAE'],
     hours: { Mon: '8 AM – 4 PM', Tue: '8 AM – 4 PM', Wed: '8 AM – 4 PM', Thu: '8 AM – 5 PM', Fri: '8 AM – 3 PM', Sat: 'Closed', Sun: 'Closed' },
     education: 'DMD — Boston University School of Dental Medicine · Endodontic Residency, NYU',
   },
   {
-    id: 7,
-    name: 'Dr. Sofia Chen',
-    title: 'Cosmetic Dentist, DDS',
-    clinic: 'Smile Lab',
-    rating: 5.0, reviews: 318, experience: 10, patients: 2050,
-    price: 95, degree: 'DDS', license: 'NY-DDS-072198',
-    specialization: 'Cosmetic & Restorative Dentistry',
-    address: '230 N 9th St, Williamsburg, NY',
-    phone: '+1 (718) 555-0707', email: 'sofia@smilelab.com',
-    avail: 'Today · 6:45 PM',
-    insurance: ['Aetna', 'BCBS', 'Delta Dental'],
-    img: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
-    hero: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Sofia Chen built Smile Lab into one of Williamsburg\'s most beloved dental practices through a commitment to painless, patient-centered care. She is equally skilled in cosmetic enhancement and restorative work, ensuring that every smile she creates is as healthy as it is beautiful. Dr. Chen is fluent in English and Mandarin, and is dedicated to making every patient feel heard and respected.',
-    services: ['Porcelain Veneers', 'Teeth Whitening', 'Dental Crowns', 'Bonding & Contouring', 'Invisalign', 'Full Smile Makeover', 'Composite Fillings'],
-    certifications: ['American Academy of Cosmetic Dentistry', 'ADA Member', 'Invisalign Diamond Provider', 'NY State Dental Association'],
-    hours: { Mon: '10 AM – 7 PM', Tue: '10 AM – 7 PM', Wed: '10 AM – 7 PM', Thu: '10 AM – 7 PM', Fri: '10 AM – 5 PM', Sat: '11 AM – 4 PM', Sun: 'Closed' },
-    education: 'DDS — Columbia University College of Dental Medicine · Aesthetic Dentistry Fellowship, Tufts University',
+    id: 16,
+    name: 'Dr. Sarah Kim', title: 'Periodontist, DDS', clinic: 'Park Slope Periodontics',
+    rating: 4.8, reviews: 97, experience: 10, patients: 820, price: 175, degree: 'DDS', license: 'NY-PERIO-064312',
+    specialization: 'Periodontics & Dental Implants', address: '456 7th Ave, Park Slope, NY',
+    phone: '+1 (718) 555-0707', email: 'sarah@parkslopeperio.com', avail: 'Thu, May 7 · 1:00 PM',
+    insurance: ['BCBS', 'Aetna'],
+    img: 'https://images.unsplash.com/photo-1614644147798-f8c0fc9da7f6?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
+    hero: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1200&q=80&auto=format&fit=crop',
+    bio: 'Dr. Sarah Kim is a board-certified periodontist who has built Park Slope Periodontics into a trusted destination for gum health and implant care. With a decade of experience, she combines the latest minimally invasive techniques with a deep commitment to patient education. Dr. Kim believes healthy gums are the foundation of every beautiful smile.',
+    services: ['Gum Disease Treatment', 'Dental Implants', 'Bone Grafting', 'Gum Grafting', 'Crown Lengthening', 'Scaling & Root Planing', 'Laser Therapy'],
+    certifications: ['American Academy of Periodontology', 'Board Certified Periodontist', 'ADA Member', 'Implant Dentistry Fellowship'],
+    hours: { Mon: '9 AM – 5 PM', Tue: '9 AM – 5 PM', Wed: '9 AM – 5 PM', Thu: '9 AM – 6 PM', Fri: '9 AM – 3 PM', Sat: 'Closed', Sun: 'Closed' },
+    education: 'DDS — University of Michigan · Periodontic Residency, Columbia University Medical Center',
   },
   {
-    id: 8,
-    name: 'Dr. Ben Levin',
-    title: 'Family Dentist, DMD',
-    clinic: 'Levin Family Dentistry',
-    rating: 4.5, reviews: 98, experience: 8, patients: 740,
-    price: 70, degree: 'DMD', license: 'NY-DMD-083456',
-    specialization: 'Family & General Dentistry',
-    address: '901 Court St, Brooklyn, NY',
-    phone: '+1 (718) 555-0808', email: 'ben@levindental.com',
-    avail: 'Tue · 4:15 PM',
-    insurance: ['BCBS'],
+    id: 17,
+    name: 'Dr. Omar Hassan', title: 'Oral Surgeon, DDS', clinic: 'Hassan Oral Surgery',
+    rating: 4.7, reviews: 211, experience: 14, patients: 1340, price: 230, degree: 'DDS', license: 'NY-OMS-048921',
+    specialization: 'Oral & Maxillofacial Surgery', address: '218 Knickerbocker Ave, Bushwick, NY',
+    phone: '+1 (718) 555-0808', email: 'omar@hassanoralsurgery.com', avail: 'Today · 4:00 PM',
+    insurance: ['United', 'Aetna', 'Delta Dental'],
     img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
+    hero: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1200&q=80&auto=format&fit=crop',
+    bio: 'Dr. Omar Hassan is a highly skilled oral and maxillofacial surgeon with 14 years of experience in complex extractions, implant placement, and corrective jaw surgery. His Bushwick practice is known for efficient, anxiety-free care — Dr. Hassan offers multiple sedation options and uses the latest 3D imaging for surgical planning.',
+    services: ['Wisdom Tooth Extraction', 'Dental Implants', 'Bone Grafting', 'Corrective Jaw Surgery', 'IV Sedation', 'Facial Trauma Care', 'Biopsy & Pathology'],
+    certifications: ['American Association of Oral and Maxillofacial Surgeons', 'Board Certified OMS', 'ADA Member', 'IV Sedation Certified'],
+    hours: { Mon: '8 AM – 5 PM', Tue: '8 AM – 5 PM', Wed: '8 AM – 5 PM', Thu: '8 AM – 6 PM', Fri: '8 AM – 3 PM', Sat: '9 AM – 1 PM', Sun: 'Closed' },
+    education: 'DDS — Howard University · Oral & Maxillofacial Surgery Residency, Mount Sinai Hospital',
+  },
+  {
+    id: 18,
+    name: 'Dr. Nina Clarke', title: 'Emergency Dentist, DMD', clinic: 'Clarke Emergency Dental',
+    rating: 4.9, reviews: 329, experience: 8, patients: 2400, price: 95, degree: 'DMD', license: 'NY-DMD-091234',
+    specialization: 'Emergency & General Dentistry', address: '900 Flatbush Ave, Brooklyn, NY',
+    phone: '+1 (718) 555-0909', email: 'nina@clarkeemergency.com', avail: 'Today · 6:00 PM',
+    insurance: ['Aetna', 'BCBS', 'Cigna', 'United'],
+    img: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=300&h=300&q=80&auto=format&fit=crop&crop=faces',
     hero: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&q=80&auto=format&fit=crop',
-    bio: 'Dr. Ben Levin is a community-focused family dentist serving patients of all ages in the Carroll Gardens neighborhood. Known for his straightforward, no-nonsense approach, Dr. Levin provides honest assessments and affordable treatment plans. He has a special interest in helping anxious patients overcome their fear of the dentist through gentle techniques and open communication.',
-    services: ['Teeth Cleaning', 'Dental Crowns', 'Tooth Extractions', 'Fillings', 'Dentures', 'Oral Exams & X-rays', 'Emergency Dental Care'],
-    certifications: ['ADA Member', 'NY State Dental Association', 'Academy of General Dentistry', 'Sedation Dentistry Certified'],
-    hours: { Mon: '9 AM – 5 PM', Tue: '9 AM – 6 PM', Wed: '9 AM – 5 PM', Thu: '9 AM – 5 PM', Fri: '9 AM – 4 PM', Sat: '9 AM – 1 PM', Sun: 'Closed' },
-    education: 'DMD — Rutgers School of Dental Medicine · General Practice Residency, SUNY Downstate',
+    bio: 'Dr. Nina Clarke founded Clarke Emergency Dental to fill a real gap in Brooklyn — same-day, evening, and weekend dental care without the ER price tag. Available 7 days a week, she and her team handle everything from sudden toothaches to broken crowns with speed and compassion. Dr. Clarke accepts nearly all major insurance plans and offers transparent upfront pricing.',
+    services: ['Emergency Exams', 'Toothache Relief', 'Broken Tooth Repair', 'Lost Crown Replacement', 'Dental Abscess Treatment', 'Same-Day Crowns', 'After-Hours Care'],
+    certifications: ['ADA Member', 'NY State Dental Association', 'CEREC Certified', 'Advanced Cardiac Life Support (ACLS)'],
+    hours: { Mon: '8 AM – 8 PM', Tue: '8 AM – 8 PM', Wed: '8 AM – 8 PM', Thu: '8 AM – 8 PM', Fri: '8 AM – 6 PM', Sat: '9 AM – 5 PM', Sun: '10 AM – 4 PM' },
+    education: 'DMD — Tufts University School of Dental Medicine · General Practice Residency, Kings County Hospital',
   },
 ];
 
@@ -174,38 +149,40 @@ const SAMPLE_REVIEWS = [
 ];
 
 // ── TOP BAR ───────────────────────────────────────────────────────────────────
-const TopBar = ({ dentistName }) => {
-  const navigate = useNavigate();
-  return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 100, background: 'oklch(0.985 0.005 80 / 0.94)', backdropFilter: 'saturate(180%) blur(16px)', borderBottom: '1px solid var(--line-2)' }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto', padding: '10px 32px 8px' }}>
-        {/* Row 1: back + logo + share */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <button onClick={() => navigate('/dentists')} style={{ width: 36, height: 36, borderRadius: 10, border: '1px solid var(--line)', background: 'var(--bg)', cursor: 'pointer', display: 'grid', placeItems: 'center', color: 'var(--ink-2)', transition: 'border-color .15s' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--ink-3)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--line)'; }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5m7-7-7 7 7 7" /></svg>
-            </button>
-            <img src={logo} alt="whyclick.tv" style={{ height: 26, cursor: 'pointer' }} onClick={() => navigate('/')} />
-          </div>
-          <button style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1px solid var(--line)', background: 'transparent', font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share
-          </button>
-        </div>
-        {/* Row 2: breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '400 12px/1 Inter', color: 'var(--ink-3)', marginTop: 6, paddingLeft: 2 }}>
-          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
-          <span>/</span>
-          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/dentists')}>Dentists</span>
-          <span>/</span>
-          <span style={{ color: 'var(--ink)', fontWeight: 500 }}>{dentistName}</span>
-        </div>
-      </div>
-    </header>
-  );
-};
+const BackBar = ({ label, onBack }) => (
+  <div style={{
+    background: 'var(--bg)', borderBottom: '1px solid var(--line-2)',
+    padding: '0 32px', height: 44,
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    maxWidth: '100%',
+  }}>
+    <div style={{ maxWidth: 1240, margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <button onClick={onBack} style={{
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        background: 'none', border: 'none', cursor: 'pointer',
+        font: '500 13px/1 Inter', color: 'var(--ink-2)',
+        padding: '4px 0',
+      }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+        Back to {label}
+      </button>
+      <button style={{
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        padding: '6px 14px', borderRadius: 8,
+        border: '1px solid var(--line)', background: 'transparent',
+        font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer',
+      }}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Share
+      </button>
+    </div>
+  </div>
+);
 
 // ── HERO BANNER ───────────────────────────────────────────────────────────────
 const HeroBanner = ({ d }) => (
@@ -513,7 +490,8 @@ export default function DentistProfile() {
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-      <TopBar dentistName={d.name} />
+      <SiteNav />
+      <BackBar label="Dentists" onBack={() => navigate('/dentists')} />
       <HeroBanner d={d} />
       <ProfileHeader d={d} />
 
@@ -523,7 +501,7 @@ export default function DentistProfile() {
         <LeftColumn d={d} />
 
         {/* RIGHT — sticky actions */}
-        <div style={{ position: 'sticky', top: 80 }}>
+        <div style={{ position: 'sticky', top: 120 }}>
           <RightColumn d={d} />
         </div>
       </div>
