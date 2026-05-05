@@ -54,7 +54,7 @@ export const PhotoPlaceholder = ({ ratio = '4/3', label = 'photo', accent = fals
           <div style={{
             position: 'absolute', inset: 0,
             display: 'flex', alignItems: 'flex-end', padding: 12,
-            font: '500 11px/1.2 "JetBrains Mono", monospace',
+            font: '500 11px/1.2 Inter',
             color: 'oklch(0.35 0.02 80)',
             letterSpacing: '0.02em',
           }}>
@@ -166,7 +166,7 @@ export const SectionHeader = ({ eyebrow, title, sub, action }) => (
       {eyebrow && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
-          <span className="mono" style={{ font: '500 11px/1 "JetBrains Mono", monospace', color: 'var(--ink-2)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{eyebrow}</span>
+          <span className="mono" style={{ font: '500 11px/1 Inter', color: 'var(--ink-2)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{eyebrow}</span>
         </div>
       )}
       <h2 className="serif" style={{ font: '700 44px/1.05 Inter, sans-serif', margin: 0, color: 'var(--ink)', letterSpacing: '-0.015em' }}>{title}</h2>

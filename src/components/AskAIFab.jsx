@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Icon } from './primitives';
 import { Avatar } from './primitives';
+import clickAiLogo from '../assets/click-ai-logo.svg';
 
 const SUGGESTIONS = [
   'Best dentist near me, weekends',
@@ -38,41 +39,26 @@ export default function AskAIFab() {
     <>
       <button
         onClick={() => setOpen(o => !o)}
-        aria-label="Ask AI"
+        aria-label="Ask Click AI"
         style={{
           position: 'fixed', left: 24, bottom: 24, zIndex: 100,
-          display: 'inline-flex', alignItems: 'center', gap: 10,
-          padding: open ? '14px' : '14px 20px 14px 16px',
+          display: 'inline-flex', alignItems: 'center',
+          padding: 0,
           borderRadius: 999,
-          background: 'var(--accent)', color: 'white',
-          border: '1px solid var(--accent)',
-          boxShadow: '0 12px 32px -8px rgba(252, 86, 71, .45), 0 0 0 4px rgba(252, 86, 71, 0.18)',
+          background: 'none',
+          border: 'none',
+          boxShadow: '0 12px 32px -8px rgba(255,90,32,0.45), 0 0 0 4px rgba(255,90,32,0.15)',
           cursor: 'pointer',
-          transition: 'transform .15s ease, padding .15s ease',
+          transition: 'transform .15s ease, box-shadow .15s ease',
         }}
-        onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-        onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 16px 40px -8px rgba(255,90,32,0.55), 0 0 0 6px rgba(255,90,32,0.18)'; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 12px 32px -8px rgba(255,90,32,0.45), 0 0 0 4px rgba(255,90,32,0.15)'; }}
       >
-        <span style={{
-          width: 32, height: 32, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.18)', display: 'grid', placeItems: 'center',
-          position: 'relative', flexShrink: 0,
-        }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V6a4 4 0 0 1 4-4z"/>
-            <circle cx="9" cy="9" r="1" fill="white" stroke="none"/>
-            <circle cx="15" cy="9" r="1" fill="white" stroke="none"/>
-            <path d="M9 15s1 1 3 1 3-1 3-1"/>
-          </svg>
-          <span style={{
-            position: 'absolute', inset: -4, borderRadius: '50%',
-            border: '2px solid rgba(255,255,255,0.4)',
-            animation: 'askAiPulse 2.2s ease-out infinite',
-          }} />
-        </span>
-        {!open && (
-          <span style={{ font: '600 14px/1 Inter' }}>Ask Click AI</span>
-        )}
+        <img
+          src={clickAiLogo}
+          alt="Click AI"
+          style={{ height: open ? 48 : 52, width: 'auto', display: 'block', borderRadius: 999 }}
+        />
       </button>
 
       {open && (
@@ -97,7 +83,7 @@ export default function AskAIFab() {
               </div>
               <div>
                 <div style={{ font: '600 13px/1 Inter' }}>Click AI</div>
-                <div className="mono" style={{ font: '500 10px/1 "JetBrains Mono", monospace',
+                <div className="mono" style={{ font: '500 10px/1 Inter',
                   color: 'oklch(0.78 0.01 80)', letterSpacing: '0.08em', marginTop: 4 }}>
                   YOUR PERSONAL MATCHMAKER
                 </div>
@@ -165,7 +151,7 @@ export default function AskAIFab() {
                         <div style={{ font: '400 11px/1.4 Inter', color: 'var(--ink-3)' }}>{it.meta}</div>
                       </div>
                       <span style={{
-                        font: '600 11px/1 "JetBrains Mono", monospace',
+                        font: '600 11px/1 Inter',
                         background: i === 0 ? 'var(--accent)' : 'var(--bg-alt)',
                         color: i === 0 ? 'white' : 'var(--ink-2)',
                         padding: '4px 7px', borderRadius: 999, letterSpacing: '0.04em',

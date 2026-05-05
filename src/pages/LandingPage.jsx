@@ -2,167 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon, Tag, Btn, Avatar, PhotoPlaceholder, Container, SectionHeader } from '../components/primitives';
 import AskAIFab from '../components/AskAIFab';
+import SiteNav from '../components/SiteNav';
 import logo from '../assets/whyclick-logo.png';
 
-// ── NAV ──────────────────────────────────────────────────────────────────────
+// ── INDUSTRY DATA (used in homepage sections only) ─────────────────────────
 const INDUSTRIES = [
-  { icon: 'tooth',    label: 'Dentists',           sub: '14,200 pros' },
-  { icon: 'fork',     label: 'Restaurants',        sub: '12,840 listings' },
-  { icon: 'scissors', label: 'Salons & Spas',      sub: '6,420 pros' },
-  { icon: 'home',     label: 'Home Services',      sub: '9,180 pros' },
-  { icon: 'wrench',   label: 'Service Pros',       sub: '20,100 pros' },
-  { icon: 'camera',   label: 'Photographers',      sub: '3,640 pros' },
-  { icon: 'pin',      label: 'Real Estate',        sub: '5,210 agents' },
-  { icon: 'sparkle',  label: 'Wellness & Fitness', sub: '4,860 pros' },
+  { icon: 'tooth',    label: 'Dentists',           sub: '14,200 pros',    slug: 'dentists' },
+  { icon: 'fork',     label: 'Restaurants',        sub: '12,840 listings',slug: 'restaurants' },
+  { icon: 'scissors', label: 'Salons & Spas',      sub: '6,420 pros',     slug: 'salon-spa' },
+  { icon: 'camera',   label: 'Photographers',      sub: '3,640 pros',     slug: 'photographers' },
+  { icon: 'home',     label: 'Home Services',      sub: '9,180 pros',     slug: null },
+  { icon: 'wrench',   label: 'Service Pros',       sub: '20,100 pros',    slug: null },
+  { icon: 'pin',      label: 'Real Estate',        sub: '5,210 agents',   slug: null },
+  { icon: 'sparkle',  label: 'Wellness & Fitness', sub: '4,860 pros',     slug: null },
 ];
 
-const Nav = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [hover, setHover] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const links = [
-    { label: 'Browse', hasMenu: true },
-    { label: 'Industries', hasMenu: true, kind: 'industries' },
-    { label: 'How it works' },
-    { label: 'For professionals' },
-    { label: 'About' },
-  ];
-
-  return (
-    <header style={{
-      position: 'sticky', top: 0, zIndex: 50,
-      background: scrolled ? 'oklch(0.985 0.005 80 / 0.96)' : 'oklch(0.985 0.005 80 / 0.65)',
-      backdropFilter: 'saturate(180%) blur(16px)',
-      WebkitBackdropFilter: 'saturate(180%) blur(16px)',
-      borderBottom: scrolled ? '1px solid var(--line-2)' : '1px solid transparent',
-      boxShadow: scrolled ? '0 1px 0 oklch(0.92 0.01 80 / 0.6), 0 8px 24px -16px oklch(0.2 0.02 80 / 0.18)' : 'none',
-      transition: 'background 200ms ease, border-color 200ms ease, box-shadow 200ms ease',
-    }}>
-      <Container>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72, gap: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
-            <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <img src={logo} alt="whyclick.tv" style={{ height: 44, width: 'auto', display: 'block' }} />
-            </a>
-            <nav style={{ display: 'flex', gap: 4, position: 'relative' }}>
-              {links.map(l => (
-                <a
-                  key={l.label}
-                  href="#"
-                  onMouseEnter={() => setHover(l.label)}
-                  onMouseLeave={() => setHover(null)}
-                  style={{
-                    position: 'relative',
-                    display: 'inline-flex', alignItems: 'center', gap: 4,
-                    padding: '8px 12px', borderRadius: 8,
-                    font: '500 14px/1 Inter',
-                    color: hover === l.label ? 'var(--ink)' : 'var(--ink-2)',
-                    background: hover === l.label ? 'oklch(0.94 0.01 80 / 0.7)' : 'transparent',
-                    transition: 'background 160ms ease, color 160ms ease',
-                  }}
-                >
-                  {l.label}
-                  {l.hasMenu && (
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{
-                      transition: 'transform 160ms ease',
-                      transform: hover === l.label ? 'rotate(180deg)' : 'rotate(0deg)',
-                    }}>
-                      <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </a>
-              ))}
-
-              {hover === 'Industries' && (
-                <div
-                  onMouseEnter={() => setHover('Industries')}
-                  onMouseLeave={() => setHover(null)}
-                  style={{
-                    position: 'absolute', top: 'calc(100% + 14px)', left: 0,
-                    width: 560,
-                    background: 'var(--bg)',
-                    border: '1px solid var(--line-2)',
-                    borderRadius: 16,
-                    padding: 14,
-                    boxShadow: '0 1px 0 oklch(1 0 0 / 0.6) inset, 0 20px 50px -20px oklch(0.2 0.02 80 / 0.35), 0 8px 20px -10px oklch(0.2 0.02 80 / 0.18)',
-                    animation: 'fadeSlideDown 180ms ease',
-                    zIndex: 10,
-                  }}
-                >
-                  <div aria-hidden="true" style={{ position: 'absolute', top: -14, left: 0, right: 0, height: 14 }} />
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
-                    {INDUSTRIES.map(ind => (
-                      <a key={ind.label} href="#" style={{
-                        display: 'flex', alignItems: 'center', gap: 12,
-                        padding: '10px 12px', borderRadius: 10,
-                        transition: 'background 140ms ease',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-                        <div style={{
-                          width: 36, height: 36, borderRadius: 9,
-                          background: 'var(--accent-soft)',
-                          display: 'grid', placeItems: 'center', flexShrink: 0,
-                        }}>
-                          <Icon name={ind.icon} size={18} color="var(--accent)" />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                          <div style={{ font: '500 14px/1.2 Inter', color: 'var(--ink)' }}>{ind.label}</div>
-                          <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>{ind.sub}</div>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-                  <div style={{
-                    marginTop: 10, paddingTop: 12, borderTop: '1px solid var(--line-2)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  }}>
-                    <span style={{ font: '400 13px/1 Inter', color: 'var(--ink-3)' }}>Don't see your industry?</span>
-                    <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: '500 13px/1 Inter', color: 'var(--accent)' }}>
-                      Browse all <Icon name="arrow-right" size={13} color="var(--accent)" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </nav>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '7px 11px', borderRadius: 8,
-              background: 'transparent', border: '1px solid transparent',
-              font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer',
-              transition: 'background 160ms, border-color 160ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-              <Icon name="pin" size={14} color="var(--ink-3)" />
-              Brooklyn, NY
-            </button>
-            <span style={{ width: 1, height: 20, background: 'var(--line-2)' }} />
-            <a href="#" style={{
-              padding: '8px 12px', borderRadius: 8,
-              font: '500 14px/1 Inter', color: 'var(--ink-2)',
-              transition: 'background 160ms, color 160ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; e.currentTarget.style.color = 'var(--ink)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-2)'; }}>Sign in</a>
-            <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={() => navigate('/join')}>Join as a partner</Btn>
-          </div>
-        </div>
-      </Container>
-    </header>
-  );
-};
 
 // ── HERO ─────────────────────────────────────────────────────────────────────
 const HERO_SLIDES = [
@@ -264,7 +118,6 @@ const Hero = () => {
                   width: 48, height: 48, borderRadius: '50%',
                   background: 'var(--accent)', color: 'white', border: 'none',
                   display: 'grid', placeItems: 'center', cursor: 'pointer',
-                  boxShadow: '0 4px 16px -2px rgba(255, 90, 32, 0.55)',
                 }}>
                   <Icon name="search" size={18} color="white" />
                 </button>
@@ -461,7 +314,7 @@ const HowItWorks = () => (
             position: 'relative', minHeight: 260,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ font: '700 13px/1 "JetBrains Mono", monospace', color: 'var(--accent)', letterSpacing: '0.04em' }}>STEP {s.n}</span>
+              <span style={{ font: '700 13px/1 Inter', color: 'var(--accent)', letterSpacing: '0.04em' }}>STEP {s.n}</span>
               <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--accent-soft)',
                 border: '1px solid var(--line)', display: 'grid', placeItems: 'center' }}>
                 <Icon name={s.icon} size={20} color="var(--accent)" />
@@ -518,7 +371,7 @@ const BrowseByCategory = () => {
               <div style={{ aspectRatio: '16/10', position: 'relative', overflow: 'hidden', background: 'oklch(0.95 0.012 80)' }}>
                 <PhotoPlaceholder ratio="16/10" label={c.name.toLowerCase()} src={c.img} style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }} />
                 <div style={{ position: 'absolute', top: 14, right: 14,
-                  font: '600 11px/1 "JetBrains Mono", monospace',
+                  font: '600 11px/1 Inter',
                   background: 'rgba(255,255,255,0.90)', color: 'var(--ink)',
                   padding: '6px 10px', borderRadius: 999, letterSpacing: '0.04em',
                 }}>{c.count} pros</div>
@@ -785,7 +638,7 @@ const Blog = () => (
     <Container>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48 }}>
         <div>
-          <div style={{ font: '700 12px/1 "JetBrains Mono", monospace', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 12 }}>FROM THE BLOG</div>
+          <div style={{ font: '700 12px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 12 }}>FROM THE BLOG</div>
           <h2 style={{ margin: 0, font: '700 36px/1.1 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
             Advice you can actually use
           </h2>
@@ -830,7 +683,7 @@ const Blog = () => (
                 <div style={{ font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>
                   {post.author} · {post.date}
                 </div>
-                <span style={{ font: '500 11px/1 "JetBrains Mono", monospace', color: 'var(--ink-3)', background: 'var(--bg-alt)', padding: '4px 8px', borderRadius: 999 }}>
+                <span style={{ font: '500 11px/1 Inter', color: 'var(--ink-3)', background: 'var(--bg-alt)', padding: '4px 8px', borderRadius: 999 }}>
                   {post.readTime} read
                 </span>
               </div>
@@ -844,89 +697,115 @@ const Blog = () => (
 
 // ── STATS ─────────────────────────────────────────────────────────────────────
 const STATS = [
-  { v: '1.8M',    label: 'Active customers',    sub: 'across the US' },
+  { v: '1.8M+',   label: 'Active customers',    sub: 'across the US' },
   { v: '14,200+', label: 'Verified pros',        sub: 'license-checked' },
   { v: '847',     label: 'Bookings today',       sub: 'and counting' },
-  { v: '4.9',     label: 'Avg. platform rating', sub: 'out of 5 stars' },
+  { v: '4.9★',   label: 'Platform rating',      sub: 'out of 5 stars' },
+];
+
+const INDUSTRY_PHOTOS = [
+  { src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop', label: 'Dentistry', name: 'Dr. Maya Patel' },
+  { src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80&auto=format&fit=crop', label: 'Restaurants', name: 'Osteria Nolita' },
+  { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80&auto=format&fit=crop&crop=faces', label: 'Salon & Spa', name: 'Jade Monroe' },
+  { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop&crop=faces', label: 'Photography', name: 'Sophie Laurent' },
 ];
 
 const Stats = () => (
   <section style={{
     position: 'relative', overflow: 'hidden',
-    background: 'linear-gradient(135deg, #1a0f0a 0%, #0f0b08 50%, #1c1008 100%)',
+    background: 'linear-gradient(160deg, #150c07 0%, #0f0905 45%, #1a0e08 100%)',
     borderTop: '1px solid rgba(255,255,255,0.06)',
   }}>
-    {/* Subtle dot grid overlay */}
+    {/* Subtle dot grid */}
     <div aria-hidden="true" style={{
       position: 'absolute', inset: 0,
-      backgroundImage: 'radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px)',
-      backgroundSize: '28px 28px',
-    }} />
-    {/* Orange radial glow */}
-    <div aria-hidden="true" style={{
-      position: 'absolute', bottom: -100, left: '50%',
-      transform: 'translateX(-50%)',
-      width: 800, height: 400,
-      background: 'radial-gradient(ellipse, rgba(255,90,32,0.18) 0%, transparent 65%)',
-      pointerEvents: 'none',
+      backgroundImage: 'radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)',
+      backgroundSize: '32px 32px',
     }} />
 
-    <Container style={{ position: 'relative', zIndex: 1 }}>
-      {/* Headline */}
-      <div style={{ padding: '72px 0 60px', textAlign: 'center' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 20,
-          padding: '5px 14px', borderRadius: 999,
-          background: 'rgba(255,90,32,0.12)', border: '1px solid rgba(255,90,32,0.25)' }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF5A20' }} />
-          <span style={{ font: '700 10px/1 "JetBrains Mono", monospace', color: '#FF5A20', letterSpacing: '0.12em' }}>LIVE PLATFORM DATA</span>
-        </div>
-        <h2 style={{ margin: '0 0 14px', font: '800 54px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
-          Growing every{' '}
-          <span style={{ color: '#FF5A20', fontStyle: 'italic' }}>single day.</span>
-        </h2>
-        <p style={{ margin: 0, font: '400 16px/1.5 Inter', color: 'rgba(255,255,255,0.45)' }}>
-          Real numbers from our platform — updated every 24 hours.
-        </p>
-      </div>
+    <Container style={{ position: 'relative', zIndex: 1, padding: '80px 0' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
 
-      {/* Stat cards */}
-      <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: 12, marginBottom: 72,
-      }}>
-        {STATS.map((s, i) => (
-          <div key={s.label} style={{
-            padding: '40px 32px',
-            background: i === 0
-              ? 'linear-gradient(135deg, #FF5A20 0%, #e04010 100%)'
-              : 'rgba(255,255,255,0.04)',
-            border: `1px solid ${i === 0 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.08)'}`,
-            borderRadius: 18,
-            display: 'flex', flexDirection: 'column', gap: 10,
-            backdropFilter: i !== 0 ? 'blur(10px)' : 'none',
-            boxShadow: i === 0 ? '0 24px 48px -12px rgba(255,90,32,0.4)' : 'none',
-            transition: 'transform .2s, box-shadow .2s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
-          >
-            <div style={{
-              font: '900 60px/1 Inter', letterSpacing: '-0.04em',
-              color: i === 0 ? '#fff' : '#FF5A20',
-            }}>
-              {s.v}
-              {s.label === 'Avg. platform rating' && (
-                <span style={{ font: '700 28px/1 Inter', color: i === 0 ? 'rgba(255,255,255,0.8)' : '#FF5A20', marginLeft: 2 }}>★</span>
-              )}
-            </div>
-            <div style={{ font: '600 14px/1.3 Inter', color: i === 0 ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.75)' }}>
-              {s.label}
-            </div>
-            <div style={{ font: '400 12px/1 Inter', color: i === 0 ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.30)' }}>
-              {s.sub}
-            </div>
+        {/* Left: headline + stats */}
+        <div>
+          <h2 style={{ margin: '0 0 16px', font: '800 52px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
+            Trusted by millions,<br />
+            <span style={{ color: '#FF5A20' }}>every single day.</span>
+          </h2>
+          <p style={{ margin: '0 0 48px', font: '400 17px/1.6 Inter', color: 'rgba(255,255,255,0.4)' }}>
+            Real numbers from our platform — updated every 24 hours.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
+            {STATS.map((s, i) => (
+              <div key={s.label} style={{
+                padding: '32px 28px',
+                background: 'rgba(255,255,255,0.04)',
+                borderRight: (i === 0 || i === 2) ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                borderBottom: (i === 0 || i === 1) ? '1px solid rgba(255,255,255,0.06)' : 'none',
+              }}>
+                <div style={{
+                  font: '800 44px/1 Inter', letterSpacing: '-0.03em',
+                  color: '#FF5A20',
+                  marginBottom: 8,
+                }}>
+                  {s.v}
+                </div>
+                <div style={{ font: '600 13px/1.3 Inter', color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>
+                  {s.label}
+                </div>
+                <div style={{ font: '400 12px/1 Inter', color: 'rgba(255,255,255,0.25)' }}>
+                  {s.sub}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Right: 2×2 photo mosaic */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 10, aspectRatio: '1 / 1' }}>
+          {INDUSTRY_PHOTOS.map((p, i) => (
+            <div key={p.label} style={{
+              position: 'relative', borderRadius: 14, overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <img
+                src={p.src}
+                alt={p.label}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+              {/* Gradient overlay */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(to top, rgba(10,6,3,0.75) 0%, rgba(10,6,3,0.1) 55%, transparent 100%)',
+              }} />
+              {/* Label */}
+              <div style={{ position: 'absolute', bottom: 12, left: 14, right: 14 }}>
+                <div style={{ font: '600 11px/1 Inter', color: '#FF5A20', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>
+                  {p.label}
+                </div>
+                <div style={{ font: '600 13px/1.2 Inter', color: 'rgba(255,255,255,0.9)' }}>
+                  {p.name}
+                </div>
+              </div>
+              {/* Verified badge */}
+              <div style={{
+                position: 'absolute', top: 12, right: 12,
+                background: 'rgba(10,6,3,0.6)', backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: 999, padding: '4px 8px',
+                display: 'flex', alignItems: 'center', gap: 4,
+              }}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="12" fill="#22c55e" />
+                  <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span style={{ font: '600 10px/1 Inter', color: 'rgba(255,255,255,0.85)' }}>Verified</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </Container>
   </section>
@@ -963,7 +842,7 @@ const Locations = () => (
               <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)', marginTop: 4 }}>{l.cities}</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ font: '600 13px/1 "JetBrains Mono", monospace', color: 'var(--ink-2)' }}>{l.count}</div>
+              <div style={{ font: '600 13px/1 Inter', color: 'var(--ink-2)' }}>{l.count}</div>
               <div style={{ marginTop: 8, display: 'inline-flex' }}>
                 <Icon name="arrow-up-right" size={14} color="var(--accent)" />
               </div>
@@ -1155,7 +1034,7 @@ const Footer = () => (
 export default function LandingPage() {
   return (
     <>
-      <Nav />
+      <SiteNav transparent />
       <main>
         <Hero />
         <BrowseByCategory />

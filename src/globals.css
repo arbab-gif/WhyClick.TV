@@ -34,7 +34,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 img { max-width: 100%; display: block; }
 
 .serif { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-weight: 600; letter-spacing: -0.025em; }
-.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.mono { font-family: Inter, sans-serif; }
 
 @keyframes fadeSlideDown {
   from { opacity: 0; transform: translateY(-6px); }

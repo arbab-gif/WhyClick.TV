@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Icon, Tag, Btn } from '../components/primitives';
-import logo from '../assets/whyclick-logo.png';
+import SiteNav from '../components/SiteNav';
 
 const ALL_PROS = {
   photographers: [
@@ -49,34 +49,37 @@ const INDUSTRY_LABEL = { photographers: 'Photographers', 'salon-spa': 'Salon & S
 const FEE_LABEL = { photographers: '/ session', 'salon-spa': '/ session', restaurants: '/ person' };
 const STAT_LABEL = { photographers: 'Sessions', 'salon-spa': 'Sessions', restaurants: 'Covers/wk' };
 
-const TopBar = ({ name, industry }) => {
-  const navigate = useNavigate();
-  return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 100, background: 'oklch(0.985 0.005 80 / 0.94)', backdropFilter: 'saturate(180%) blur(16px)', borderBottom: '1px solid var(--line-2)' }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto', padding: '10px 32px 8px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <button onClick={() => navigate(`/${industry}`)} style={{ width: 36, height: 36, borderRadius: 10, border: '1px solid var(--line)', background: 'var(--bg)', cursor: 'pointer', display: 'grid', placeItems: 'center', color: 'var(--ink-2)' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5m7-7-7 7 7 7" /></svg>
-            </button>
-            <img src={logo} alt="whyclick.tv" style={{ height: 26, cursor: 'pointer' }} onClick={() => navigate('/')} />
-          </div>
-          <button style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1px solid var(--line)', background: 'transparent', font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer' }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share
-          </button>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '400 12px/1 Inter', color: 'var(--ink-3)', marginTop: 6, paddingLeft: 2 }}>
-          <span style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
-          <span>/</span>
-          <span style={{ cursor: 'pointer' }} onClick={() => navigate(`/${industry}`)}>{INDUSTRY_LABEL[industry]}</span>
-          <span>/</span>
-          <span style={{ color: 'var(--ink)', fontWeight: 500 }}>{name}</span>
-        </div>
-      </div>
-    </header>
-  );
-};
+const BackBar = ({ label, onBack }) => (
+  <div style={{
+    background: 'var(--bg)', borderBottom: '1px solid var(--line-2)',
+    padding: '0 32px', height: 44,
+  }}>
+    <div style={{ maxWidth: 1240, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+      <button onClick={onBack} style={{
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        background: 'none', border: 'none', cursor: 'pointer',
+        font: '500 13px/1 Inter', color: 'var(--ink-2)', padding: '4px 0',
+      }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+        Back to {label}
+      </button>
+      <button style={{
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        padding: '6px 14px', borderRadius: 8,
+        border: '1px solid var(--line)', background: 'transparent',
+        font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer',
+      }}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Share
+      </button>
+    </div>
+  </div>
+);
 
 const SectionHead = ({ title }) => (
   <div style={{ font: '600 15px/1 Inter', color: 'var(--ink)', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -117,7 +120,8 @@ export default function ProProfile() {
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-      <TopBar name={pro.name} industry={industry} />
+      <SiteNav />
+      <BackBar label={INDUSTRY_META[industry]?.label || industry} onBack={() => navigate(`/${industry}`)} />
 
       {/* Hero */}
       <div style={{ width: '100%', height: 260, overflow: 'hidden', position: 'relative' }}>

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import L from 'leaflet';
 import { Icon, Tag, Btn } from '../components/primitives';
 import AskAIFab from '../components/AskAIFab';
-import logo from '../assets/whyclick-logo.png';
+import SiteNav from '../components/SiteNav';
 
 // ── SHARED PRO DATA ───────────────────────────────────────────────────────────
 const ALL_PROS = {
@@ -48,29 +48,6 @@ const INDUSTRY_META = {
   restaurants:   { label: 'Restaurants',   noun: 'restaurant'   },
 };
 
-// ── TOP BAR ───────────────────────────────────────────────────────────────────
-const TopBar = () => {
-  const navigate = useNavigate();
-  return (
-    <header style={{
-      position: 'sticky', top: 0, zIndex: 60,
-      background: 'oklch(0.985 0.005 80 / 0.92)',
-      backdropFilter: 'saturate(180%) blur(16px)',
-      borderBottom: '1px solid var(--line-2)',
-    }}>
-      <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64, gap: 24 }}>
-        <a href="/" onClick={e => { e.preventDefault(); navigate('/'); }} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src={logo} alt="whyclick.tv" style={{ height: 32, width: 'auto' }} />
-        </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <a href="#" style={{ padding: '8px 12px', borderRadius: 8, font: '500 14px/1 Inter', color: 'var(--ink-2)' }}>Sign in</a>
-          <Btn variant="primary" size="sm" iconRight="arrow-right">Join as a partner</Btn>
-        </div>
-      </div>
-    </header>
-  );
-};
 
 // ── SEARCH SUB-BAR ────────────────────────────────────────────────────────────
 const SearchSubBar = ({ industry, location, onLocationChange, query, onQueryChange }) => {
@@ -78,12 +55,6 @@ const SearchSubBar = ({ industry, location, onLocationChange, query, onQueryChan
   return (
     <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--line-2)', padding: '20px 24px' }}>
       <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '500 13px/1 Inter', color: 'var(--ink-3)' }}>
-          <a href="/" onClick={e => { e.preventDefault(); navigate('/'); }}>Home</a>
-          <Icon name="chevron-right" size={12} />
-          <span style={{ color: 'var(--ink)' }}>{industry.label}</span>
-        </div>
-        <span style={{ flex: 1 }} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 0,
           background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: 999,
           padding: 4, minWidth: 480, maxWidth: 600, flex: 1 }}>
@@ -300,7 +271,7 @@ export default function ProListing() {
 
   return (
     <>
-      <TopBar />
+      <SiteNav />
       <SearchSubBar
         industry={meta}
         location={location} onLocationChange={setLocation}
