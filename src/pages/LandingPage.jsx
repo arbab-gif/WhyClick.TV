@@ -99,27 +99,37 @@ const Nav = () => {
                 >
                   <div aria-hidden="true" style={{ position: 'absolute', top: -14, left: 0, right: 0, height: 14 }} />
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
-                    {INDUSTRIES.map(ind => (
-                      <a key={ind.label} href="#" style={{
-                        display: 'flex', alignItems: 'center', gap: 12,
-                        padding: '10px 12px', borderRadius: 10,
-                        transition: 'background 140ms ease',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-                        <div style={{
-                          width: 36, height: 36, borderRadius: 9,
-                          background: 'var(--accent-soft)',
-                          display: 'grid', placeItems: 'center', flexShrink: 0,
-                        }}>
-                          <Icon name={ind.icon} size={18} color="var(--accent)" />
-                        </div>
-                        <div style={{ minWidth: 0 }}>
-                          <div style={{ font: '500 14px/1.2 Inter', color: 'var(--ink)' }}>{ind.label}</div>
-                          <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>{ind.sub}</div>
-                        </div>
-                      </a>
-                    ))}
+                    {INDUSTRIES.map(ind => {
+                      const isLive = ind.label === 'Dentists';
+                      return (
+                        <a key={ind.label}
+                          href={isLive ? '/dentists' : '#'}
+                          onClick={e => { e.preventDefault(); navigate('/dentists'); setHover(null); }}
+                          style={{
+                            display: 'flex', alignItems: 'center', gap: 12,
+                            padding: '10px 12px', borderRadius: 10,
+                            transition: 'background 140ms ease',
+                            textDecoration: 'none',
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                          <div style={{
+                            width: 36, height: 36, borderRadius: 9,
+                            background: isLive ? 'var(--accent-soft)' : 'oklch(0.95 0.005 80)',
+                            display: 'grid', placeItems: 'center', flexShrink: 0,
+                          }}>
+                            <Icon name={ind.icon} size={18} color={isLive ? 'var(--accent)' : 'var(--ink-3)'} />
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <span style={{ font: '500 14px/1.2 Inter', color: 'var(--ink)' }}>{ind.label}</span>
+                              {!isLive && <span style={{ font: '500 10px/1 Inter', color: 'var(--ink-3)', background: 'oklch(0.93 0.005 80)', padding: '2px 6px', borderRadius: 999 }}>Soon</span>}
+                            </div>
+                            <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>{ind.sub}</div>
+                          </div>
+                        </a>
+                      );
+                    })}
                   </div>
                   <div style={{
                     marginTop: 10, paddingTop: 12, borderTop: '1px solid var(--line-2)',
@@ -495,8 +505,8 @@ const BrowseByCategory = () => {
         <SectionHeader title="Browse by category" sub="Whatever you need, we have the right pro for it." />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
           {BROWSE.map(c => (
-            <a key={c.id} href={c.id === 'dentist' ? '/dentists' : '#'}
-              onClick={c.id === 'dentist' ? (e) => { e.preventDefault(); navigate('/dentists'); } : undefined}
+            <a key={c.id} href="/dentists"
+              onClick={e => { e.preventDefault(); navigate('/dentists'); }}
               style={{
                 display: 'flex', flexDirection: 'column',
                 background: 'var(--bg)', color: 'var(--ink)',
@@ -872,17 +882,20 @@ const LOCATIONS = [
   { name: 'Arizona',       count: '17,900 pros', cities: 'Phoenix · Tucson · Scottsdale' },
 ];
 
-const Locations = () => (
+const Locations = () => {
+  const navigate = useNavigate();
+  return (
   <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
     <Container>
       <SectionHeader title="Find pros across the U.S." sub="Search in your city and see who's available this week." />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {LOCATIONS.map(l => (
-          <a key={l.name} href="#" style={{
+          <a key={l.name} href="/dentists" onClick={e => { e.preventDefault(); navigate('/dentists'); }} style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
             padding: '22px 24px', borderRadius: 'var(--radius)',
             border: '1px solid var(--line)', background: 'var(--bg)',
             transition: 'transform .15s, box-shadow .15s',
+            textDecoration: 'none', color: 'inherit',
           }}
           onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 28px -12px rgba(40,30,20,.14)'; }}
           onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
@@ -902,7 +915,8 @@ const Locations = () => (
       </div>
     </Container>
   </section>
-);
+  );
+};
 
 // ── FOOTER ────────────────────────────────────────────────────────────────────
 const Newsletter = () => {
