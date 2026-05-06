@@ -671,6 +671,7 @@ const TopProfessionals = () => {
         <SectionHeader
           title="Top professionals near you"
           sub="Hand-picked, consistently 5-star, and available this week."
+          action={<Btn variant="outline" iconRight="arrow-right" onClick={() => {}}>View all</Btn>}
         />
         <div style={{ display: 'flex', gap: 8, marginBottom: 28, flexWrap: 'wrap' }}>
           {PRO_TABS.map(tab => (
@@ -695,9 +696,6 @@ const TopProfessionals = () => {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
           {filtered.slice(0, 12).map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-          <Btn variant="outline" iconRight="arrow-right" onClick={() => {}}>View all professionals</Btn>
         </div>
       </Container>
     </section>
