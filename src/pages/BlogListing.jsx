@@ -13,17 +13,23 @@ export default function BlogListing() {
       <SiteNav />
 
       {/* ── Hero ── */}
-      <section style={{ background: 'linear-gradient(160deg, #150c07 0%, #0f0905 45%, #1a0e08 100%)', padding: '72px 0 80px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <section style={{
+        background: '#fff',
+        borderBottom: '1px solid var(--line-2)',
+        padding: '64px 0 60px',
+      }}>
         <Container>
-          <p style={{ margin: '0 0 14px', font: '600 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            whyclick.tv Blog
-          </p>
-          <h1 style={{ margin: '0 0 18px', font: '800 56px/1.06 Inter', letterSpacing: '-0.04em', color: '#fff' }}>
-            Discover our latest blogs
-          </h1>
-          <p style={{ margin: 0, font: '400 18px/1.6 Inter', color: 'rgba(255,255,255,0.55)', maxWidth: 520 }}>
-            Guides, insights, and expert advice — for patients finding better care and professionals building better practices.
-          </p>
+          <div style={{ maxWidth: 640 }}>
+            <p style={{ margin: '0 0 14px', font: '600 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              whyclick.tv Blog
+            </p>
+            <h1 style={{ margin: '0 0 16px', font: '800 52px/1.06 Inter', letterSpacing: '-0.04em', color: 'var(--ink)' }}>
+              Discover our latest blogs
+            </h1>
+            <p style={{ margin: 0, font: '400 17px/1.65 Inter', color: 'var(--ink-2)' }}>
+              Guides, insights, and expert advice — for patients finding better care and professionals building better practices.
+            </p>
+          </div>
         </Container>
       </section>
 
