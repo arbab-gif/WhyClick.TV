@@ -740,6 +740,24 @@ const REVIEWS = [
     for: 'Jade Monroe',
     img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&auto=format&fit=crop',
   },
+  {
+    id: 7, name: 'Olivia S.', loc: 'Bushwick, NY', rating: 5,
+    body: '"I booked Rina for LinkedIn headshots and got 12 interview requests in the first month. Best professional investment I\'ve made. The whole session felt relaxed and natural."',
+    for: 'Rina Tanaka',
+    img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80&auto=format&fit=crop',
+  },
+  {
+    id: 8, name: 'Tom H.', loc: 'Carroll Gardens, NY', rating: 5,
+    body: '"Had a root canal with Dr. Reyes and I barely felt a thing. He talked me through everything beforehand. First time I\'ve left a dental appointment feeling genuinely fine."',
+    for: 'Dr. Marcus Reyes',
+    img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80&auto=format&fit=crop',
+  },
+  {
+    id: 9, name: 'Aisha B.', loc: 'Fort Greene, NY', rating: 5,
+    body: '"Osteria Nolita for our anniversary dinner was perfect. Found it through whyclick.tv, saw the photos, booked a table the same day. The pasta and wine list were exceptional."',
+    for: 'Osteria Nolita',
+    img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&q=80&auto=format&fit=crop',
+  },
 ];
 
 const Reviews = () => {
