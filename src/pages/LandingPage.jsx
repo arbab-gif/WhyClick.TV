@@ -542,13 +542,6 @@ const BrowseByCategory = () => {
                   position: 'absolute', inset: 0,
                   background: 'linear-gradient(to top, rgba(10,6,3,0.72) 0%, rgba(10,6,3,0.1) 60%, transparent 100%)',
                 }} />
-                {/* Count badge */}
-                <div style={{
-                  position: 'absolute', top: 14, right: 14,
-                  font: '600 11px/1 Inter', letterSpacing: '0.03em',
-                  background: 'rgba(255,255,255,0.92)', color: 'var(--ink)',
-                  padding: '6px 11px', borderRadius: 999,
-                }}>{c.count} pros</div>
                 {/* Name over gradient */}
                 <div style={{ position: 'absolute', bottom: 16, left: 18, right: 18 }}>
                   <div style={{ font: '700 22px/1.1 Inter', color: 'white', letterSpacing: '-0.015em' }}>{c.name}</div>
