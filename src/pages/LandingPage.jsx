@@ -952,10 +952,10 @@ const STATS = [
 ];
 
 const INDUSTRY_PHOTOS = [
-  { src: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop', label: 'Dentistry', name: 'Dr. Maya Patel' },
-  { src: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80&auto=format&fit=crop', label: 'Restaurants', name: 'Osteria Nolita' },
-  { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80&auto=format&fit=crop&crop=faces', label: 'Salon & Spa', name: 'Jade Monroe' },
-  { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop&crop=faces', label: 'Photography', name: 'Sophie Laurent' },
+  { src: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=800&q=80&auto=format&fit=crop&crop=faces', label: 'Dentistry', name: 'Dr. Ali Awan' },
+  { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80&auto=format&fit=crop', label: 'Restaurants', name: 'Casa Verde' },
+  { src: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&q=80&auto=format&fit=crop&crop=faces', label: 'Salon & Spa', name: 'Kira Osei' },
+  { src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80&auto=format&fit=crop&crop=faces', label: 'Photography', name: 'Chloe Bennett' },
 ];
 
 const Stats = () => (
