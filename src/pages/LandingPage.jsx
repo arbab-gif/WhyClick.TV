@@ -4,6 +4,7 @@ import { Icon, Tag, Btn, Avatar, PhotoPlaceholder, Container, SectionHeader } fr
 import AskAIFab from '../components/AskAIFab';
 import SiteNav from '../components/SiteNav';
 import logo from '../assets/whyclick-logo.png';
+import { BLOG_POSTS } from '../data/blogData';
 
 // ── INDUSTRY DATA (used in homepage sections only) ─────────────────────────
 const INDUSTRIES = [
@@ -34,6 +35,7 @@ const Nav = () => {
     { label: 'Industries', hasMenu: true, kind: 'industries' },
     { label: 'How it works' },
     { label: 'For professionals' },
+    { label: 'Blog' },
     { label: 'About' },
   ];
 
@@ -60,6 +62,11 @@ const Nav = () => {
                   href="#"
                   onMouseEnter={() => setHover(l.label)}
                   onMouseLeave={() => setHover(null)}
+                  onClick={e => {
+                    e.preventDefault();
+                    if (l.label === 'Blog') { navigate('/blog'); setHover(null); }
+                    else if (l.label === 'About') { navigate('/about'); setHover(null); }
+                  }}
                   style={{
                     position: 'relative',
                     display: 'inline-flex', alignItems: 'center', gap: 4,
@@ -436,63 +443,116 @@ const GetHelpToday = () => {
 };
 
 // ── HOW IT WORKS ──────────────────────────────────────────────────────────────
-const STEPS = [
+const HOW_STEPS = [
   {
     n: '01',
-    title: 'Tell us what you need',
-    body: 'Type it in plain English — "pediatric dentist who takes Aetna" or "photographer for a birthday party". No forms, no checkboxes.',
     icon: 'search',
+    title: 'Search by what you actually need',
+    body: 'Tell us what you\'re looking for in plain language — "pediatric dentist near me who takes Aetna" or "wedding photographer under $2,000." No dropdowns, no checkboxes, no guessing.',
+    detail: 'Powered by smart matching across 76,000+ listings',
   },
   {
     n: '02',
-    title: 'Compare real profiles',
-    body: 'See verified reviews, prices, availability, and credentials side by side. Every pro is ID-checked before they list.',
     icon: 'sparkle',
+    title: 'Every pro is verified before they list',
+    body: 'We confirm licenses against state databases, call references directly, and verify malpractice insurance — before the profile goes live. You see only professionals who\'ve passed our checks.',
+    detail: '12% of applications are rejected in the first pass',
   },
   {
     n: '03',
-    title: 'Book or message instantly',
-    body: 'Send a message or request a booking directly. Most pros respond in under an hour.',
-    icon: 'message',
+    icon: 'star',
+    title: 'Read reviews that are earned, not bought',
+    body: 'Every review on whyclick.tv comes from a confirmed booking. No anonymous posts. No paid placement. If the rating is high, it\'s because patients keep coming back and saying so.',
+    detail: '4.9 average platform rating across 1.8M reviews',
+  },
+  {
+    n: '04',
+    icon: 'calendar',
+    title: 'Book a time that actually works for you',
+    body: 'See real availability and lock in an appointment directly — no voicemail, no "we\'ll call you back." Most professionals respond to messages within the hour.',
+    detail: 'Same-day booking available with most verified pros',
   },
 ];
 
-const HowItWorks = () => (
-  <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
-    <Container>
-      <SectionHeader title="How it works" sub="From search to booked — in minutes, not days." />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0,
-        border: '1px solid var(--line)', borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--bg)' }}>
-        {STEPS.map((s, i) => (
-          <div key={s.n} style={{
-            padding: 36,
-            borderRight: i < STEPS.length - 1 ? '1px solid var(--line-2)' : 'none',
-            display: 'flex', flexDirection: 'column', gap: 18,
-            position: 'relative', minHeight: 260,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ font: '700 13px/1 Inter', color: 'var(--accent)', letterSpacing: '0.04em' }}>STEP {s.n}</span>
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--accent-soft)',
-                border: '1px solid var(--line)', display: 'grid', placeItems: 'center' }}>
-                <Icon name={s.icon} size={20} color="var(--accent)" />
-              </div>
-            </div>
-            <h3 style={{ margin: 0, font: '700 24px/1.2 Inter', letterSpacing: '-0.015em', color: 'var(--ink)' }}>{s.title}</h3>
-            <p style={{ margin: 0, color: 'var(--ink-2)', fontSize: 14, lineHeight: 1.65 }}>{s.body}</p>
-            {i < STEPS.length - 1 && (
-              <div style={{ position: 'absolute', right: -12, top: '50%', transform: 'translateY(-50%)',
-                width: 24, height: 24, borderRadius: '50%', background: 'var(--bg)',
-                border: '1px solid var(--line)', display: 'grid', placeItems: 'center', zIndex: 2 }}>
-                <Icon name="arrow-right" size={11} color="var(--ink-3)" />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+const HowItWorks = () => {
+  const navigate = useNavigate();
+  return (
+    <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: 'var(--bg-alt)' }}>
+      <Container>
+        <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', gap: 80, alignItems: 'start' }}>
 
-    </Container>
-  </section>
-);
+          {/* ── Left: heading block ── */}
+          <div style={{ position: 'sticky', top: 100 }}>
+            <p style={{ margin: '0 0 14px', font: '600 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              How it works
+            </p>
+            <h2 style={{ margin: '0 0 20px', font: '800 44px/1.08 Inter', letterSpacing: '-0.03em', color: 'var(--ink)' }}>
+              Find a pro you can actually trust
+            </h2>
+            <p style={{ margin: '0 0 36px', font: '400 16px/1.65 Inter', color: 'var(--ink-2)' }}>
+              We do the vetting so you don't have to. Every professional on whyclick.tv has been license-checked, reviewed, and confirmed before they appear in your search.
+            </p>
+
+            {/* Trust stats */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 40 }}>
+              {[
+                { v: '76,000+', label: 'verified professionals' },
+                { v: '1.8M+',   label: 'confirmed bookings' },
+                { v: '4.9 ★',   label: 'average platform rating' },
+              ].map(s => (
+                <div key={s.v} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <span style={{ font: '700 20px/1 Inter', color: 'var(--accent)', letterSpacing: '-0.02em', minWidth: 90 }}>{s.v}</span>
+                  <span style={{ font: '400 14px/1 Inter', color: 'var(--ink-2)' }}>{s.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <Btn variant="primary" iconRight="arrow-right" onClick={() => navigate('/dentists')}>
+              Find a professional
+            </Btn>
+          </div>
+
+          {/* ── Right: steps ── */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {HOW_STEPS.map((s, i) => (
+              <div key={s.n} style={{ display: 'flex', gap: 24, padding: '32px 0', borderBottom: i < HOW_STEPS.length - 1 ? '1px solid var(--line)' : 'none' }}>
+                {/* Number + connector */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, flexShrink: 0 }}>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 14,
+                    background: 'linear-gradient(135deg, var(--accent) 0%, #ff7a47 100%)',
+                    display: 'grid', placeItems: 'center', flexShrink: 0,
+                    boxShadow: '0 4px 14px -4px rgba(255,90,32,0.4)',
+                  }}>
+                    <Icon name={s.icon} size={20} color="#fff" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div style={{ flex: 1, paddingTop: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                    <span style={{ font: '700 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Step {s.n}</span>
+                  </div>
+                  <h3 style={{ margin: '0 0 10px', font: '700 20px/1.25 Inter', letterSpacing: '-0.015em', color: 'var(--ink)' }}>
+                    {s.title}
+                  </h3>
+                  <p style={{ margin: '0 0 14px', font: '400 14px/1.65 Inter', color: 'var(--ink-2)' }}>
+                    {s.body}
+                  </p>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: 8,
+                    background: 'var(--accent-soft)', border: '1px solid rgba(255,90,32,0.12)' }}>
+                    <Icon name="check" size={12} color="var(--accent)" />
+                    <span style={{ font: '500 12px/1 Inter', color: 'var(--accent)' }}>{s.detail}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+};
 
 // ── BROWSE BY CATEGORY ────────────────────────────────────────────────────────
 const BROWSE = [
@@ -848,100 +908,59 @@ const Reviews = () => {
 };
 
 // ── BLOG ─────────────────────────────────────────────────────────────────────
-const BLOG_POSTS = [
-  {
-    id: 1,
-    tag: 'Patient Guide',
-    title: 'How to pick a dentist you\'ll actually stick with',
-    excerpt: 'Most people dread the dentist because of one bad experience with the wrong one. Here\'s what to look for — and what to ask before you sit in the chair.',
-    author: 'Sara Kimani',
-    date: 'Apr 28, 2026',
-    readTime: '4 min',
-    img: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80&auto=format&fit=crop',
-  },
-  {
-    id: 2,
-    tag: 'Platform',
-    title: 'What "verified" actually means on whyclick.tv',
-    excerpt: 'We check licenses, confirm malpractice insurance, and call references. Here\'s exactly what goes into the badge you see on every profile.',
-    author: 'James Okafor',
-    date: 'Apr 14, 2026',
-    readTime: '6 min',
-    img: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    tag: 'For Professionals',
-    title: '7 things top-rated pros do differently on their profiles',
-    excerpt: 'We analyzed thousands of profiles. The ones that book 3× more share a few common habits — and none of them require a marketing budget.',
-    author: 'Priya Shah',
-    date: 'Mar 30, 2026',
-    readTime: '5 min',
-    img: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80&auto=format&fit=crop',
-  },
-];
-
-const Blog = () => (
-  <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
-    <Container>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 48 }}>
-        <div>
-          <div style={{ font: '700 12px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', marginBottom: 12 }}>FROM THE BLOG</div>
+const Blog = () => {
+  const navigate = useNavigate();
+  return (
+    <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
+      <Container>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 48 }}>
           <h2 style={{ margin: 0, font: '700 36px/1.1 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
-            Advice you can actually use
+            Discover our latest blogs
           </h2>
+          <a href="/blog" onClick={e => { e.preventDefault(); navigate('/blog'); }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, font: '600 14px/1 Inter', color: 'var(--accent)', textDecoration: 'none' }}>
+            View all posts <Icon name="arrow-right" size={14} color="var(--accent)" />
+          </a>
         </div>
-        <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, font: '600 14px/1 Inter', color: 'var(--accent)' }}>
-          View all posts <Icon name="arrow-right" size={14} color="var(--accent)" />
-        </a>
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-        {BLOG_POSTS.map(post => (
-          <article key={post.id} style={{
-            background: 'var(--bg)', border: '1px solid var(--line)',
-            borderRadius: 'var(--radius)', overflow: 'hidden',
-            display: 'flex', flexDirection: 'column',
-            cursor: 'pointer', transition: 'transform .2s, box-shadow .2s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px -16px rgba(40,30,20,.18)'; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: 'var(--bg-alt)' }}>
-              <img src={post.img} alt={post.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .4s ease' }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-              />
-            </div>
-            <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
-              <div style={{
-                display: 'inline-block', alignSelf: 'flex-start',
-                padding: '4px 10px', borderRadius: 999,
-                background: 'var(--accent-soft)', color: 'var(--accent)',
-                font: '600 11px/1 Inter', letterSpacing: '0.02em',
-              }}>{post.tag}</div>
-              <h3 style={{ margin: 0, font: '700 18px/1.3 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>
-                {post.title}
-              </h3>
-              <p style={{ margin: 0, font: '400 13px/1.6 Inter', color: 'var(--ink-2)', flex: 1 }}>
-                {post.excerpt}
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 14, borderTop: '1px solid var(--line-2)' }}>
-                <div style={{ font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>
-                  {post.author} · {post.date}
-                </div>
-                <span style={{ font: '500 11px/1 Inter', color: 'var(--ink-3)', background: 'var(--bg-alt)', padding: '4px 8px', borderRadius: 999 }}>
-                  {post.readTime} read
-                </span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+          {BLOG_POSTS.slice(0, 3).map(post => (
+            <article key={post.id}
+              onClick={() => navigate(`/blog/${post.id}`)}
+              style={{
+                background: 'var(--bg)', border: '1px solid var(--line)',
+                borderRadius: 'var(--radius)', overflow: 'hidden',
+                display: 'flex', flexDirection: 'column',
+                cursor: 'pointer', transition: 'transform .2s, box-shadow .2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px -16px rgba(40,30,20,.18)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+            >
+              <div style={{ aspectRatio: '16/9', overflow: 'hidden', background: 'var(--bg-alt)' }}>
+                <img src={post.img} alt={post.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .4s ease' }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                />
               </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    </Container>
-  </section>
-);
+              <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+                <h3 style={{ margin: 0, font: '700 18px/1.3 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>
+                  {post.title}
+                </h3>
+                <p style={{ margin: 0, font: '400 13px/1.6 Inter', color: 'var(--ink-2)' }}>
+                  {post.excerpt}
+                </p>
+                <div style={{ marginTop: 'auto', paddingTop: 8, display: 'flex', alignItems: 'center', gap: 6, font: '600 13px/1 Inter', color: 'var(--accent)' }}>
+                  Read article <Icon name="arrow-right" size={12} color="var(--accent)" />
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};
 
 // ── STATS ─────────────────────────────────────────────────────────────────────
 const STATS = [

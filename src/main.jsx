@@ -10,6 +10,8 @@ import ProListing from './pages/ProListing';
 import ProProfile from './pages/ProProfile';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import BlogListing from './pages/BlogListing';
+import BlogDetail from './pages/BlogDetail';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -18,6 +20,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<LandingPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/blog" element={<BlogListing />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/dentists" element={<DentistListing />} />
         <Route path="/dentists/:id" element={<DentistProfile />} />
         <Route path="/join" element={<JoinAsPartner />} />

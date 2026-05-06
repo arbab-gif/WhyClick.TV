@@ -17,6 +17,7 @@ const INDUSTRIES = [
 const NAV_LINKS = [
   { label: 'Home',       path: '/' },
   { label: 'Industries', path: null, hasMenu: true },
+  { label: 'Blog',       path: '/blog' },
   { label: 'About',      path: '/about' },
   { label: 'Contact Us', path: '/contact' },
 ];
