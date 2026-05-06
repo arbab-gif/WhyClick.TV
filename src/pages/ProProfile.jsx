@@ -121,7 +121,7 @@ export default function ProProfile() {
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
       <SiteNav />
-      <BackBar label={INDUSTRY_META[industry]?.label || industry} onBack={() => navigate(`/${industry}`)} />
+      <BackBar label={INDUSTRY_LABEL[industry] || industry} onBack={() => navigate(`/${industry}`)} />
 
       {/* Hero */}
       <div style={{ width: '100%', height: 260, overflow: 'hidden', position: 'relative' }}>
