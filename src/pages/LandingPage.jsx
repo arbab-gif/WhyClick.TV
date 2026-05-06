@@ -722,44 +722,108 @@ const REVIEWS = [
     for: 'Dr. James Okafor',
     img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80&auto=format&fit=crop',
   },
+  {
+    id: 4, name: 'James L.', loc: 'Park Slope, NY', rating: 5,
+    body: '"Finally found a dentist I actually trust. Dr. Vogel explained every step, never pushed unnecessary treatments, and my teeth have never looked better."',
+    for: 'Dr. Lena Vogel',
+    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop',
+  },
+  {
+    id: 5, name: 'Camille R.', loc: 'Williamsburg, NY', rating: 5,
+    body: '"Used whyclick.tv to find a wedding photographer on three weeks notice. Sophie was incredible — the photos look like they belong in a magazine."',
+    for: 'Sophie Laurent',
+    img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&q=80&auto=format&fit=crop',
+  },
+  {
+    id: 6, name: 'Derek M.', loc: 'Astoria, NY', rating: 5,
+    body: '"Jade did a color correction that three other salons had refused to touch. Walked out with exactly what I wanted. The booking process took less than two minutes."',
+    for: 'Jade Monroe',
+    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&auto=format&fit=crop',
+  },
 ];
 
-const Reviews = () => (
-  <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
-    <Container>
-      <SectionHeader title="What people are actually saying" sub="Real words from real customers — not marketing copy." />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-        {REVIEWS.map(r => (
-          <article key={r.id} style={{
-            padding: 28, borderRadius: 'var(--radius)',
-            border: '1px solid var(--line)', background: 'var(--bg)',
-            display: 'flex', flexDirection: 'column', gap: 18, minHeight: 280,
-            transition: 'box-shadow .2s',
-          }}
-          onMouseEnter={e => e.currentTarget.style.boxShadow = '0 12px 32px -16px rgba(40,30,20,.14)'}
-          onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
-          >
-            <div style={{ display: 'flex', gap: 3 }}>
-              {[1,2,3,4,5].map(i => <Icon key={i} name="star" size={15} color={i <= r.rating ? '#FF5A20' : 'oklch(0.88 0.01 80)'} />)}
-            </div>
-            <p style={{ margin: 0, font: '400 17px/1.55 Inter', letterSpacing: '-0.01em', color: 'var(--ink)', flex: 1 }}>
-              {r.body}
-            </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 18, borderTop: '1px solid var(--line-2)' }}>
-              <div style={{ width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, boxShadow: 'inset 0 0 0 1px var(--line)' }}>
-                <img src={r.img} alt={r.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ font: '600 14px/1.2 Inter' }}>{r.name}</div>
-                <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)' }}>{r.loc} · booked {r.for}</div>
-              </div>
-            </div>
-          </article>
-        ))}
+const Reviews = () => {
+  const [page, setPage] = useState(0);
+  const perPage = 3;
+  const totalPages = Math.ceil(REVIEWS.length / perPage);
+  const visible = REVIEWS.slice(page * perPage, page * perPage + perPage);
+
+  const ReviewCard = ({ r }) => (
+    <article style={{
+      padding: 28, borderRadius: 'var(--radius)',
+      border: '1px solid var(--line)', background: 'var(--bg)',
+      display: 'flex', flexDirection: 'column', gap: 18, minHeight: 280,
+      transition: 'box-shadow .2s',
+    }}
+    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 12px 32px -16px rgba(40,30,20,.14)'}
+    onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+    >
+      <div style={{ display: 'flex', gap: 3 }}>
+        {[1,2,3,4,5].map(i => <Icon key={i} name="star" size={15} color={i <= r.rating ? '#FF5A20' : 'oklch(0.88 0.01 80)'} />)}
       </div>
-    </Container>
-  </section>
-);
+      <p style={{ margin: 0, font: '400 17px/1.55 Inter', letterSpacing: '-0.01em', color: 'var(--ink)', flex: 1 }}>
+        {r.body}
+      </p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 18, borderTop: '1px solid var(--line-2)' }}>
+        <div style={{ width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, boxShadow: 'inset 0 0 0 1px var(--line)' }}>
+          <img src={r.img} alt={r.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ font: '600 14px/1.2 Inter' }}>{r.name}</div>
+          <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)' }}>{r.loc} · booked {r.for}</div>
+        </div>
+      </div>
+    </article>
+  );
+
+  const ArrowBtn = ({ dir, onClick, disabled }) => (
+    <button onClick={onClick} disabled={disabled} aria-label={dir === 'prev' ? 'Previous' : 'Next'} style={{
+      position: 'absolute', top: '50%', transform: 'translateY(-50%)',
+      [dir === 'prev' ? 'left' : 'right']: -28,
+      zIndex: 2,
+      width: 48, height: 48, borderRadius: '50%',
+      background: disabled ? 'var(--bg-alt)' : 'var(--bg)',
+      border: '1px solid var(--line)',
+      boxShadow: disabled ? 'none' : '0 4px 16px -4px rgba(40,30,20,.14)',
+      display: 'grid', placeItems: 'center',
+      cursor: disabled ? 'default' : 'pointer',
+      opacity: disabled ? 0.4 : 1,
+      transition: 'opacity .15s, box-shadow .15s',
+    }}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {dir === 'prev'
+          ? <path d="M15 18l-6-6 6-6" />
+          : <path d="M9 18l6-6-6-6" />}
+      </svg>
+    </button>
+  );
+
+  return (
+    <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
+      <Container>
+        <SectionHeader title="What people are actually saying" sub="Real words from real customers — not marketing copy." />
+        <div style={{ position: 'relative', padding: '0 8px' }}>
+          <ArrowBtn dir="prev" onClick={() => setPage(p => p - 1)} disabled={page === 0} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+            {visible.map(r => <ReviewCard key={r.id} r={r} />)}
+          </div>
+          <ArrowBtn dir="next" onClick={() => setPage(p => p + 1)} disabled={page === totalPages - 1} />
+        </div>
+        {/* Dots */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }}>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button key={i} onClick={() => setPage(i)} aria-label={`Page ${i + 1}`} style={{
+              width: i === page ? 24 : 8, height: 8,
+              borderRadius: 999, border: 'none', cursor: 'pointer',
+              background: i === page ? 'var(--accent)' : 'oklch(0.88 0.01 80)',
+              transition: 'all .2s ease', padding: 0,
+            }} />
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+};
 
 // ── BLOG ─────────────────────────────────────────────────────────────────────
 const BLOG_POSTS = [
