@@ -748,15 +748,19 @@ const Reviews = () => {
   const totalPages = Math.ceil(REVIEWS.length / perPage);
   const visible = REVIEWS.slice(page * perPage, page * perPage + perPage);
 
-  const ReviewCard = ({ r }) => (
+  const ReviewCard = ({ r, isCenter }) => (
     <article style={{
       padding: 28, borderRadius: 'var(--radius)',
-      border: '1px solid var(--line)', background: 'var(--bg)',
+      border: isCenter ? '1.5px solid var(--accent)' : '1px solid var(--line)',
+      background: isCenter ? 'var(--bg)' : 'var(--bg)',
       display: 'flex', flexDirection: 'column', gap: 18, minHeight: 280,
-      transition: 'box-shadow .2s',
+      transform: isCenter ? 'scale(1.04)' : 'scale(1)',
+      boxShadow: isCenter ? '0 20px 48px -12px rgba(255,90,32,0.18)' : 'none',
+      transition: 'box-shadow .2s, transform .2s',
+      position: 'relative', zIndex: isCenter ? 1 : 0,
     }}
-    onMouseEnter={e => e.currentTarget.style.boxShadow = '0 12px 32px -16px rgba(40,30,20,.14)'}
-    onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+    onMouseEnter={e => { if (!isCenter) e.currentTarget.style.boxShadow = '0 12px 32px -16px rgba(40,30,20,.14)'; }}
+    onMouseLeave={e => { if (!isCenter) e.currentTarget.style.boxShadow = 'none'; }}
     >
       <div style={{ display: 'flex', gap: 3 }}>
         {[1,2,3,4,5].map(i => <Icon key={i} name="star" size={15} color={i <= r.rating ? '#FF5A20' : 'oklch(0.88 0.01 80)'} />)}
@@ -764,7 +768,7 @@ const Reviews = () => {
       <p style={{ margin: 0, font: '400 17px/1.55 Inter', letterSpacing: '-0.01em', color: 'var(--ink)', flex: 1 }}>
         {r.body}
       </p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 18, borderTop: '1px solid var(--line-2)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 18, borderTop: `1px solid ${isCenter ? 'rgba(255,90,32,0.15)' : 'var(--line-2)'}` }}>
         <div style={{ width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, boxShadow: 'inset 0 0 0 1px var(--line)' }}>
           <img src={r.img} alt={r.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
@@ -804,8 +808,8 @@ const Reviews = () => {
         <SectionHeader title="What people are actually saying" sub="Real words from real customers — not marketing copy." />
         <div style={{ position: 'relative', padding: '0 8px' }}>
           <ArrowBtn dir="prev" onClick={() => setPage(p => p - 1)} disabled={page === 0} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-            {visible.map(r => <ReviewCard key={r.id} r={r} />)}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, alignItems: 'center' }}>
+            {visible.map((r, i) => <ReviewCard key={r.id} r={r} isCenter={i === 1} />)}
           </div>
           <ArrowBtn dir="next" onClick={() => setPage(p => p + 1)} disabled={page === totalPages - 1} />
         </div>
