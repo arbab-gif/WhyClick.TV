@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SiteNav from '../components/SiteNav';
 import { Icon, Container } from '../components/primitives';
 import { BLOG_POSTS } from '../data/blogData';
 
-const TAGS = ['All', 'Patient Guide', 'Platform', 'For Professionals', 'Consumer Tips', 'Industry'];
-
 export default function BlogListing() {
   const navigate = useNavigate();
-  const [activeTag, setActiveTag] = useState('All');
-
-  const filtered = activeTag === 'All' ? BLOG_POSTS : BLOG_POSTS.filter(p => p.tag === activeTag);
-  const [featured, ...rest] = filtered;
+  const [featured, ...rest] = BLOG_POSTS;
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
@@ -33,22 +28,6 @@ export default function BlogListing() {
       </section>
 
       <Container style={{ padding: '56px 0 96px' }}>
-
-        {/* ── Tag filter ── */}
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 52 }}>
-          {TAGS.map(tag => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(tag)}
-              style={{
-                padding: '7px 16px', borderRadius: 999, border: 'none', cursor: 'pointer', font: '500 13px/1 Inter',
-                background: activeTag === tag ? 'var(--accent)' : 'var(--bg-alt)',
-                color: activeTag === tag ? '#fff' : 'var(--ink-2)',
-                transition: 'all .15s ease',
-              }}
-            >{tag}</button>
-          ))}
-        </div>
 
         {featured && (
           <>
@@ -137,11 +116,6 @@ export default function BlogListing() {
           </>
         )}
 
-        {filtered.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--ink-3)', font: '400 15px/1.6 Inter' }}>
-            No posts in this category yet.
-          </div>
-        )}
       </Container>
     </div>
   );
