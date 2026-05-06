@@ -496,12 +496,16 @@ const HowItWorks = () => (
 
 // ── BROWSE BY CATEGORY ────────────────────────────────────────────────────────
 const BROWSE = [
-  { id: 'restaurant', slug: 'restaurants',  name: 'Restaurants',           count: '12,840', icon: 'fork',      sub: 'Fine dining → cafes',        img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80&auto=format&fit=crop' },
-  { id: 'dentist',    slug: 'dentists',     name: 'Dentists',               count: '14,200', icon: 'tooth',     sub: 'Cleaning, ortho, cosmetic',  img: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80&auto=format&fit=crop' },
-  { id: 'service',    slug: null,           name: 'Professional Services',  count: '20,100', icon: 'briefcase', sub: 'Legal, finance, consulting', img: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop' },
-  { id: 'salon',      slug: 'salon-spa',    name: 'Salon & Spa',            count: '6,420',  icon: 'scissors',  sub: 'Hair, nails, massage',       img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&auto=format&fit=crop' },
-  { id: 'home',       slug: null,           name: 'Home Services',          count: '9,180',  icon: 'home',      sub: 'Plumbing, electric, HVAC',   img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80&auto=format&fit=crop' },
-  { id: 'photo',      slug: 'photographers',name: 'Photographers',          count: '3,640',  icon: 'camera',    sub: 'Weddings, portraits, events',img: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800&q=80&auto=format&fit=crop' },
+  { id: 'dentist',    slug: 'dentists',      name: 'Dentists',           role: 'Pediatric · Cosmetic · Ortho', img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'restaurant', slug: 'restaurants',   name: 'Restaurants',        role: 'Fine dining · Casual · Brunch', img: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'photo',      slug: 'photographers', name: 'Photographers',      role: 'Weddings · Portraits · Events', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'salon',      slug: 'salon-spa',     name: 'Salon & Spa',        role: 'Hair · Nails · Massage',        img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'home',       slug: null,            name: 'Home Services',      role: 'Plumbing · Electric · HVAC',    img: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c9349?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'fitness',    slug: null,            name: 'Fitness & Wellness', role: 'Personal · Yoga · Nutrition',   img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'legal',      slug: null,            name: 'Legal Services',     role: 'Family · Business · Estate',    img: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'realestate', slug: null,            name: 'Real Estate',        role: 'Buy · Sell · Property Mgmt',    img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'finance',    slug: null,            name: 'Financial Advisors', role: 'Tax · Wealth · Retirement',     img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop&crop=faces' },
+  { id: 'events',     slug: null,            name: 'Event Planners',     role: 'Corporate · Weddings · Private', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80&auto=format&fit=crop&crop=faces' },
 ];
 
 const BrowseByCategory = () => {
@@ -510,41 +514,67 @@ const BrowseByCategory = () => {
     <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
       <Container>
         <SectionHeader title="Browse by industry" sub="Whatever you need, we have the right pro for it." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14 }}>
           {BROWSE.map(c => (
-            <a key={c.id} href="/dentists"
-              onClick={e => { e.preventDefault(); navigate('/dentists'); }}
+            <a
+              key={c.id}
+              href={c.slug ? `/${c.slug}` : '/dentists'}
+              onClick={e => { e.preventDefault(); navigate(c.slug ? `/${c.slug}` : '/dentists'); }}
               style={{
-                display: 'flex', flexDirection: 'column',
-                background: 'var(--bg)', color: 'var(--ink)',
-                border: '1px solid var(--line)',
-                borderRadius: 'var(--radius)', padding: 0,
-                overflow: 'hidden', cursor: 'pointer',
-                transition: 'transform .2s ease, box-shadow .2s ease',
+                position: 'relative', display: 'block',
+                borderRadius: 18, overflow: 'hidden',
+                aspectRatio: '3/4',
+                cursor: 'pointer', textDecoration: 'none',
+                transition: 'transform .22s ease, box-shadow .22s ease',
               }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px -16px rgba(40,30,20,.22)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-4px) scale(1.015)';
+                e.currentTarget.style.boxShadow = '0 24px 48px -12px rgba(0,0,0,0.28)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
-              <div style={{ aspectRatio: '16/10', position: 'relative', overflow: 'hidden', background: 'oklch(0.95 0.012 80)' }}>
-                <PhotoPlaceholder ratio="16/10" label={c.name.toLowerCase()} src={c.img} style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }} />
-                <div style={{ position: 'absolute', top: 14, right: 14,
-                  font: '600 11px/1 Inter',
-                  background: 'rgba(255,255,255,0.90)', color: 'var(--ink)',
-                  padding: '6px 10px', borderRadius: 999, letterSpacing: '0.04em',
-                }}>{c.count} pros</div>
-              </div>
-              <div style={{ padding: '20px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ font: '700 20px/1.1 Inter', letterSpacing: '-0.015em' }}>{c.name}</div>
-                  <div style={{ font: '400 13px/1.4 Inter', color: 'var(--ink-3)', marginTop: 4 }}>{c.sub}</div>
-                </div>
+              {/* Photo */}
+              <img
+                src={c.img}
+                alt={c.name}
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'cover', objectPosition: 'center top',
+                  transition: 'transform .4s ease',
+                }}
+              />
+              {/* Gradient overlay */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(to top, rgba(10,6,3,0.82) 0%, rgba(10,6,3,0.28) 55%, transparent 100%)',
+              }} />
+              {/* "Coming soon" badge for non-live */}
+              {!c.slug && (
                 <div style={{
-                  width: 36, height: 36, borderRadius: '50%',
-                  border: '1.5px solid var(--accent)', color: 'var(--accent)',
-                  display: 'grid', placeItems: 'center',
-                }}>
-                  <Icon name="arrow-up-right" size={16} color="var(--accent)" />
-                </div>
+                  position: 'absolute', top: 12, right: 12,
+                  font: '600 10px/1 Inter', letterSpacing: '0.06em',
+                  background: 'rgba(255,255,255,0.18)', color: 'rgba(255,255,255,0.85)',
+                  backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.22)',
+                  padding: '5px 9px', borderRadius: 999,
+                }}>SOON</div>
+              )}
+              {/* Text */}
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0,
+                padding: '18px 16px 20px',
+              }}>
+                <div style={{
+                  font: '700 17px/1.15 Inter', color: 'white',
+                  letterSpacing: '-0.01em', marginBottom: 4,
+                }}>{c.name}</div>
+                <div style={{
+                  font: '400 11px/1.4 Inter', color: 'rgba(255,255,255,0.72)',
+                }}>{c.role}</div>
               </div>
             </a>
           ))}
