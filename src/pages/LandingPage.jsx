@@ -625,7 +625,7 @@ function ProCard({ pro, featured = false }) {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
-              <h3 style={{ margin: 0, font: '700 18px/1.2 Inter', letterSpacing: '-0.015em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pro.name}</h3>
+              <h3 style={{ margin: 0, font: '600 16px/1.2 Inter', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pro.name}</h3>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} aria-label="Verified">
                 <circle cx="12" cy="12" r="12" fill="var(--green)" />
                 <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -692,7 +692,7 @@ const TopProfessionals = () => {
           ))}
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
-          {filtered.slice(0, 4).map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
+          {filtered.slice(0, 12).map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
         </div>
       </Container>
     </section>
