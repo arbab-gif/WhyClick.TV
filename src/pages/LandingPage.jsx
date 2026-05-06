@@ -1092,11 +1092,11 @@ const Locations = () => {
               <div style={{ font: '700 20px/1.1 Inter', letterSpacing: '-0.015em' }}>{l.name}</div>
               <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)', marginTop: 4 }}>{l.cities}</div>
             </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ font: '600 13px/1 Inter', color: 'var(--ink-2)' }}>{l.count}</div>
-              <div style={{ marginTop: 8, display: 'inline-flex' }}>
-                <Icon name="arrow-up-right" size={14} color="var(--accent)" />
-              </div>
+            <div style={{
+              width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+              background: 'var(--accent-soft)', display: 'grid', placeItems: 'center',
+            }}>
+              <Icon name="arrow-up-right" size={20} color="var(--accent)" />
             </div>
           </a>
         ))}
