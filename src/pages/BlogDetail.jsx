@@ -64,14 +64,6 @@ export default function BlogDetail() {
             All articles
           </button>
 
-          {/* Tag */}
-          <span style={{
-            display: 'inline-block', marginBottom: 20,
-            padding: '4px 12px', borderRadius: 999,
-            background: 'var(--accent-soft)', color: 'var(--accent)',
-            font: '600 11px/1 Inter', letterSpacing: '0.06em', textTransform: 'uppercase',
-          }}>{post.tag}</span>
-
           {/* Title */}
           <h1 style={{ margin: '0 0 24px', font: '800 46px/1.1 Inter', letterSpacing: '-0.03em', color: 'var(--ink)' }}>
             {post.title}
@@ -167,18 +159,15 @@ export default function BlogDetail() {
                       onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                     />
                   </div>
-                  <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
-                    <span style={{
-                      display: 'inline-block', alignSelf: 'flex-start',
-                      padding: '3px 10px', borderRadius: 999,
-                      background: 'var(--accent-soft)', color: 'var(--accent)',
-                      font: '600 10px/1 Inter', letterSpacing: '0.06em', textTransform: 'uppercase',
-                    }}>{rel.tag}</span>
+                  <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
                     <h3 style={{ margin: 0, font: '600 15px/1.3 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>
                       {rel.title}
                     </h3>
-                    <div style={{ paddingTop: 4, font: '400 12px/1 Inter', color: 'var(--ink-3)' }}>
-                      {rel.date} · {rel.readTime} read
+                    <p style={{ margin: 0, font: '400 12px/1.55 Inter', color: 'var(--ink-2)', flex: 1 }}>
+                      {rel.excerpt.slice(0, 90)}…
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '600 12px/1 Inter', color: 'var(--accent)' }}>
+                      Read article <Icon name="arrow-right" size={11} color="var(--accent)" />
                     </div>
                   </div>
                 </article>

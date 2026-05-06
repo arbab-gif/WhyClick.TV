@@ -119,22 +119,15 @@ export default function BlogListing() {
                         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                       />
                     </div>
-                    <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
-                      <span style={{
-                        display: 'inline-block', alignSelf: 'flex-start',
-                        padding: '3px 10px', borderRadius: 999,
-                        background: 'var(--accent-soft)', color: 'var(--accent)',
-                        font: '600 10px/1 Inter', letterSpacing: '0.06em', textTransform: 'uppercase',
-                      }}>{post.tag}</span>
-                      <h3 style={{ margin: 0, font: '700 17px/1.3 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>
+                    <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+                      <h3 style={{ margin: 0, font: '700 18px/1.3 Inter', letterSpacing: '-0.01em', color: 'var(--ink)' }}>
                         {post.title}
                       </h3>
                       <p style={{ margin: 0, font: '400 13px/1.6 Inter', color: 'var(--ink-2)', flex: 1 }}>
                         {post.excerpt}
                       </p>
-                      <div style={{ paddingTop: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ font: '400 12px/1 Inter', color: 'var(--ink-3)' }}>{post.date} · {post.readTime} read</span>
-                        <Icon name="arrow-right" size={14} color="var(--accent)" />
+                      <div style={{ marginTop: 'auto', paddingTop: 8, display: 'flex', alignItems: 'center', gap: 6, font: '600 13px/1 Inter', color: 'var(--accent)' }}>
+                        Read article <Icon name="arrow-right" size={12} color="var(--accent)" />
                       </div>
                     </div>
                   </article>
