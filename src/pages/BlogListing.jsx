@@ -45,12 +45,6 @@ export default function BlogListing() {
               onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               <div style={{ padding: '48px 52px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20 }}>
-                <span style={{
-                  display: 'inline-block', alignSelf: 'flex-start',
-                  padding: '4px 12px', borderRadius: 999,
-                  background: 'var(--accent-soft)', color: 'var(--accent)',
-                  font: '600 11px/1 Inter', letterSpacing: '0.06em', textTransform: 'uppercase',
-                }}>{featured.tag}</span>
                 <h2 style={{ margin: 0, font: '800 34px/1.15 Inter', letterSpacing: '-0.025em', color: 'var(--ink)' }}>
                   {featured.title}
                 </h2>
