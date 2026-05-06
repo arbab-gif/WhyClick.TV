@@ -698,8 +698,8 @@ const TopProfessionals = () => {
             </button>
           ))}
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-          {filtered.map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+          {filtered.slice(0, 4).map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
         </div>
       </Container>
     </section>
