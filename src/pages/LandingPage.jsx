@@ -174,7 +174,7 @@ const Nav = () => {
             }}
             onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; e.currentTarget.style.color = 'var(--ink)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-2)'; }}>Sign in</a>
-            <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={() => navigate('/join')}>Join as a partner</Btn>
+            <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={() => navigate('/join')}>Join as a Partner</Btn>
           </div>
         </div>
       </Container>
@@ -426,17 +426,6 @@ const GetHelpToday = () => {
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 28 }}>
-          <a href="#" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            font: '600 14px/1 Inter', color: 'var(--accent)',
-            transition: 'gap .15s',
-          }}
-          onMouseEnter={e => e.currentTarget.style.gap = '10px'}
-          onMouseLeave={e => e.currentTarget.style.gap = '6px'}>
-            See all services <Icon name="arrow-right" size={14} color="var(--accent)" />
-          </a>
-        </div>
       </Container>
     </section>
   );
@@ -558,9 +547,9 @@ const HowItWorks = () => {
 const BROWSE = [
   { id: 'restaurant', slug: 'restaurants',  name: 'Restaurants',          count: '12,840', sub: 'Fine dining · Cafes · Brunch',    img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80&auto=format&fit=crop' },
   { id: 'dentist',    slug: 'dentists',     name: 'Dentists',              count: '14,200', sub: 'Cleaning · Ortho · Cosmetic',     img: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&q=80&auto=format&fit=crop' },
-  { id: 'service',    slug: null,           name: 'Professional Services', count: '20,100', sub: 'Legal · Finance · Consulting',    img: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop' },
-  { id: 'salon',      slug: 'salon-spa',    name: 'Salon & Spa',           count: '6,420',  sub: 'Hair · Nails · Massage',          img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&auto=format&fit=crop' },
-  { id: 'home',       slug: null,           name: 'Home Services',         count: '9,180',  sub: 'Plumbing · Electric · HVAC',      img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80&auto=format&fit=crop' },
+  { id: 'service',    slug: 'professional-service', name: 'Professional Services', count: '20,100', sub: 'Legal · Finance · Consulting',    img: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80&auto=format&fit=crop' },
+  { id: 'salon',      slug: 'salon-spa',           name: 'Salon & Spa',           count: '6,420',  sub: 'Hair · Nails · Massage',          img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&auto=format&fit=crop' },
+  { id: 'home',       slug: 'home-services',        name: 'Home Services',         count: '9,180',  sub: 'Plumbing · Electric · HVAC',      img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80&auto=format&fit=crop' },
   { id: 'photo',      slug: 'photographers',name: 'Photographers',         count: '3,640',  sub: 'Weddings · Portraits · Events',   img: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=800&q=80&auto=format&fit=crop' },
 ];
 
@@ -1136,22 +1125,22 @@ const Newsletter = () => {
   };
   return (
     <div style={{
-      background: 'var(--accent-soft)', border: '1px solid rgba(255,90,32,0.18)',
+      background: 'var(--accent)', border: 'none',
       borderRadius: 16, padding: '36px 40px',
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       gap: 40, marginBottom: 56, flexWrap: 'wrap',
     }}>
       <div style={{ maxWidth: 400 }}>
-        <h3 style={{ margin: '0 0 8px', font: '700 22px/1.2 Inter', letterSpacing: '-0.015em', color: 'var(--ink)' }}>
+        <h3 style={{ margin: '0 0 8px', font: '700 22px/1.2 Inter', letterSpacing: '-0.015em', color: 'white' }}>
           Get the weekly pro roundup
         </h3>
-        <p style={{ margin: 0, font: '400 14px/1.55 Inter', color: 'var(--ink-2)' }}>
+        <p style={{ margin: 0, font: '400 14px/1.55 Inter', color: 'rgba(255,255,255,0.8)' }}>
           Top-rated professionals, booking tips, and new city launches. No spam. Unsubscribe anytime.
         </p>
       </div>
       {sent ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--accent)', font: '600 15px/1 Inter' }}>
-          <Icon name="check-badge" size={20} color="var(--accent)" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'white', font: '600 15px/1 Inter' }}>
+          <Icon name="check-badge" size={20} color="white" />
           You're in! Check your inbox.
         </div>
       ) : (
@@ -1162,18 +1151,18 @@ const Newsletter = () => {
             required
             style={{
               padding: '12px 18px', borderRadius: '10px 0 0 10px',
-              border: '1.5px solid var(--line)', borderRight: 'none',
-              font: '500 14px/1 Inter', color: 'var(--ink)', background: 'var(--bg)',
+              border: 'none', borderRight: 'none',
+              font: '500 14px/1 Inter', color: 'var(--ink)', background: 'white',
               outline: 'none', width: 220,
             }}
           />
           <button type="submit" style={{
             padding: '12px 20px', borderRadius: '0 10px 10px 0',
-            background: 'var(--accent)', color: 'white', border: '1.5px solid var(--accent)',
+            background: 'var(--ink)', color: 'white', border: 'none',
             font: '600 14px/1 Inter', cursor: 'pointer',
             transition: 'opacity .15s',
           }}
-          onMouseEnter={e => e.currentTarget.style.opacity = '0.88'}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
           onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
             Subscribe
           </button>
@@ -1312,7 +1301,7 @@ export default function LandingPage() {
         <TopProfessionals />
         <Locations />
         <Stats />
-        <HowItWorks />
+
         <Reviews />
         <Blog />
         <GetHelpToday />

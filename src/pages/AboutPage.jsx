@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SiteNav from '../components/SiteNav';
+import SiteFooter from '../components/SiteFooter';
 
 const TEAM = [
   {
@@ -42,59 +43,41 @@ export default function AboutPage() {
       <SiteNav />
 
       {/* ── HERO ── */}
-      <section style={{ maxWidth: 1240, margin: '0 auto', padding: '72px 40px 80px', display: 'grid', gridTemplateColumns: '1fr 440px', gap: 80, alignItems: 'center' }}>
-        <div>
-          <p style={{ margin: '0 0 18px', font: '600 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-            About whyclick.tv
+      <section style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Background image */}
+        <img
+          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80&auto=format&fit=crop"
+          alt=""
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+        {/* Dark overlay — heavier on left, fades right */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, oklch(0.10 0.02 40 / 0.92) 0%, oklch(0.14 0.02 40 / 0.70) 50%, oklch(0.14 0.02 40 / 0.45) 100%)' }} />
+
+        <div style={{ maxWidth: 1240, margin: '0 auto', padding: '80px 40px 72px', position: 'relative', zIndex: 1 }}>
+          <p style={{ margin: '0 0 18px', font: '600 12px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            About us
           </p>
-          <h1 style={{ margin: '0 0 28px', font: '800 60px/1.04 Inter', letterSpacing: '-0.04em', color: 'var(--ink)' }}>
-            Finding someone<br />good shouldn't<br />be this hard.
+          <h1 style={{ margin: '0 0 20px', font: '800 clamp(36px,5vw,60px)/1.06 Inter', letterSpacing: '-0.035em', color: 'white', maxWidth: 620, textShadow: '0 2px 24px oklch(0 0 0 / 0.35)' }}>
+            Finding someone <span style={{ color: 'var(--accent)' }}>good</span> shouldn't be this hard.
           </h1>
-          <p style={{ margin: '0 0 20px', font: '400 18px/1.7 Inter', color: 'var(--ink-2)', maxWidth: 520 }}>
-            We started whyclick.tv after a few too many bad experiences — overpaying for a dentist we found on a forum, booking a photographer who turned out to be their own best reviewer, waiting three weeks for a callback that never came.
+          <p style={{ margin: '0 0 44px', font: '400 17px/1.7 Inter', color: 'rgba(255,255,255,0.65)', maxWidth: 520 }}>
+            We built whyclick.tv after one too many bad experiences — unverified listings, ghost reviews, and professionals who were impossible to reach. Good pros exist in every city. We help you find them.
           </p>
-          <p style={{ margin: 0, font: '400 18px/1.7 Inter', color: 'var(--ink-2)', maxWidth: 520 }}>
-            Good professionals exist in every city. The tools for finding them are stuck in 2009. We're fixing that.
-          </p>
-        </div>
 
-        {/* Photo collage */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '200px 200px', gap: 10 }}>
-          {PROS_COLLAGE.map((p, i) => (
-            <div key={p.label} style={{
-              position: 'relative', borderRadius: 14, overflow: 'hidden',
-              gridRow: i === 0 ? '1 / 3' : 'auto',
-            }}>
-              <img src={p.src} alt={p.label} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 55%)' }} />
-              <div style={{ position: 'absolute', bottom: 10, left: 12, font: '600 11px/1 Inter', color: 'rgba(255,255,255,0.9)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                {p.label}
+          {/* Stats row */}
+          <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
+            {[
+              { n: '1.8M', label: 'people helped this year' },
+              { n: '14,200+', label: 'verified professionals' },
+              { n: '50+', label: 'cities across the US' },
+              { n: '4.9★', label: 'average rating' },
+            ].map(s => (
+              <div key={s.label}>
+                <div style={{ font: '800 28px/1 Inter', letterSpacing: '-0.03em', color: 'white' }}>{s.n}</div>
+                <div style={{ font: '400 12px/1.4 Inter', color: 'rgba(255,255,255,0.5)', marginTop: 4 }}>{s.label}</div>
               </div>
-              {/* verified pip */}
-              <div style={{ position: 'absolute', top: 10, right: 10, width: 22, height: 22, borderRadius: '50%', background: '#22c55e', display: 'grid', placeItems: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── STATS ── */}
-      <section style={{ borderTop: '1px solid var(--line-2)', borderBottom: '1px solid var(--line-2)', background: 'var(--bg-alt)' }}>
-        <div style={{ maxWidth: 1240, margin: '0 auto', padding: '0 40px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-          {[
-            { n: '1.8M', label: 'people found a pro this year' },
-            { n: '14,200+', label: 'verified professionals' },
-            { n: '50+', label: 'cities across the US' },
-            { n: '4.9★', label: 'average platform rating' },
-          ].map((s, i) => (
-            <div key={s.label} style={{ padding: '40px 28px', borderRight: i < 3 ? '1px solid var(--line-2)' : 'none' }}>
-              <div style={{ font: '800 40px/1 Inter', letterSpacing: '-0.03em', color: 'var(--ink)', marginBottom: 8 }}>{s.n}</div>
-              <div style={{ font: '400 14px/1.4 Inter', color: 'var(--ink-3)' }}>{s.label}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -205,12 +188,9 @@ export default function AboutPage() {
                   }}
                 />
               </div>
-              <div style={{ padding: '20px 20px 24px' }}>
+              <div style={{ padding: '16px 20px 20px' }}>
                 <div style={{ font: '600 15px/1.2 Inter', color: 'var(--ink)' }}>{m.name}</div>
-                <div style={{ font: '500 11px/1 Inter', color: 'var(--accent)', marginTop: 4, marginBottom: 14, letterSpacing: '0.03em' }}>{m.role}</div>
-                <p style={{ margin: 0, font: '400 13px/1.6 Inter', color: 'var(--ink-3)', fontStyle: 'italic' }}>
-                  "{m.quote}"
-                </p>
+                <div style={{ font: '500 11px/1 Inter', color: 'var(--accent)', marginTop: 4, letterSpacing: '0.03em' }}>{m.role}</div>
               </div>
             </div>
           ))}
@@ -248,6 +228,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <SiteFooter />
     </div>
   );
 }

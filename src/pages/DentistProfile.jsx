@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Icon, Tag, Btn } from '../components/primitives';
 import SiteNav from '../components/SiteNav';
+import SiteFooter from '../components/SiteFooter';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const DENTISTS = [
@@ -505,6 +506,7 @@ export default function DentistProfile() {
           <RightColumn d={d} />
         </div>
       </div>
+      <SiteFooter />
     </div>
   );
 }

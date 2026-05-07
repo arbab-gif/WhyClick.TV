@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SiteNav from '../components/SiteNav';
+import SiteFooter from '../components/SiteFooter';
 import { Icon, Container } from '../components/primitives';
 import { BLOG_POSTS } from '../data/blogData';
 
@@ -176,6 +177,7 @@ export default function BlogDetail() {
           </div>
         )}
       </Container>
+      <SiteFooter />
     </div>
   );
 }

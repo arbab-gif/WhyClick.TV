@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { Icon, Tag, Btn } from '../components/primitives';
 import AskAIFab from '../components/AskAIFab';
 import SiteNav from '../components/SiteNav';
+import SiteFooter from '../components/SiteFooter';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const DENTISTS = [
@@ -20,25 +21,36 @@ const DENTISTS = [
 
 const ALL_TREATMENTS = ['Cleaning', 'Whitening', 'Pediatric', 'Cosmetic', 'Orthodontics', 'Aligners', 'Family', 'Veneers', 'Root Canal', 'Gum Care', 'Implants', 'Emergency', 'Extractions', 'Sedation', 'Crowns'];
 
+const CATEGORY_NAV = [
+  { slug: 'restaurants',           label: 'Restaurants',         icon: 'fork',     accent: '#DC2626', accentBg: '#FEF2F2' },
+  { slug: 'dentists',              label: 'Dentists',            icon: 'tooth',    accent: '#2563EB', accentBg: '#EFF6FF' },
+  { slug: 'professional-service',  label: 'Professional',        icon: 'briefcase',accent: '#16A34A', accentBg: '#F0FDF4' },
+  { slug: 'salon-spa',             label: 'Salon & Spa',         icon: 'scissors', accent: '#DB2777', accentBg: '#FDF2F8' },
+  { slug: 'home-services',         label: 'Home Services',       icon: 'wrench',   accent: '#EA580C', accentBg: '#FFF7ED' },
+  { slug: 'photographers',         label: 'Photography',         icon: 'camera',   accent: '#9333EA', accentBg: '#FAF5FF' },
+];
 
 // ── SEARCH SUB-BAR ────────────────────────────────────────────────────────────
-const SearchSubBar = ({ location, onLocationChange, query, onQueryChange }) => {
+const SearchSubBar = ({ location, onLocationChange, query, onQueryChange, filters, setFilters }) => {
   const navigate = useNavigate();
+  const activeCat = CATEGORY_NAV.find(c => c.slug === 'dentists');
   return (
-    <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--line-2)', padding: '20px 24px' }}>
-      <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+    <div style={{ background: 'var(--bg)', borderBottom: '1px solid var(--line-2)', padding: '16px 24px' }}>
+      <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+
+        {/* Search + location pill */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 0,
           background: 'var(--bg)', border: '1px solid var(--line)', borderRadius: 999,
-          padding: 4, minWidth: 480, maxWidth: 600, flex: 1 }}>
+          padding: 4, width: 520 }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px', flex: 1 }}>
             <Icon name="search" size={16} color="var(--ink-3)" />
             <input value={query} onChange={e => onQueryChange(e.target.value)}
-              placeholder="What can we help you with?"
+              placeholder="Search dentists…"
               style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent',
                 font: '500 14px/1.4 Inter', color: 'var(--ink)', padding: '10px 0' }} />
           </label>
           <span style={{ width: 1, height: 24, background: 'var(--line-2)' }} />
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px', minWidth: 200 }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px', minWidth: 180 }}>
             <Icon name="pin" size={16} color="var(--accent)" />
             <input value={location} onChange={e => onLocationChange(e.target.value)}
               style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent',
@@ -52,6 +64,41 @@ const SearchSubBar = ({ location, onLocationChange, query, onQueryChange }) => {
             <Icon name="search" size={14} color="white" />
           </button>
         </div>
+
+        {/* Right group: Filters + Industry selector */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          {filters && setFilters && <FilterButton filters={filters} setFilters={setFilters} />}
+
+          <div style={{ position: 'relative' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              border: '1px solid var(--line)', borderRadius: 999, padding: '0 14px',
+              height: 42, background: 'var(--bg)', pointerEvents: 'none',
+              position: 'absolute', inset: 0, zIndex: 1,
+            }}>
+              <span style={{ font: '500 13px/1 Inter', color: 'var(--ink)', whiteSpace: 'nowrap' }}>
+                {activeCat.label}
+              </span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </div>
+            <select
+              defaultValue="dentists"
+              onChange={e => navigate(`/${e.target.value}`)}
+              style={{
+                position: 'relative', zIndex: 2, opacity: 0,
+                height: 42, minWidth: 150, cursor: 'pointer',
+                border: 'none', background: 'transparent',
+              }}
+            >
+              {CATEGORY_NAV.map(cat => (
+                <option key={cat.slug} value={cat.slug}>{cat.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -158,6 +205,14 @@ const FilterPanel = ({ filters, setFilters, hideHeader = false, onClose }) => {
           ))}
         </div>
       </FilterGroup>
+
+      <FilterGroup title="Neighbourhood">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {['Brooklyn', 'Williamsburg', 'Greenpoint', 'Park Slope', 'Bushwick', 'Flatbush'].map(n => (
+            <Pill key={n} active={filters.neighbourhood === n} onClick={() => setFilters({ ...filters, neighbourhood: filters.neighbourhood === n ? 'Any' : n })}>{n}</Pill>
+          ))}
+        </div>
+      </FilterGroup>
     </div>
   );
 };
@@ -168,10 +223,11 @@ const countActiveFilters = (f) => (
   (f.avail !== 'Anytime' ? 1 : 0) +
   (f.minRating > 0 ? 1 : 0) +
   (f.priceMax < 300 ? 1 : 0) +
-  (f.maxDistance < 5 ? 1 : 0)
+  (f.maxDistance < 5 ? 1 : 0) +
+  (f.neighbourhood !== 'Any' ? 1 : 0)
 );
 
-const INITIAL_FILTERS = { treatments: [], priceMax: 300, minRating: 0, maxDistance: 5, insurance: [], gender: 'any', avail: 'Anytime' };
+const INITIAL_FILTERS = { treatments: [], priceMax: 300, minRating: 0, maxDistance: 5, insurance: [], gender: 'any', avail: 'Anytime', neighbourhood: 'Any' };
 
 const FilterButton = ({ filters, setFilters }) => {
   const [open, setOpen] = useState(false);
@@ -189,7 +245,7 @@ const FilterButton = ({ filters, setFilters }) => {
   return (
     <div style={{ position: 'relative' }}>
       <button onClick={() => setOpen(o => !o)} style={{
-        display: 'inline-flex', alignItems: 'center', gap: 8,
+        display: 'inline-flex', alignItems: 'center', gap: 8, height: 42,
         padding: '10px 16px', borderRadius: 999,
         background: open ? 'var(--ink)' : 'var(--bg)',
         color: open ? 'var(--bg)' : 'var(--ink)',
@@ -461,6 +517,7 @@ export default function DentistListing() {
       if (filters.treatments.length && !filters.treatments.some(t => d.treatments.includes(t))) return false;
       if (filters.insurance.length && !filters.insurance.some(i => d.insurance.includes(i))) return false;
       if (filters.avail === 'Today' && !d.avail.startsWith('Today')) return false;
+      if (filters.neighbourhood !== 'Any' && !d.address.toLowerCase().includes(filters.neighbourhood.toLowerCase())) return false;
       if (query && !(d.name + d.clinic + d.treatments.join(' ')).toLowerCase().includes(query.toLowerCase())) return false;
       return true;
     });
@@ -482,24 +539,22 @@ export default function DentistListing() {
       <SearchSubBar
         location={location} onLocationChange={setLocation}
         query={query} onQueryChange={setQuery}
+        filters={filters} setFilters={setFilters}
       />
       <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 24px',
         display: 'flex', alignItems: 'flex-start', gap: 24 }}>
         <main style={{ flex: 1, minWidth: 0, padding: '24px 0' }}>
-          <div style={{ marginBottom: 16 }}>
-            <h1 style={{ margin: 0, font: '700 28px/1.1 Inter', letterSpacing: '-0.02em' }}>
-              {filtered.length} dentists near {location.split(' · ')[0]}
-            </h1>
-            <p style={{ margin: '6px 0 0', font: '400 14px/1.4 Inter', color: 'var(--ink-3)' }}>
-              Sorted by {sort === 'distance' ? 'distance' : sort === 'rating' ? 'rating' : 'price'} · Showing within {filters.maxDistance} mi
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            marginBottom: 20, gap: 12, flexWrap: 'wrap' }}>
-            <FilterButton filters={filters} setFilters={setFilters} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginBottom: 20 }}>
+            <div>
+              <h1 style={{ margin: 0, font: '700 28px/1.1 Inter', letterSpacing: '-0.02em' }}>
+                {filtered.length} dentists near {location.split(' · ')[0]}
+              </h1>
+              <p style={{ margin: '4px 0 0', font: '400 14px/1.4 Inter', color: 'var(--ink-3)' }}>
+                Sorted by {sort === 'distance' ? 'distance' : sort === 'rating' ? 'rating' : 'price'} · Showing within {filters.maxDistance} mi
+              </p>
+            </div>
             <div style={{ display: 'flex', gap: 6, padding: 4, background: 'var(--bg)',
-              borderRadius: 999, border: '1px solid var(--line)' }}>
+              borderRadius: 999, border: '1px solid var(--line)', flexShrink: 0 }}>
               {[{ id: 'distance', label: 'Closest' }, { id: 'rating', label: 'Top rated' }, { id: 'price', label: 'Lowest price' }].map(s => (
                 <button key={s.id} onClick={() => setSort(s.id)} style={{
                   padding: '7px 14px', borderRadius: 999, border: 'none',
@@ -564,6 +619,7 @@ export default function DentistListing() {
           onToggleCollapse={() => setMapCollapsed(c => !c)}
         />
       </div>
+      <SiteFooter />
       <AskAIFab />
     </>
   );

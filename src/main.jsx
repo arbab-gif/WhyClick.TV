@@ -12,6 +12,8 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import BlogListing from './pages/BlogListing';
 import BlogDetail from './pages/BlogDetail';
+import ProSignIn from './pages/ProSignIn';
+import ProUnderReview from './pages/ProUnderReview';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -25,6 +27,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/dentists" element={<DentistListing />} />
         <Route path="/dentists/:id" element={<DentistProfile />} />
         <Route path="/join" element={<JoinAsPartner />} />
+        <Route path="/pro/signin" element={<ProSignIn />} />
+        <Route path="/pro/under-review" element={<ProUnderReview />} />
         <Route path="/:industry/:id" element={<ProProfile />} />
         <Route path="/:industry" element={<ProListing />} />
       </Routes>

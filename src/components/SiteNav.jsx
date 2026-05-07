@@ -4,21 +4,19 @@ import { Icon, Btn } from './primitives';
 import logo from '../assets/whyclick-logo.png';
 
 const INDUSTRIES = [
-  { icon: 'tooth',    label: 'Dentists',           sub: '14,200 pros',    slug: 'dentists' },
-  { icon: 'fork',     label: 'Restaurants',        sub: '12,840 listings',slug: 'restaurants' },
-  { icon: 'scissors', label: 'Salons & Spas',      sub: '6,420 pros',     slug: 'salon-spa' },
-  { icon: 'camera',   label: 'Photographers',      sub: '3,640 pros',     slug: 'photographers' },
-  { icon: 'home',     label: 'Home Services',      sub: '9,180 pros',     slug: null },
-  { icon: 'wrench',   label: 'Service Pros',       sub: '20,100 pros',    slug: null },
-  { icon: 'pin',      label: 'Real Estate',        sub: '5,210 agents',   slug: null },
-  { icon: 'sparkle',  label: 'Wellness & Fitness', sub: '4,860 pros',     slug: null },
+  { icon: 'tooth',    label: 'Dentists',             sub: '14,200 pros',     slug: 'dentists' },
+  { icon: 'fork',     label: 'Restaurants',          sub: '12,840 listings', slug: 'restaurants' },
+  { icon: 'scissors', label: 'Salons & Spas',        sub: '6,420 pros',      slug: 'salon-spa' },
+  { icon: 'camera',   label: 'Photographers',        sub: '3,640 pros',      slug: 'photographers' },
+  { icon: 'home',     label: 'Home Services',        sub: '9,180 pros',      slug: 'home-services' },
+  { icon: 'wrench',   label: 'Professional Services',sub: '20,100 pros',     slug: 'professional-service' },
 ];
 
 const NAV_LINKS = [
   { label: 'Home',       path: '/' },
   { label: 'Industries', path: null, hasMenu: true },
-  { label: 'Blog',       path: '/blog' },
   { label: 'About',      path: '/about' },
+  { label: 'Blog',       path: '/blog' },
   { label: 'Contact Us', path: '/contact' },
 ];
 
@@ -105,7 +103,7 @@ export default function SiteNav({ transparent = false }) {
                   onMouseLeave={() => setHover(null)}
                   style={{
                     position: 'absolute', top: 'calc(100% + 14px)', left: 0,
-                    width: 560,
+                    width: 520,
                     background: 'var(--bg)',
                     border: '1px solid var(--line-2)',
                     borderRadius: 16,
@@ -116,20 +114,19 @@ export default function SiteNav({ transparent = false }) {
                 >
                   {/* invisible bridge so mouse can move from button to dropdown */}
                   <div aria-hidden="true" style={{ position: 'absolute', top: -14, left: 0, right: 0, height: 14 }} />
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
                     {INDUSTRIES.map(ind => (
                       <button
                         key={ind.label}
-                        onClick={() => { if (ind.slug) { setHover(null); navigate(`/${ind.slug}`); } }}
+                        onClick={() => { setHover(null); navigate(`/${ind.slug}`); }}
                         style={{
                           display: 'flex', alignItems: 'center', gap: 12,
                           padding: '10px 12px', borderRadius: 10,
                           background: 'transparent', border: 'none',
-                          cursor: ind.slug ? 'pointer' : 'default',
+                          cursor: 'pointer',
                           transition: 'background 140ms ease', textAlign: 'left', width: '100%',
-                          opacity: ind.slug ? 1 : 0.5,
                         }}
-                        onMouseEnter={e => { if (ind.slug) e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
                         onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                       >
                         <div style={{
@@ -141,25 +138,10 @@ export default function SiteNav({ transparent = false }) {
                         </div>
                         <div style={{ minWidth: 0 }}>
                           <div style={{ font: '500 14px/1.2 Inter', color: 'var(--ink)' }}>{ind.label}</div>
-                          <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>
-                            {ind.sub}{!ind.slug && ' · coming soon'}
-                          </div>
+                          <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>{ind.sub}</div>
                         </div>
                       </button>
                     ))}
-                  </div>
-                  <div style={{
-                    marginTop: 10, paddingTop: 12, borderTop: '1px solid var(--line-2)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  }}>
-                    <span style={{ font: '400 13px/1 Inter', color: 'var(--ink-3)' }}>Don't see your industry?</span>
-                    <button onClick={() => { setHover(null); navigate('/contact'); }} style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 4,
-                      font: '500 13px/1 Inter', color: 'var(--accent)',
-                      background: 'none', border: 'none', cursor: 'pointer',
-                    }}>
-                      Get in touch <Icon name="arrow-right" size={13} color="var(--accent)" />
-                    </button>
                   </div>
                 </div>
               )}
@@ -168,18 +150,18 @@ export default function SiteNav({ transparent = false }) {
 
           {/* Right CTAs */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <a href="#" style={{
+            <button onClick={() => navigate('/pro/signin')} style={{
               padding: '8px 12px', borderRadius: 8,
               font: '500 14px/1 Inter', color: 'var(--ink-2)',
-              textDecoration: 'none',
+              background: 'transparent', border: 'none', cursor: 'pointer',
               transition: 'background 160ms, color 160ms',
             }}
             onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; e.currentTarget.style.color = 'var(--ink)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-2)'; }}>
               Sign in
-            </a>
+            </button>
             <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={() => navigate('/join')}>
-              Join as a partner
+              Join as a Partner
             </Btn>
           </div>
 

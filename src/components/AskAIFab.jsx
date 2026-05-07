@@ -41,7 +41,7 @@ export default function AskAIFab() {
         onClick={() => setOpen(o => !o)}
         aria-label="Ask Click AI"
         style={{
-          position: 'fixed', left: 24, bottom: 24, zIndex: 100,
+          position: 'fixed', right: 24, bottom: 24, zIndex: 100,
           display: 'inline-flex', alignItems: 'center',
           padding: 0,
           borderRadius: 999,
@@ -64,7 +64,7 @@ export default function AskAIFab() {
       {open && (
         <div role="dialog" aria-label="Click AI Assistant"
           style={{
-            position: 'fixed', left: 24, bottom: 92, zIndex: 100,
+            position: 'fixed', right: 24, bottom: 92, zIndex: 100,
             width: 380, maxHeight: 'min(72vh, 560px)',
             background: 'var(--bg)', color: 'var(--ink)',
             borderRadius: 16, border: '1px solid var(--line)',
