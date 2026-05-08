@@ -91,8 +91,6 @@ export default function SiteFooter() {
   return (
     <footer style={{ borderTop: '1px solid var(--line-2)', background: 'var(--bg)', padding: '64px 0 32px' }}>
       <Container>
-        <Newsletter />
-
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
           {/* Brand column */}
           <div>

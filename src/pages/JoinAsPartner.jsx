@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '../components/primitives';
 import logo from '../assets/whyclick-logo.png';
-import SiteFooter from '../components/SiteFooter';
+import SiteNav from '../components/SiteNav';
 
 // ── INDUSTRY CONFIGS ──────────────────────────────────────────────────────────
 const INDUSTRIES = [
@@ -1002,29 +1002,7 @@ export default function JoinAsPartner() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-alt)' }}>
-      {/* ── Main header ── */}
-      <header style={{
-        background: 'var(--bg)', borderBottom: '1px solid var(--line-2)',
-        padding: '0 32px', height: 60,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        position: 'sticky', top: 0, zIndex: 50,
-      }}>
-        <img src={logo} alt="whyclick" style={{ height: 44, width: 'auto', cursor: 'pointer' }} onClick={() => navigate('/')} />
-        <div />
-        <button onClick={() => navigate('/')} style={{
-          width: 36, height: 36, borderRadius: '50%', border: '1.5px solid var(--line)',
-          background: 'var(--bg-alt)', cursor: 'pointer', display: 'grid', placeItems: 'center',
-          transition: 'background .15s, border-color .15s', flexShrink: 0,
-        }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'var(--line-2)'; e.currentTarget.style.borderColor = 'var(--ink-3)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-alt)'; e.currentTarget.style.borderColor = 'var(--line)'; }}
-          title="Back to site"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" strokeWidth="2" strokeLinecap="round">
-            <path d="M18 6 6 18M6 6l12 12"/>
-          </svg>
-        </button>
-      </header>
+      <SiteNav />
 
       {/* ── Industry screen ── */}
       {screen === 'industry' && (
@@ -1175,7 +1153,6 @@ export default function JoinAsPartner() {
 
         </div>
       )}
-      <SiteFooter />
     </div>
   );
 }
