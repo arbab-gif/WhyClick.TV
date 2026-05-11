@@ -172,7 +172,7 @@ export default function ProSignIn() {
                 <h1 style={{ margin: '0 0 6px', font: '700 30px/1.1 Inter', letterSpacing: '-0.025em', color: 'var(--ink)' }}>Welcome back</h1>
                 <p style={{ margin: '0 0 36px', font: '400 14px/1.6 Inter', color: 'var(--ink-3)' }}>Sign in to your professional account to manage your listing.</p>
 
-                <form onSubmit={e => { e.preventDefault(); navigate('/pro/under-review'); }} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+                <form onSubmit={e => { e.preventDefault(); navigate('/pro/dashboard'); }} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
                   <div>
                     <label style={{ display: 'block', font: '500 12px/1 Inter', color: 'var(--ink-3)', marginBottom: 8 }}>Email address</label>
                     <input type="email" value={email} onChange={e => setEmail(e.target.value)}

@@ -14,6 +14,8 @@ import BlogListing from './pages/BlogListing';
 import BlogDetail from './pages/BlogDetail';
 import ProSignIn from './pages/ProSignIn';
 import ProUnderReview from './pages/ProUnderReview';
+import ProDashboard from './pages/ProDashboard';
+import LockInFlow from './pages/LockInFlow';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -29,6 +31,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/join" element={<JoinAsPartner />} />
         <Route path="/pro/signin" element={<ProSignIn />} />
         <Route path="/pro/under-review" element={<ProUnderReview />} />
+        <Route path="/pro/dashboard" element={<ProDashboard />} />
+        <Route path="/lockin" element={<LockInFlow />} />
         <Route path="/:industry/:id" element={<ProProfile />} />
         <Route path="/:industry" element={<ProListing />} />
       </Routes>
