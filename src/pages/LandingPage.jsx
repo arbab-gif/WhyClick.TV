@@ -302,7 +302,7 @@ const Hero = () => {
   };
 
   return (
-    <section style={{ position: 'relative', overflow: 'hidden' }}
+    <section style={{ position: 'relative', overflow: 'hidden', minHeight: isMobile ? '100svh' : 'auto' }}
       onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
         {HERO_SLIDES.map((s, i) => (
@@ -316,28 +316,39 @@ const Hero = () => {
         ))}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(90deg, oklch(0.12 0.02 40 / 0.88) 0%, oklch(0.18 0.02 40 / 0.60) 50%, oklch(0.18 0.02 40 / 0.28) 100%)',
+          background: isMobile
+            ? 'linear-gradient(to top, oklch(0.08 0.02 40 / 0.92) 0%, oklch(0.10 0.02 40 / 0.55) 50%, oklch(0.12 0.02 40 / 0.15) 100%)'
+            : 'linear-gradient(90deg, oklch(0.12 0.02 40 / 0.88) 0%, oklch(0.18 0.02 40 / 0.60) 50%, oklch(0.18 0.02 40 / 0.28) 100%)',
         }} />
       </div>
 
       <Container>
-        <div style={{ paddingTop: isMobile ? 60 : 120, paddingBottom: isMobile ? 80 : 140, position: 'relative', zIndex: 1,
-          display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
+        <div style={{
+          paddingTop: isMobile ? 48 : 120,
+          paddingBottom: isMobile ? 40 : 140,
+          minHeight: isMobile ? '100svh' : 'auto',
+          position: 'relative', zIndex: 1,
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'flex-start', justifyContent: isMobile ? 'flex-end' : 'flex-start',
+          textAlign: 'left',
+        }}>
           <div style={{ maxWidth: 720, width: '100%' }}>
             <h1 style={{
               margin: 0, fontWeight: 800,
-              fontSize: 'clamp(42px, 6vw, 76px)', lineHeight: 1.04, letterSpacing: '-0.03em',
+              fontSize: isMobile ? '30px' : 'clamp(42px, 6vw, 76px)',
+              lineHeight: isMobile ? 1.12 : 1.04,
+              letterSpacing: '-0.03em',
               color: 'oklch(0.99 0 0)',
               textShadow: '0 2px 32px oklch(0 0 0 / 0.4)',
             }}>
-              The pro you've been<br />looking for — found.
+              {isMobile ? 'The pro you\'ve been looking for — found.' : <>The pro you've been<br />looking for — found.</>}
             </h1>
 
-            <p style={{ marginTop: 22, maxWidth: 500, color: 'oklch(1 0 0 / 0.82)', fontSize: 17, lineHeight: 1.6, fontWeight: 400 }}>
+            <p style={{ marginTop: isMobile ? 12 : 22, maxWidth: 500, color: 'oklch(1 0 0 / 0.82)', fontSize: isMobile ? 14 : 17, lineHeight: 1.6, fontWeight: 400 }}>
               Every professional is ID-checked, license-verified, and reviewed by real customers. No guessing.
             </p>
 
-            <form onSubmit={handleSearch} style={{ marginTop: 28, maxWidth: 640 }}>
+            <form onSubmit={handleSearch} style={{ marginTop: isMobile ? 18 : 28, maxWidth: 640 }}>
               {isMobile ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   <div style={{
@@ -418,7 +429,7 @@ const Hero = () => {
             </form>
 
             {/* Quick category pills */}
-            <div style={{ marginTop: 18, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <div style={{ marginTop: isMobile ? 12 : 18, display: 'flex', flexWrap: 'wrap', gap: isMobile ? 6 : 8 }}>
               {[
                 { label: 'Dentist',       slug: 'dentists'      },
                 { label: 'Restaurant',    slug: 'restaurants'   },
@@ -429,9 +440,9 @@ const Hero = () => {
               ].map(({ label, slug }) => (
                 <button key={label} onClick={() => slug && navigate(`/${slug}`)}
                   style={{
-                    padding: '7px 14px', borderRadius: 999,
+                    padding: isMobile ? '6px 12px' : '7px 14px', borderRadius: 999,
                     background: 'oklch(1 0 0 / 0.12)', border: '1px solid oklch(1 0 0 / 0.25)',
-                    color: 'oklch(1 0 0 / 0.92)', font: '500 13px/1 Inter',
+                    color: 'oklch(1 0 0 / 0.92)', font: isMobile ? '500 12px/1 Inter' : '500 13px/1 Inter',
                     cursor: 'pointer', backdropFilter: 'blur(8px)',
                     transition: 'background .15s',
                   }}
@@ -443,7 +454,7 @@ const Hero = () => {
               ))}
             </div>
 
-            <div style={{ marginTop: 36, display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap' }}>
+            <div style={{ marginTop: isMobile ? 24 : 36, display: 'flex', alignItems: 'center', gap: isMobile ? 16 : 28, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {[
@@ -468,10 +479,10 @@ const Hero = () => {
                   <span style={{ font: '500 11px/1.4 Inter', color: 'oklch(1 0 0 / 0.7)' }}>184k reviews · 1.8M users</span>
                 </div>
               </div>
-              <div style={{ width: 1, height: 32, background: 'oklch(1 0 0 / 0.2)' }} />
+              {!isMobile && <div style={{ width: 1, height: 32, background: 'oklch(1 0 0 / 0.2)' }} />}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Icon name="check-badge" size={18} color="#4ade80" />
-                <span style={{ font: '500 13px/1.4 Inter', color: 'oklch(1 0 0 / 0.9)' }}>ID-verified professionals only</span>
+                <span style={{ font: isMobile ? '500 12px/1.4 Inter' : '500 13px/1.4 Inter', color: 'oklch(1 0 0 / 0.9)' }}>ID-verified professionals only</span>
               </div>
             </div>
           </div>
@@ -479,26 +490,21 @@ const Hero = () => {
       </Container>
 
       <div style={{
-        position: 'absolute', right: 32, bottom: 32, zIndex: 2,
-        display: 'flex', alignItems: 'center', gap: 14,
-        padding: '10px 16px', borderRadius: 999,
+        position: 'absolute', left: '50%', bottom: isMobile ? 16 : 28, zIndex: 2,
+        transform: 'translateX(-50%)',
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '8px 14px', borderRadius: 999,
         background: 'oklch(1 0 0 / 0.12)', backdropFilter: 'blur(10px)',
         border: '1px solid oklch(1 0 0 / 0.2)',
       }}>
-        <span style={{ font: '500 13px/1 Inter', color: 'oklch(1 0 0 / 0.95)' }}>
-          {HERO_SLIDES[slide].label}
-        </span>
-        <div style={{ width: 1, height: 14, background: 'oklch(1 0 0 / 0.25)' }} />
-        <div style={{ display: 'flex', gap: 6 }}>
-          {HERO_SLIDES.map((s, i) => (
-            <button key={s.id} onClick={() => setSlide(i)} aria-label={`Show ${s.label}`} style={{
-              width: i === slide ? 22 : 6, height: 6, borderRadius: 999,
-              border: 'none', padding: 0, cursor: 'pointer',
-              background: i === slide ? 'oklch(1 0 0 / 0.95)' : 'oklch(1 0 0 / 0.4)',
-              transition: 'width .3s, background .2s',
-            }} />
-          ))}
-        </div>
+        {HERO_SLIDES.map((s, i) => (
+          <button key={s.id} onClick={() => setSlide(i)} aria-label={`Show ${s.label}`} style={{
+            width: i === slide ? 22 : 6, height: 6, borderRadius: 999,
+            border: 'none', padding: 0, cursor: 'pointer',
+            background: i === slide ? 'oklch(1 0 0 / 0.95)' : 'oklch(1 0 0 / 0.4)',
+            transition: 'width .3s, background .2s',
+          }} />
+        ))}
       </div>
     </section>
   );
@@ -513,29 +519,30 @@ const SERVICE_ROWS = [
 
 const GetHelpToday = () => {
   const navigate = useNavigate();
+  const isMobile = useW() < 768;
   return (
-    <section style={{ padding: '72px 0 64px', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
+    <section style={{ padding: isMobile ? '52px 0 48px' : '72px 0 64px', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
       <Container>
-        <div style={{ marginBottom: 36 }}>
-          <h2 style={{ margin: '0 0 6px', font: '700 34px/1.15 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
+        <div style={{ marginBottom: isMobile ? 24 : 36 }}>
+          <h2 style={{ margin: '0 0 6px', font: isMobile ? '700 24px/1.15 Inter' : '700 34px/1.15 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
             Get help today
           </h2>
-          <p style={{ margin: 0, font: '400 15px/1.5 Inter', color: 'var(--ink-3)' }}>
+          <p style={{ margin: 0, font: isMobile ? '400 13px/1.5 Inter' : '400 15px/1.5 Inter', color: 'var(--ink-3)' }}>
             Pick a service and we'll match you with the right professional near you — usually within minutes.
           </p>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 8 : 12 }}>
           {SERVICE_ROWS.map((row, ri) => (
-            <div key={ri} style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+            <div key={ri} style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? 8 : 10 }}>
               {row.map(svc => (
                 <button
                   key={svc}
                   onClick={() => navigate('/dentists')}
                   style={{
-                    padding: '10px 20px', borderRadius: 999,
+                    padding: isMobile ? '8px 14px' : '10px 20px', borderRadius: 999,
                     border: '1.5px solid var(--line)',
                     background: 'var(--bg)',
-                    font: '500 14px/1 Inter', color: 'var(--ink-2)',
+                    font: isMobile ? '500 13px/1 Inter' : '500 14px/1 Inter', color: 'var(--ink-2)',
                     cursor: 'pointer', transition: 'all .15s',
                   }}
                   onMouseEnter={e => {
@@ -605,10 +612,10 @@ const HowItWorks = () => {
             <p style={{ margin: '0 0 14px', font: '600 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               How it works
             </p>
-            <h2 style={{ margin: '0 0 20px', font: '800 44px/1.08 Inter', letterSpacing: '-0.03em', color: 'var(--ink)' }}>
+            <h2 style={{ margin: '0 0 20px', font: isMobile ? '800 28px/1.1 Inter' : '800 44px/1.08 Inter', letterSpacing: '-0.03em', color: 'var(--ink)' }}>
               Find a pro you can actually trust
             </h2>
-            <p style={{ margin: '0 0 36px', font: '400 16px/1.65 Inter', color: 'var(--ink-2)' }}>
+            <p style={{ margin: '0 0 28px', font: isMobile ? '400 14px/1.6 Inter' : '400 16px/1.65 Inter', color: 'var(--ink-2)' }}>
               We do the vetting so you don't have to. Every professional on whyclick.tv has been license-checked, reviewed, and confirmed before they appear in your search.
             </p>
 
@@ -634,7 +641,7 @@ const HowItWorks = () => {
           {/* ── Right: steps ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             {HOW_STEPS.map((s, i) => (
-              <div key={s.n} style={{ display: 'flex', gap: 24, padding: '32px 0', borderBottom: i < HOW_STEPS.length - 1 ? '1px solid var(--line)' : 'none' }}>
+              <div key={s.n} style={{ display: 'flex', gap: isMobile ? 16 : 24, padding: isMobile ? '24px 0' : '32px 0', borderBottom: i < HOW_STEPS.length - 1 ? '1px solid var(--line)' : 'none' }}>
                 {/* Number + connector */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, flexShrink: 0 }}>
                   <div style={{
@@ -652,10 +659,10 @@ const HowItWorks = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                     <span style={{ font: '700 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Step {s.n}</span>
                   </div>
-                  <h3 style={{ margin: '0 0 10px', font: '700 20px/1.25 Inter', letterSpacing: '-0.015em', color: 'var(--ink)' }}>
+                  <h3 style={{ margin: '0 0 8px', font: isMobile ? '700 16px/1.25 Inter' : '700 20px/1.25 Inter', letterSpacing: '-0.015em', color: 'var(--ink)' }}>
                     {s.title}
                   </h3>
-                  <p style={{ margin: '0 0 14px', font: '400 14px/1.65 Inter', color: 'var(--ink-2)' }}>
+                  <p style={{ margin: '0 0 12px', font: isMobile ? '400 13px/1.6 Inter' : '400 14px/1.65 Inter', color: 'var(--ink-2)' }}>
                     {s.body}
                   </p>
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: 8,
@@ -698,7 +705,7 @@ const BrowseByCategory = () => {
               onClick={e => { e.preventDefault(); navigate(c.slug ? `/${c.slug}` : '/dentists'); }}
               style={{
                 position: 'relative', display: 'block',
-                borderRadius: 16, overflow: 'hidden',
+                borderRadius: isMobile ? 12 : 16, overflow: 'hidden',
                 cursor: 'pointer', textDecoration: 'none',
                 transition: 'transform .2s ease, box-shadow .2s ease',
               }}
@@ -712,7 +719,7 @@ const BrowseByCategory = () => {
               }}
             >
               {/* Landscape photo with gradient */}
-              <div style={{ aspectRatio: '16/9', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ aspectRatio: isMobile ? '4/3' : '16/9', position: 'relative', overflow: 'hidden' }}>
                 <img
                   src={c.img}
                   alt={c.name}
@@ -720,12 +727,18 @@ const BrowseByCategory = () => {
                 />
                 <div style={{
                   position: 'absolute', inset: 0,
-                  background: 'linear-gradient(to top, rgba(10,6,3,0.72) 0%, rgba(10,6,3,0.1) 60%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(10,6,3,0.80) 0%, rgba(10,6,3,0.15) 55%, transparent 100%)',
                 }} />
                 {/* Name over gradient */}
-                <div style={{ position: 'absolute', bottom: 16, left: 18, right: 18 }}>
-                  <div style={{ font: '700 22px/1.1 Inter', color: 'white', letterSpacing: '-0.015em' }}>{c.name}</div>
-                  <div style={{ font: '400 12px/1.4 Inter', color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>{c.sub}</div>
+                <div style={{ position: 'absolute', bottom: isMobile ? 10 : 16, left: isMobile ? 12 : 18, right: isMobile ? 12 : 18 }}>
+                  <div style={{
+                    font: isMobile ? '700 14px/1.2 Inter' : '700 22px/1.1 Inter',
+                    color: 'white', letterSpacing: '-0.01em',
+                  }}>{c.name}</div>
+                  <div style={{
+                    font: isMobile ? '400 10px/1.4 Inter' : '400 12px/1.4 Inter',
+                    color: 'rgba(255,255,255,0.75)', marginTop: isMobile ? 2 : 4,
+                  }}>{c.sub}</div>
                 </div>
               </div>
             </a>
@@ -783,9 +796,11 @@ const TOP_PROS = [
 
 const PRO_TABS = ['Dentists', 'Photographers', 'Salon & Spa', 'Restaurants'];
 
-function ProCard({ pro, featured = false }) {
+function ProCard({ pro }) {
   const navigate = useNavigate();
+  const isMobile = useW() < 768;
   const dest = '/dentists/' + pro.id;
+
   return (
     <article
       onClick={() => navigate(dest)}
@@ -801,40 +816,85 @@ function ProCard({ pro, featured = false }) {
       onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 40px -16px rgba(40,30,20,.22)'; }}
       onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
     >
-      <div style={{ position: 'relative' }}>
-        <PhotoPlaceholder ratio="5/4" label={pro.role.toLowerCase()} src={pro.img} style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }} />
-      </div>
-      <div style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {/* Photo */}
+      <PhotoPlaceholder ratio="5/4" label={pro.role.toLowerCase()} src={pro.img} style={{ borderRadius: 0, border: 'none', boxShadow: 'none' }} />
+
+      {/* Content */}
+      <div style={{ padding: isMobile ? '12px 12px 14px' : '16px 18px 18px', display: 'flex', flexDirection: 'column', gap: isMobile ? 6 : 10, flex: 1 }}>
+
+        {/* Name + verified + rating row */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 4 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
-              <h3 style={{ margin: 0, font: '600 16px/1.2 Inter', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pro.name}</h3>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }} aria-label="Verified">
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6, marginBottom: 3 }}>
+            {/* Name + badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0, flex: 1 }}>
+              <h3 style={{
+                margin: 0,
+                font: isMobile ? '600 13px/1.3 Inter' : '600 15px/1.25 Inter',
+                letterSpacing: '-0.01em',
+                color: 'var(--ink)',
+                wordBreak: 'break-word',
+              }}>{pro.name}</h3>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, marginTop: 1 }} aria-label="Verified">
                 <circle cx="12" cy="12" r="12" fill="var(--green)" />
                 <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, font: '600 12px/1 Inter', flexShrink: 0 }}>
-              <Icon name="star" size={12} color="oklch(0.72 0.14 75)" />
-              {pro.rating}
-              <span style={{ color: 'var(--ink-3)', fontWeight: 500 }}>({pro.reviews})</span>
+            {/* Rating */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3, flexShrink: 0 }}>
+              <Icon name="star" size={11} color="oklch(0.72 0.14 75)" />
+              <span style={{ font: '600 12px/1 Inter', color: 'var(--ink)' }}>{pro.rating}</span>
+              {!isMobile && <span style={{ font: '400 11px/1 Inter', color: 'var(--ink-3)' }}>({pro.reviews})</span>}
             </div>
           </div>
-          <div style={{ font: '400 13px/1.4 Inter', color: 'var(--ink-2)', marginBottom: 6 }}>{pro.role}</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, font: '500 12px/1 Inter', color: 'var(--ink-3)' }}>
-            <Icon name="pin" size={12} />
-            <span>{pro.loc}</span>
+
+          <div style={{ font: isMobile ? '400 11px/1.4 Inter' : '400 13px/1.4 Inter', color: 'var(--ink-2)' }}>{pro.role}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 3, font: isMobile ? '400 11px/1 Inter' : '500 12px/1 Inter', color: 'var(--ink-3)', marginTop: 3 }}>
+            <Icon name="pin" size={10} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{pro.loc}</span>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {pro.tags.map(t => <Tag key={t} tone="neutral" size="sm">{t}</Tag>)}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px dashed var(--line)', paddingTop: 12, marginTop: 2 }}>
+
+        {/* Tags — desktop only */}
+        {!isMobile && (
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            {pro.tags.map(t => <Tag key={t} tone="neutral" size="sm">{t}</Tag>)}
+          </div>
+        )}
+
+        {/* Footer: price + CTA */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          borderTop: '1px dashed var(--line)', paddingTop: isMobile ? 10 : 12, marginTop: 'auto',
+        }}>
           <div>
-            <div style={{ font: '700 15px/1 Inter', color: 'var(--ink)', letterSpacing: '-0.01em' }}>From ${pro.fee}</div>
-            <div style={{ font: '400 11px/1 Inter', color: 'var(--ink-3)', marginTop: 3 }}>per consult</div>
+            <div style={{ font: isMobile ? '700 13px/1 Inter' : '700 15px/1 Inter', color: 'var(--ink)', letterSpacing: '-0.01em' }}>
+              From ${pro.fee}
+            </div>
+            <div style={{ font: '400 10px/1 Inter', color: 'var(--ink-3)', marginTop: 2 }}>per consult</div>
           </div>
-          <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={e => { e.stopPropagation(); navigate(dest); }}>View profile</Btn>
+
+          {isMobile ? (
+            /* compact pill button on mobile */
+            <button
+              onClick={e => { e.stopPropagation(); navigate(dest); }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                padding: '7px 12px', borderRadius: 999,
+                background: 'var(--accent)', color: '#fff', border: 'none',
+                font: '600 12px/1 Inter', cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              View
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          ) : (
+            <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={e => { e.stopPropagation(); navigate(dest); }}>
+              View profile
+            </Btn>
+          )}
         </div>
       </div>
     </article>
@@ -1038,7 +1098,7 @@ const Blog = () => {
     <section style={{ padding: isMobile ? '60px 0' : '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
       <Container>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: isMobile ? 28 : 48, flexWrap: 'wrap', gap: 12 }}>
-          <h2 style={{ margin: 0, font: '700 36px/1.1 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
+          <h2 style={{ margin: 0, font: isMobile ? '700 24px/1.1 Inter' : '700 36px/1.1 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
             Discover our latest blogs
           </h2>
           <a href="/blog" onClick={e => { e.preventDefault(); navigate('/blog'); }}
@@ -1116,38 +1176,38 @@ const Stats = () => {
       backgroundSize: '32px 32px',
     }} />
 
-    <Container style={{ position: 'relative', zIndex: 1, padding: isMobile ? '60px 0' : '80px 0' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 64, alignItems: 'center' }}>
+    <Container style={{ position: 'relative', zIndex: 1, padding: isMobile ? '48px 16px' : '80px 32px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 24 : 64, alignItems: 'center' }}>
 
         {/* Left: headline + stats */}
         <div>
-          <h2 style={{ margin: '0 0 16px', font: isMobile ? '800 36px/1.1 Inter' : '800 52px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
+          <h2 style={{ margin: isMobile ? '0 0 10px' : '0 0 16px', font: isMobile ? '800 30px/1.1 Inter' : '800 52px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
             Trusted by millions,<br />
             <span style={{ color: '#FF5A20' }}>every single day.</span>
           </h2>
-          <p style={{ margin: '0 0 48px', font: '400 17px/1.6 Inter', color: 'rgba(255,255,255,0.4)' }}>
+          <p style={{ margin: isMobile ? '0 0 20px' : '0 0 48px', font: isMobile ? '400 14px/1.5 Inter' : '400 17px/1.6 Inter', color: 'rgba(255,255,255,0.4)' }}>
             Real numbers from our platform — updated every 24 hours.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, borderRadius: isMobile ? 14 : 16, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)' }}>
             {STATS.map((s, i) => (
               <div key={s.label} style={{
-                padding: '32px 28px',
+                padding: isMobile ? '20px 16px' : '32px 28px',
                 background: 'rgba(255,255,255,0.04)',
                 borderRight: (i === 0 || i === 2) ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 borderBottom: (i === 0 || i === 1) ? '1px solid rgba(255,255,255,0.06)' : 'none',
               }}>
                 <div style={{
-                  font: '800 44px/1 Inter', letterSpacing: '-0.03em',
+                  font: isMobile ? '800 26px/1 Inter' : '800 44px/1 Inter', letterSpacing: '-0.03em',
                   color: '#FF5A20',
-                  marginBottom: 8,
+                  marginBottom: isMobile ? 6 : 8,
                 }}>
                   {s.v}
                 </div>
-                <div style={{ font: '600 13px/1.3 Inter', color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>
+                <div style={{ font: isMobile ? '600 12px/1.3 Inter' : '600 13px/1.3 Inter', color: 'rgba(255,255,255,0.65)', marginBottom: 3 }}>
                   {s.label}
                 </div>
-                <div style={{ font: '400 12px/1 Inter', color: 'rgba(255,255,255,0.25)' }}>
+                <div style={{ font: isMobile ? '400 11px/1 Inter' : '400 12px/1 Inter', color: 'rgba(255,255,255,0.25)' }}>
                   {s.sub}
                 </div>
               </div>
@@ -1155,8 +1215,8 @@ const Stats = () => {
           </div>
         </div>
 
-        {/* Right: 2×2 photo mosaic */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 10, aspectRatio: '1 / 1' }}>
+        {/* Right: 2×2 photo mosaic — desktop only */}
+        {!isMobile && <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: 10, aspectRatio: '1 / 1' }}>
           {INDUSTRY_PHOTOS.map((p, i) => (
             <div key={p.label} style={{
               position: 'relative', borderRadius: 14, overflow: 'hidden',
@@ -1197,7 +1257,7 @@ const Stats = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
 
       </div>
     </Container>
@@ -1226,8 +1286,8 @@ const Locations = () => {
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: 10 }}>
         {LOCATIONS.map(l => (
           <a key={l.name} href="/dentists" onClick={e => { e.preventDefault(); navigate('/dentists'); }} style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
-            padding: '22px 24px', borderRadius: 'var(--radius)',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+            padding: isMobile ? '16px 16px' : '22px 24px', borderRadius: 'var(--radius)',
             border: '1px solid var(--line)', background: 'var(--bg)',
             transition: 'transform .15s, box-shadow .15s',
             textDecoration: 'none', color: 'inherit',
@@ -1236,14 +1296,14 @@ const Locations = () => {
           onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
           >
             <div>
-              <div style={{ font: '700 20px/1.1 Inter', letterSpacing: '-0.015em' }}>{l.name}</div>
-              <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)', marginTop: 4 }}>{l.cities}</div>
+              <div style={{ font: isMobile ? '700 15px/1.1 Inter' : '700 20px/1.1 Inter', letterSpacing: '-0.015em' }}>{l.name}</div>
+              {!isMobile && <div style={{ font: '400 12px/1.4 Inter', color: 'var(--ink-3)', marginTop: 4 }}>{l.cities}</div>}
             </div>
             <div style={{
-              width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+              width: isMobile ? 32 : 40, height: isMobile ? 32 : 40, borderRadius: '50%', flexShrink: 0,
               background: 'var(--accent-soft)', display: 'grid', placeItems: 'center',
             }}>
-              <Icon name="arrow-up-right" size={20} color="var(--accent)" />
+              <Icon name="arrow-up-right" size={isMobile ? 16 : 20} color="var(--accent)" />
             </div>
           </a>
         ))}
@@ -1314,14 +1374,21 @@ const Newsletter = () => {
   );
 };
 
+const FOOTER_COLS = [
+  { h: 'Browse',  items: ['Dentists', 'Restaurants', 'Services', 'Salons', 'Photographers'] },
+  { h: 'Company', items: ['About', 'How it works', 'Blog', 'Careers', 'Press'] },
+  { h: 'Support', items: ['Help center', 'Contact us', 'Trust & safety', 'Privacy', 'Terms'] },
+];
+
 const Footer = () => {
   const isMobile = useW() < 768;
+  const [openCol, setOpenCol] = useState(null);
   return (
   <footer style={{ padding: isMobile ? '48px 0 24px' : '64px 0 32px', borderTop: '1px solid var(--line-2)', background: 'var(--bg)' }}>
     <Container>
       <Newsletter />
 
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '2fr 1fr 1fr 1fr', gap: isMobile ? 32 : 48, marginBottom: isMobile ? 32 : 48 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr 1fr 1fr', gap: isMobile ? 20 : 48, marginBottom: isMobile ? 24 : 48 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <img src={logo} alt="whyclick.tv" style={{ height: 44, width: 'auto', display: 'block' }} />
@@ -1396,32 +1463,68 @@ const Footer = () => {
             ))}
           </div>
         </div>
-        {[
-          { h: 'Browse',  items: ['Dentists', 'Restaurants', 'Services', 'Salons', 'Photographers'] },
-          { h: 'Company', items: ['About', 'How it works', 'Blog', 'Careers', 'Press'] },
-          { h: 'Support', items: ['Help center', 'Contact us', 'Trust & safety', 'Privacy', 'Terms'] },
-        ].map(col => (
-          <div key={col.h}>
-            <div style={{ font: '600 13px/1 Inter', marginBottom: 16, color: 'var(--ink)' }}>{col.h}</div>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
-              {col.items.map(it => (
-                <li key={it}>
-                  <a href="#" style={{
-                    font: '400 13px/1 Inter', color: 'var(--ink-2)',
-                    transition: 'color .15s',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
-                  onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
-                  >{it}</a>
-                </li>
-              ))}
-            </ul>
+        {/* Mobile: accordion / Desktop: columns */}
+        {isMobile ? (
+          <div style={{ gridColumn: '1 / -1', display: 'flex', flexDirection: 'column', borderTop: '1px solid var(--line-2)', marginTop: 4 }}>
+            {FOOTER_COLS.map(col => {
+              const isOpen = openCol === col.h;
+              return (
+                <div key={col.h} style={{ borderBottom: '1px solid var(--line-2)' }}>
+                  {/* Accordion header */}
+                  <button
+                    onClick={() => setOpenCol(isOpen ? null : col.h)}
+                    style={{
+                      width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '14px 0', background: 'none', border: 'none', cursor: 'pointer',
+                    }}
+                  >
+                    <span style={{ font: '600 14px/1 Inter', color: 'var(--ink)' }}>{col.h}</span>
+                    <svg
+                      width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="var(--ink-3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                      style={{ transition: 'transform .2s', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0 }}
+                    >
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </button>
+                  {/* Accordion body */}
+                  {isOpen && (
+                    <ul style={{ listStyle: 'none', padding: '0 0 14px', margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      {col.items.map(it => (
+                        <li key={it}>
+                          <a href="#" style={{ font: '400 14px/1 Inter', color: 'var(--ink-2)', display: 'block', padding: '2px 0' }}
+                            onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
+                            onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
+                          >{it}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        ))}
+        ) : (
+          FOOTER_COLS.map(col => (
+            <div key={col.h}>
+              <div style={{ font: '600 13px/1 Inter', marginBottom: 16, color: 'var(--ink)' }}>{col.h}</div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 11 }}>
+                {col.items.map(it => (
+                  <li key={it}>
+                    <a href="#" style={{ font: '400 13px/1 Inter', color: 'var(--ink-2)', transition: 'color .15s' }}
+                      onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'var(--ink-2)'}
+                    >{it}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        )}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 24,
-        borderTop: '1px solid var(--line-2)', flexWrap: 'wrap', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: isMobile ? 'flex-start' : 'center', justifyContent: 'space-between', paddingTop: 24,
+        borderTop: '1px solid var(--line-2)', flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? 10 : 12 }}>
         <div style={{ font: '400 12px/1 Inter', color: 'var(--ink-3)' }}>
           © 2026 whyclick.tv · All rights reserved.
         </div>

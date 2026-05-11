@@ -54,3 +54,11 @@ img { max-width: 100%; display: block; }
 
 /* Leaflet custom pins */
 .wc-pin { background: transparent !important; border: none !important; }
+
+/* Responsive container */
+.wc-container { margin: 0 auto; padding: 0 32px; }
+@media (max-width: 767px) {
+  .wc-container { padding: 0 16px; }
+  .wc-section-title { font-size: 26px !important; line-height: 1.15 !important; }
+  .wc-section-sub  { font-size: 14px !important; }
+}

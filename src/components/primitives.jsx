@@ -157,7 +157,7 @@ export const Btn = ({ children, variant = 'primary', size = 'md', icon, iconRigh
 };
 
 export const Container = ({ children, max = 1240, style: extraStyle = {} }) => (
-  <div style={{ maxWidth: max, margin: '0 auto', padding: '0 32px', ...extraStyle }}>{children}</div>
+  <div className="wc-container" style={{ maxWidth: max, ...extraStyle }}>{children}</div>
 );
 
 export const SectionHeader = ({ eyebrow, title, sub, action }) => (
@@ -169,8 +169,8 @@ export const SectionHeader = ({ eyebrow, title, sub, action }) => (
           <span className="mono" style={{ font: '500 11px/1 Inter', color: 'var(--ink-2)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{eyebrow}</span>
         </div>
       )}
-      <h2 className="serif" style={{ font: '700 44px/1.05 Inter, sans-serif', margin: 0, color: 'var(--ink)', letterSpacing: '-0.015em' }}>{title}</h2>
-      {sub && <p style={{ margin: '14px 0 0', color: 'var(--ink-2)', fontSize: 16, maxWidth: 560 }}>{sub}</p>}
+      <h2 className="serif wc-section-title" style={{ font: '700 44px/1.05 Inter, sans-serif', margin: 0, color: 'var(--ink)', letterSpacing: '-0.015em' }}>{title}</h2>
+      {sub && <p className="wc-section-sub" style={{ margin: '14px 0 0', color: 'var(--ink-2)', fontSize: 16, maxWidth: 560 }}>{sub}</p>}
     </div>
     {action}
   </div>
