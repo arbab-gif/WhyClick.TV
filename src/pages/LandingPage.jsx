@@ -6,6 +6,17 @@ import SiteNav from '../components/SiteNav';
 import logo from '../assets/whyclick-logo.png';
 import { BLOG_POSTS } from '../data/blogData';
 
+// ── RESPONSIVE HOOK ──────────────────────────────────────────────────────────
+const useW = () => {
+  const [w, setW] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
+  return w;
+};
+
 // ── INDUSTRY DATA (used in homepage sections only) ─────────────────────────
 const INDUSTRIES = [
   { icon: 'tooth',    label: 'Dentists',           sub: '14,200 pros',    slug: 'dentists' },
@@ -21,7 +32,10 @@ const INDUSTRIES = [
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [hover, setHover] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const w = useW();
+  const isMobile = w < 768;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -29,6 +43,9 @@ const Nav = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Close menu on resize to desktop
+  useEffect(() => { if (!isMobile) setMenuOpen(false); }, [isMobile]);
 
   const links = [
     { label: 'Browse', hasMenu: true },
@@ -42,142 +59,211 @@ const Nav = () => {
   return (
     <header style={{
       position: 'sticky', top: 0, zIndex: 50,
-      background: scrolled ? 'oklch(0.985 0.005 80 / 0.96)' : 'oklch(0.985 0.005 80 / 0.65)',
+      background: scrolled || menuOpen ? 'oklch(0.985 0.005 80 / 0.98)' : 'oklch(0.985 0.005 80 / 0.65)',
       backdropFilter: 'saturate(180%) blur(16px)',
       WebkitBackdropFilter: 'saturate(180%) blur(16px)',
-      borderBottom: scrolled ? '1px solid var(--line-2)' : '1px solid transparent',
+      borderBottom: scrolled || menuOpen ? '1px solid var(--line-2)' : '1px solid transparent',
       boxShadow: scrolled ? '0 1px 0 oklch(0.92 0.01 80 / 0.6), 0 8px 24px -16px oklch(0.2 0.02 80 / 0.18)' : 'none',
       transition: 'background 200ms ease, border-color 200ms ease, box-shadow 200ms ease',
     }}>
       <Container>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72, gap: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
-            <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <img src={logo} alt="whyclick.tv" style={{ height: 44, width: 'auto', display: 'block' }} />
-            </a>
-            <nav style={{ display: 'flex', gap: 4, position: 'relative' }}>
-              {links.map(l => (
-                <a
-                  key={l.label}
-                  href="#"
-                  onMouseEnter={() => setHover(l.label)}
-                  onMouseLeave={() => setHover(null)}
-                  onClick={e => {
-                    e.preventDefault();
-                    if (l.label === 'Blog') { navigate('/blog'); setHover(null); }
-                    else if (l.label === 'About') { navigate('/about'); setHover(null); }
-                  }}
-                  style={{
-                    position: 'relative',
-                    display: 'inline-flex', alignItems: 'center', gap: 4,
-                    padding: '8px 12px', borderRadius: 8,
-                    font: '500 14px/1 Inter',
-                    color: hover === l.label ? 'var(--ink)' : 'var(--ink-2)',
-                    background: hover === l.label ? 'oklch(0.94 0.01 80 / 0.7)' : 'transparent',
-                    transition: 'background 160ms ease, color 160ms ease',
-                  }}
-                >
-                  {l.label}
-                  {l.hasMenu && (
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{
-                      transition: 'transform 160ms ease',
-                      transform: hover === l.label ? 'rotate(180deg)' : 'rotate(0deg)',
-                    }}>
-                      <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </a>
-              ))}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: isMobile ? 60 : 72, gap: 24 }}>
+          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <img src={logo} alt="whyclick.tv" style={{ height: isMobile ? 36 : 44, width: 'auto', display: 'block' }} />
+          </a>
 
-              {hover === 'Industries' && (
-                <div
-                  onMouseEnter={() => setHover('Industries')}
-                  onMouseLeave={() => setHover(null)}
-                  style={{
-                    position: 'absolute', top: 'calc(100% + 14px)', left: 0,
-                    width: 560,
-                    background: 'var(--bg)',
-                    border: '1px solid var(--line-2)',
-                    borderRadius: 16,
-                    padding: 14,
-                    boxShadow: '0 1px 0 oklch(1 0 0 / 0.6) inset, 0 20px 50px -20px oklch(0.2 0.02 80 / 0.35), 0 8px 20px -10px oklch(0.2 0.02 80 / 0.18)',
-                    animation: 'fadeSlideDown 180ms ease',
-                    zIndex: 10,
-                  }}
-                >
-                  <div aria-hidden="true" style={{ position: 'absolute', top: -14, left: 0, right: 0, height: 14 }} />
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
-                    {INDUSTRIES.map(ind => {
-                      const isLive = ind.label === 'Dentists';
-                      return (
-                        <a key={ind.label}
-                          href={isLive ? '/dentists' : '#'}
-                          onClick={e => { e.preventDefault(); navigate('/dentists'); setHover(null); }}
-                          style={{
-                            display: 'flex', alignItems: 'center', gap: 12,
-                            padding: '10px 12px', borderRadius: 10,
-                            transition: 'background 140ms ease',
-                            textDecoration: 'none',
-                          }}
-                          onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
-                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-                          <div style={{
-                            width: 36, height: 36, borderRadius: 9,
-                            background: isLive ? 'var(--accent-soft)' : 'oklch(0.95 0.005 80)',
-                            display: 'grid', placeItems: 'center', flexShrink: 0,
-                          }}>
-                            <Icon name={ind.icon} size={18} color={isLive ? 'var(--accent)' : 'var(--ink-3)'} />
-                          </div>
-                          <div style={{ minWidth: 0 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                              <span style={{ font: '500 14px/1.2 Inter', color: 'var(--ink)' }}>{ind.label}</span>
-                              {!isLive && <span style={{ font: '500 10px/1 Inter', color: 'var(--ink-3)', background: 'oklch(0.93 0.005 80)', padding: '2px 6px', borderRadius: 999 }}>Soon</span>}
+          {/* Desktop nav links */}
+          {!isMobile && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 36, flex: 1 }}>
+              <nav style={{ display: 'flex', gap: 4, position: 'relative' }}>
+                {links.map(l => (
+                  <a
+                    key={l.label}
+                    href="#"
+                    onMouseEnter={() => setHover(l.label)}
+                    onMouseLeave={() => setHover(null)}
+                    onClick={e => {
+                      e.preventDefault();
+                      if (l.label === 'Blog') { navigate('/blog'); setHover(null); }
+                      else if (l.label === 'About') { navigate('/about'); setHover(null); }
+                    }}
+                    style={{
+                      position: 'relative',
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                      padding: '8px 12px', borderRadius: 8,
+                      font: '500 14px/1 Inter',
+                      color: hover === l.label ? 'var(--ink)' : 'var(--ink-2)',
+                      background: hover === l.label ? 'oklch(0.94 0.01 80 / 0.7)' : 'transparent',
+                      transition: 'background 160ms ease, color 160ms ease',
+                    }}
+                  >
+                    {l.label}
+                    {l.hasMenu && (
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{
+                        transition: 'transform 160ms ease',
+                        transform: hover === l.label ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }}>
+                        <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </a>
+                ))}
+
+                {hover === 'Industries' && (
+                  <div
+                    onMouseEnter={() => setHover('Industries')}
+                    onMouseLeave={() => setHover(null)}
+                    style={{
+                      position: 'absolute', top: 'calc(100% + 14px)', left: 0,
+                      width: 560,
+                      background: 'var(--bg)',
+                      border: '1px solid var(--line-2)',
+                      borderRadius: 16,
+                      padding: 14,
+                      boxShadow: '0 1px 0 oklch(1 0 0 / 0.6) inset, 0 20px 50px -20px oklch(0.2 0.02 80 / 0.35), 0 8px 20px -10px oklch(0.2 0.02 80 / 0.18)',
+                      animation: 'fadeSlideDown 180ms ease',
+                      zIndex: 10,
+                    }}
+                  >
+                    <div aria-hidden="true" style={{ position: 'absolute', top: -14, left: 0, right: 0, height: 14 }} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+                      {INDUSTRIES.map(ind => {
+                        const isLive = ind.label === 'Dentists';
+                        return (
+                          <a key={ind.label}
+                            href={isLive ? '/dentists' : '#'}
+                            onClick={e => { e.preventDefault(); navigate('/dentists'); setHover(null); }}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 12,
+                              padding: '10px 12px', borderRadius: 10,
+                              transition: 'background 140ms ease',
+                              textDecoration: 'none',
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.96 0.005 80)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                            <div style={{
+                              width: 36, height: 36, borderRadius: 9,
+                              background: isLive ? 'var(--accent-soft)' : 'oklch(0.95 0.005 80)',
+                              display: 'grid', placeItems: 'center', flexShrink: 0,
+                            }}>
+                              <Icon name={ind.icon} size={18} color={isLive ? 'var(--accent)' : 'var(--ink-3)'} />
                             </div>
-                            <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>{ind.sub}</div>
-                          </div>
-                        </a>
-                      );
-                    })}
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                <span style={{ font: '500 14px/1.2 Inter', color: 'var(--ink)' }}>{ind.label}</span>
+                                {!isLive && <span style={{ font: '500 10px/1 Inter', color: 'var(--ink-3)', background: 'oklch(0.93 0.005 80)', padding: '2px 6px', borderRadius: 999 }}>Soon</span>}
+                              </div>
+                              <div style={{ font: '400 12px/1.3 Inter', color: 'var(--ink-3)', marginTop: 2 }}>{ind.sub}</div>
+                            </div>
+                          </a>
+                        );
+                      })}
+                    </div>
+                    <div style={{
+                      marginTop: 10, paddingTop: 12, borderTop: '1px solid var(--line-2)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    }}>
+                      <span style={{ font: '400 13px/1 Inter', color: 'var(--ink-3)' }}>Don't see your industry?</span>
+                      <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: '500 13px/1 Inter', color: 'var(--accent)' }}>
+                        Browse all <Icon name="arrow-right" size={13} color="var(--accent)" />
+                      </a>
+                    </div>
                   </div>
-                  <div style={{
-                    marginTop: 10, paddingTop: 12, borderTop: '1px solid var(--line-2)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  }}>
-                    <span style={{ font: '400 13px/1 Inter', color: 'var(--ink-3)' }}>Don't see your industry?</span>
-                    <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: '500 13px/1 Inter', color: 'var(--accent)' }}>
-                      Browse all <Icon name="arrow-right" size={13} color="var(--accent)" />
-                    </a>
-                  </div>
-                </div>
-              )}
-            </nav>
-          </div>
+                )}
+              </nav>
+            </div>
+          )}
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '7px 11px', borderRadius: 8,
-              background: 'transparent', border: '1px solid transparent',
-              font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer',
-              transition: 'background 160ms, border-color 160ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
-              <Icon name="pin" size={14} color="var(--ink-3)" />
-              Brooklyn, NY
-            </button>
-            <span style={{ width: 1, height: 20, background: 'var(--line-2)' }} />
-            <a href="#" style={{
-              padding: '8px 12px', borderRadius: 8,
-              font: '500 14px/1 Inter', color: 'var(--ink-2)',
-              transition: 'background 160ms, color 160ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; e.currentTarget.style.color = 'var(--ink)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-2)'; }}>Sign in</a>
-            <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={() => navigate('/join')}>Join as a Partner</Btn>
-          </div>
+          {/* Desktop right CTAs */}
+          {!isMobile && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '7px 11px', borderRadius: 8,
+                background: 'transparent', border: '1px solid transparent',
+                font: '500 13px/1 Inter', color: 'var(--ink-2)', cursor: 'pointer',
+                transition: 'background 160ms, border-color 160ms',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+                <Icon name="pin" size={14} color="var(--ink-3)" />
+                Brooklyn, NY
+              </button>
+              <span style={{ width: 1, height: 20, background: 'var(--line-2)' }} />
+              <a href="#" style={{
+                padding: '8px 12px', borderRadius: 8,
+                font: '500 14px/1 Inter', color: 'var(--ink-2)',
+                transition: 'background 160ms, color 160ms',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'oklch(0.94 0.01 80 / 0.7)'; e.currentTarget.style.color = 'var(--ink)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--ink-2)'; }}>Sign in</a>
+              <Btn variant="primary" size="sm" iconRight="arrow-right" onClick={() => navigate('/join')}>Join as a Partner</Btn>
+            </div>
+          )}
+
+          {/* Mobile: Sign in + Hamburger */}
+          {isMobile && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <a href="#" style={{ font: '500 14px/1 Inter', color: 'var(--ink-2)', padding: '8px 4px' }}>Sign in</a>
+              <button
+                onClick={() => setMenuOpen(o => !o)}
+                aria-label="Toggle menu"
+                style={{
+                  width: 40, height: 40, borderRadius: 10,
+                  background: menuOpen ? 'oklch(0.94 0.01 80)' : 'transparent',
+                  border: '1px solid var(--line)',
+                  display: 'grid', placeItems: 'center',
+                  cursor: 'pointer', transition: 'background .15s',
+                }}
+              >
+                {menuOpen ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round">
+                    <path d="M18 6 6 18M6 6l12 12"/>
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                  </svg>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </Container>
+
+      {/* Mobile drawer */}
+      {isMobile && menuOpen && (
+        <div style={{
+          borderTop: '1px solid var(--line-2)',
+          background: 'var(--bg)',
+          padding: '16px 20px 24px',
+          display: 'flex', flexDirection: 'column', gap: 4,
+          animation: 'fadeSlideDown 180ms ease',
+        }}>
+          {links.map(l => (
+            <a key={l.label} href="#"
+              onClick={e => {
+                e.preventDefault();
+                setMenuOpen(false);
+                if (l.label === 'Blog') navigate('/blog');
+                else if (l.label === 'About') navigate('/about');
+              }}
+              style={{
+                display: 'block', padding: '12px 14px', borderRadius: 10,
+                font: '500 15px/1 Inter', color: 'var(--ink-2)',
+                transition: 'background .15s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-alt)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >{l.label}</a>
+          ))}
+          <div style={{ borderTop: '1px solid var(--line-2)', marginTop: 8, paddingTop: 16 }}>
+            <Btn variant="primary" style={{ width: '100%', justifyContent: 'center' }} iconRight="arrow-right" onClick={() => { setMenuOpen(false); navigate('/join'); }}>
+              Join as a Partner
+            </Btn>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
@@ -198,6 +284,8 @@ const Hero = () => {
   const [focused, setFocused] = useState(false);
   const [slide, setSlide] = useState(0);
   const [paused, setPaused] = useState(false);
+  const w = useW();
+  const isMobile = w < 768;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -233,7 +321,7 @@ const Hero = () => {
       </div>
 
       <Container>
-        <div style={{ paddingTop: 120, paddingBottom: 140, position: 'relative', zIndex: 1,
+        <div style={{ paddingTop: isMobile ? 60 : 120, paddingBottom: isMobile ? 80 : 140, position: 'relative', zIndex: 1,
           display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
           <div style={{ maxWidth: 720, width: '100%' }}>
             <h1 style={{
@@ -249,43 +337,84 @@ const Hero = () => {
               Every professional is ID-checked, license-verified, and reviewed by real customers. No guessing.
             </p>
 
-            <form onSubmit={handleSearch} style={{ marginTop: 36, maxWidth: 640 }}>
-              <div style={{
-                display: 'grid', gridTemplateColumns: '1fr 180px auto', gap: 0,
-                background: 'oklch(1 0 0 / 0.98)', borderRadius: 999,
-                boxShadow: focused ? '0 16px 48px -8px oklch(0 0 0 / 0.5)' : '0 8px 32px -8px oklch(0 0 0 / 0.35)',
-                transition: 'box-shadow .15s',
-                padding: 6,
-                alignItems: 'center',
-              }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 18px' }}>
-                  <Icon name="search" size={18} color="var(--ink-3)" />
-                  <input
-                    value={query} onChange={e => setQuery(e.target.value)}
-                    onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-                    placeholder="Dentist, chef, photographer…"
-                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent',
-                      font: '500 15px/1.4 Inter', color: 'var(--ink)', padding: '14px 0' }}
-                  />
-                </label>
-                <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px',
-                  borderLeft: '1px solid var(--line-2)' }}>
-                  <Icon name="pin" size={16} color="var(--accent)" />
-                  <input
-                    value={zip} onChange={e => setZip(e.target.value)}
-                    placeholder="Zip Code"
-                    style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent',
-                      font: '500 14px/1.4 Inter', color: 'var(--ink)', padding: '14px 0' }}
-                  />
-                </label>
-                <button type="submit" style={{
-                  width: 48, height: 48, borderRadius: '50%',
-                  background: 'var(--accent)', color: 'white', border: 'none',
-                  display: 'grid', placeItems: 'center', cursor: 'pointer',
+            <form onSubmit={handleSearch} style={{ marginTop: 28, maxWidth: 640 }}>
+              {isMobile ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    background: 'oklch(1 0 0 / 0.98)', borderRadius: 14,
+                    padding: '4px 16px',
+                    boxShadow: '0 8px 32px -8px oklch(0 0 0 / 0.35)',
+                  }}>
+                    <Icon name="search" size={18} color="var(--ink-3)" />
+                    <input
+                      value={query} onChange={e => setQuery(e.target.value)}
+                      placeholder="Dentist, chef, photographer…"
+                      style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                        font: '500 15px/1.4 Inter', color: 'var(--ink)', padding: '14px 0' }}
+                    />
+                  </div>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    background: 'oklch(1 0 0 / 0.98)', borderRadius: 14,
+                    padding: '4px 16px',
+                    boxShadow: '0 8px 32px -8px oklch(0 0 0 / 0.35)',
+                  }}>
+                    <Icon name="pin" size={16} color="var(--accent)" />
+                    <input
+                      value={zip} onChange={e => setZip(e.target.value)}
+                      placeholder="Zip Code"
+                      style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                        font: '500 14px/1.4 Inter', color: 'var(--ink)', padding: '14px 0' }}
+                    />
+                  </div>
+                  <button type="submit" style={{
+                    width: '100%', padding: '14px', borderRadius: 14,
+                    background: 'var(--accent)', color: 'white', border: 'none',
+                    font: '600 15px/1 Inter', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  }}>
+                    <Icon name="search" size={16} color="white" /> Search
+                  </button>
+                </div>
+              ) : (
+                <div style={{
+                  display: 'grid', gridTemplateColumns: '1fr 180px auto', gap: 0,
+                  background: 'oklch(1 0 0 / 0.98)', borderRadius: 999,
+                  boxShadow: focused ? '0 16px 48px -8px oklch(0 0 0 / 0.5)' : '0 8px 32px -8px oklch(0 0 0 / 0.35)',
+                  transition: 'box-shadow .15s',
+                  padding: 6,
+                  alignItems: 'center',
                 }}>
-                  <Icon name="search" size={18} color="white" />
-                </button>
-              </div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 18px' }}>
+                    <Icon name="search" size={18} color="var(--ink-3)" />
+                    <input
+                      value={query} onChange={e => setQuery(e.target.value)}
+                      onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+                      placeholder="Dentist, chef, photographer…"
+                      style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent',
+                        font: '500 15px/1.4 Inter', color: 'var(--ink)', padding: '14px 0' }}
+                    />
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '0 14px',
+                    borderLeft: '1px solid var(--line-2)' }}>
+                    <Icon name="pin" size={16} color="var(--accent)" />
+                    <input
+                      value={zip} onChange={e => setZip(e.target.value)}
+                      placeholder="Zip Code"
+                      style={{ width: '100%', border: 'none', outline: 'none', background: 'transparent',
+                        font: '500 14px/1.4 Inter', color: 'var(--ink)', padding: '14px 0' }}
+                    />
+                  </label>
+                  <button type="submit" style={{
+                    width: 48, height: 48, borderRadius: '50%',
+                    background: 'var(--accent)', color: 'white', border: 'none',
+                    display: 'grid', placeItems: 'center', cursor: 'pointer',
+                  }}>
+                    <Icon name="search" size={18} color="white" />
+                  </button>
+                </div>
+              )}
             </form>
 
             {/* Quick category pills */}
@@ -465,13 +594,14 @@ const HOW_STEPS = [
 
 const HowItWorks = () => {
   const navigate = useNavigate();
+  const isMobile = useW() < 768;
   return (
-    <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: 'var(--bg-alt)' }}>
+    <section style={{ padding: isMobile ? '60px 0' : '96px 0', borderTop: '1px solid var(--line-2)', background: 'var(--bg-alt)' }}>
       <Container>
-        <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', gap: 80, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '420px 1fr', gap: isMobile ? 40 : 80, alignItems: 'start' }}>
 
           {/* ── Left: heading block ── */}
-          <div style={{ position: 'sticky', top: 100 }}>
+          <div style={{ position: isMobile ? 'static' : 'sticky', top: 100 }}>
             <p style={{ margin: '0 0 14px', font: '600 11px/1 Inter', color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               How it works
             </p>
@@ -555,11 +685,12 @@ const BROWSE = [
 
 const BrowseByCategory = () => {
   const navigate = useNavigate();
+  const isMobile = useW() < 768;
   return (
-    <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
+    <section style={{ padding: isMobile ? '60px 0' : '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
       <Container>
         <SectionHeader title="Browse by industry" sub="Whatever you need, we have the right pro for it." />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: isMobile ? 10 : 16 }}>
           {BROWSE.map(c => (
             <a
               key={c.id}
@@ -713,16 +844,17 @@ function ProCard({ pro, featured = false }) {
 const TopProfessionals = () => {
   const [activeTab, setActiveTab] = useState('Dentists');
   const filtered = TOP_PROS.filter(p => p.industry === activeTab);
+  const isMobile = useW() < 768;
 
   return (
-    <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
+    <section style={{ padding: isMobile ? '60px 0' : '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
       <Container>
         <SectionHeader
           title="Top professionals near you"
           sub="Hand-picked, consistently 5-star, and available this week."
           action={<Btn variant="outline" iconRight="arrow-right" onClick={() => {}}>View all</Btn>}
         />
-        <div style={{ display: 'flex', gap: 8, marginBottom: 28, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 28, overflowX: isMobile ? 'auto' : 'visible', flexWrap: isMobile ? 'nowrap' : 'wrap', paddingBottom: isMobile ? 4 : 0 }}>
           {PRO_TABS.map(tab => (
             <button
               key={tab}
@@ -734,6 +866,7 @@ const TopProfessionals = () => {
                 cursor: 'pointer',
                 border: '1px solid',
                 transition: 'all .15s',
+                flexShrink: 0,
                 borderColor: activeTab === tab ? 'var(--accent)' : 'var(--line)',
                 background: activeTab === tab ? 'var(--accent)' : 'var(--bg)',
                 color: activeTab === tab ? '#fff' : 'var(--ink-2)',
@@ -743,7 +876,7 @@ const TopProfessionals = () => {
             </button>
           ))}
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: isMobile ? 12 : 20 }}>
           {filtered.slice(0, 12).map((p, i) => <ProCard key={p.id} pro={p} featured={i === 0} />)}
         </div>
       </Container>
@@ -811,7 +944,8 @@ const REVIEWS = [
 
 const Reviews = () => {
   const [page, setPage] = useState(0);
-  const perPage = 3;
+  const isMobile = useW() < 768;
+  const perPage = isMobile ? 1 : 3;
   const totalPages = Math.ceil(REVIEWS.length / perPage);
   const visible = REVIEWS.slice(page * perPage, page * perPage + perPage);
 
@@ -870,15 +1004,15 @@ const Reviews = () => {
   );
 
   return (
-    <section style={{ padding: '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
+    <section style={{ padding: isMobile ? '60px 0' : '96px 0', borderTop: '1px solid var(--line-2)', background: '#fff' }}>
       <Container>
         <SectionHeader title="What people are actually saying" sub="Real words from real customers — not marketing copy." />
-        <div style={{ position: 'relative', padding: '0 8px' }}>
-          <ArrowBtn dir="prev" onClick={() => setPage(p => p - 1)} disabled={page === 0} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, alignItems: 'center' }}>
-            {visible.map((r, i) => <ReviewCard key={r.id} r={r} isCenter={i === 1} />)}
+        <div style={{ position: 'relative', padding: isMobile ? '0' : '0 8px' }}>
+          {!isMobile && <ArrowBtn dir="prev" onClick={() => setPage(p => p - 1)} disabled={page === 0} />}
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? 14 : 20, alignItems: 'center' }}>
+            {visible.map((r, i) => <ReviewCard key={r.id} r={r} isCenter={!isMobile && i === 1} />)}
           </div>
-          <ArrowBtn dir="next" onClick={() => setPage(p => p + 1)} disabled={page === totalPages - 1} />
+          {!isMobile && <ArrowBtn dir="next" onClick={() => setPage(p => p + 1)} disabled={page === totalPages - 1} />}
         </div>
         {/* Dots */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }}>
@@ -899,10 +1033,11 @@ const Reviews = () => {
 // ── BLOG ─────────────────────────────────────────────────────────────────────
 const Blog = () => {
   const navigate = useNavigate();
+  const isMobile = useW() < 768;
   return (
-    <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
+    <section style={{ padding: isMobile ? '60px 0' : '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
       <Container>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 48 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: isMobile ? 28 : 48, flexWrap: 'wrap', gap: 12 }}>
           <h2 style={{ margin: 0, font: '700 36px/1.1 Inter', letterSpacing: '-0.02em', color: 'var(--ink)' }}>
             Discover our latest blogs
           </h2>
@@ -912,7 +1047,7 @@ const Blog = () => {
           </a>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: isMobile ? 14 : 20 }}>
           {BLOG_POSTS.slice(0, 3).map(post => (
             <article key={post.id}
               onClick={() => navigate(`/blog/${post.id}`)}
@@ -966,7 +1101,9 @@ const INDUSTRY_PHOTOS = [
   { src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80&auto=format&fit=crop&crop=faces', label: 'Photography', name: 'Chloe Bennett' },
 ];
 
-const Stats = () => (
+const Stats = () => {
+  const isMobile = useW() < 768;
+  return (
   <section style={{
     position: 'relative', overflow: 'hidden',
     background: 'linear-gradient(160deg, #150c07 0%, #0f0905 45%, #1a0e08 100%)',
@@ -979,12 +1116,12 @@ const Stats = () => (
       backgroundSize: '32px 32px',
     }} />
 
-    <Container style={{ position: 'relative', zIndex: 1, padding: '80px 0' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }}>
+    <Container style={{ position: 'relative', zIndex: 1, padding: isMobile ? '60px 0' : '80px 0' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 64, alignItems: 'center' }}>
 
         {/* Left: headline + stats */}
         <div>
-          <h2 style={{ margin: '0 0 16px', font: '800 52px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
+          <h2 style={{ margin: '0 0 16px', font: isMobile ? '800 36px/1.1 Inter' : '800 52px/1.05 Inter', letterSpacing: '-0.03em', color: '#fff' }}>
             Trusted by millions,<br />
             <span style={{ color: '#FF5A20' }}>every single day.</span>
           </h2>
@@ -1065,7 +1202,8 @@ const Stats = () => (
       </div>
     </Container>
   </section>
-);
+  );
+};
 
 
 // ── LOCATIONS ─────────────────────────────────────────────────────────────────
@@ -1080,11 +1218,12 @@ const LOCATIONS = [
 
 const Locations = () => {
   const navigate = useNavigate();
+  const isMobile = useW() < 768;
   return (
-  <section style={{ padding: '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
+  <section style={{ padding: isMobile ? '60px 0' : '96px 0', background: '#fff', borderTop: '1px solid var(--line-2)' }}>
     <Container>
       <SectionHeader title="Find pros across the U.S." sub="Search in your city and see who's available this week." />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: 10 }}>
         {LOCATIONS.map(l => (
           <a key={l.name} href="/dentists" onClick={e => { e.preventDefault(); navigate('/dentists'); }} style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
@@ -1118,6 +1257,7 @@ const Locations = () => {
 const Newsletter = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
+  const isMobile = useW() < 768;
   const submit = (e) => {
     e.preventDefault();
     if (!email.trim()) return;
@@ -1126,9 +1266,11 @@ const Newsletter = () => {
   return (
     <div style={{
       background: 'var(--accent)', border: 'none',
-      borderRadius: 16, padding: '36px 40px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      gap: 40, marginBottom: 56, flexWrap: 'wrap',
+      borderRadius: 16, padding: isMobile ? '28px 24px' : '36px 40px',
+      display: 'flex', alignItems: isMobile ? 'flex-start' : 'center',
+      flexDirection: isMobile ? 'column' : 'row',
+      justifyContent: 'space-between',
+      gap: isMobile ? 20 : 40, marginBottom: isMobile ? 36 : 56,
     }}>
       <div style={{ maxWidth: 400 }}>
         <h3 style={{ margin: '0 0 8px', font: '700 22px/1.2 Inter', letterSpacing: '-0.015em', color: 'white' }}>
@@ -1144,7 +1286,7 @@ const Newsletter = () => {
           You're in! Check your inbox.
         </div>
       ) : (
-        <form onSubmit={submit} style={{ display: 'flex', gap: 0, flexShrink: 0 }}>
+        <form onSubmit={submit} style={{ display: 'flex', gap: 0, flexShrink: 0, width: isMobile ? '100%' : 'auto' }}>
           <input
             type="email" value={email} onChange={e => setEmail(e.target.value)}
             placeholder="your@email.com"
@@ -1153,7 +1295,7 @@ const Newsletter = () => {
               padding: '12px 18px', borderRadius: '10px 0 0 10px',
               border: 'none', borderRight: 'none',
               font: '500 14px/1 Inter', color: 'var(--ink)', background: 'white',
-              outline: 'none', width: 220,
+              outline: 'none', width: isMobile ? '100%' : 220, flex: isMobile ? 1 : 'none',
             }}
           />
           <button type="submit" style={{
@@ -1172,12 +1314,14 @@ const Newsletter = () => {
   );
 };
 
-const Footer = () => (
-  <footer style={{ padding: '64px 0 32px', borderTop: '1px solid var(--line-2)', background: 'var(--bg)' }}>
+const Footer = () => {
+  const isMobile = useW() < 768;
+  return (
+  <footer style={{ padding: isMobile ? '48px 0 24px' : '64px 0 32px', borderTop: '1px solid var(--line-2)', background: 'var(--bg)' }}>
     <Container>
       <Newsletter />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '2fr 1fr 1fr 1fr', gap: isMobile ? 32 : 48, marginBottom: isMobile ? 32 : 48 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <img src={logo} alt="whyclick.tv" style={{ height: 44, width: 'auto', display: 'block' }} />
@@ -1288,7 +1432,8 @@ const Footer = () => (
       </div>
     </Container>
   </footer>
-);
+  );
+};
 
 // ── PAGE ──────────────────────────────────────────────────────────────────────
 export default function LandingPage() {
